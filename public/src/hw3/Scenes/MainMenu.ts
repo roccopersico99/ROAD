@@ -5,6 +5,8 @@ import Scene from "../../Wolfie2D/Scene/Scene";
 import Color from "../../Wolfie2D/Utils/Color";
 import Label from "../../Wolfie2D/Nodes/UIElements/Label";
 import hw3_scene from "./hw3_scene";
+import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
+import Input from "../../Wolfie2D/Input/Input";
 
 export default class MainMenu extends Scene {
     // Layers, for multiple main menu screens
@@ -12,13 +14,23 @@ export default class MainMenu extends Scene {
     private about: Layer;
     private control: Layer;
 
-    loadScene(){}
+    // The cursor
+    private cursor: Sprite;
+
+    loadScene(){
+        this.load.image("cursor", "hw3_assets/sprites/crosshair.png");
+    }
 
     startScene(){
         const center = this.viewport.getCenter();
 
+        this.addLayer("primary", 10);
+
         // The main menu
         this.mainMenu = this.addUILayer("mainMenu");
+
+        //initialize cursor
+        this.initializeCursor();
 
         // Add play button, and give it an event to emit on press
         const play = this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y - 100), text: "Play"});
@@ -122,6 +134,7 @@ export default class MainMenu extends Scene {
     }
 
     updateScene(){
+        this.cursor.position.set(Input.getGlobalMousePosition().x, Input.getGlobalMousePosition().y);
         while(this.receiver.hasNextEvent()){
             let event = this.receiver.getNextEvent();
 
@@ -147,5 +160,10 @@ export default class MainMenu extends Scene {
                 this.mainMenu.setHidden(true);
             }
         }
+    }
+
+    initializeCursor(): void {
+        this.cursor = this.add.sprite("cursor", "primary");
+        this.cursor.position.set(Input.getGlobalMousePosition().x, Input.getGlobalMousePosition().y);
     }
 }

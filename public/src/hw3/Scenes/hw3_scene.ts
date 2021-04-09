@@ -1,5 +1,6 @@
 import PlayerController from "../AI/PlayerController";
 import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
+import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import Scene from "../../Wolfie2D/Scene/Scene";
 import { GraphicType } from "../../Wolfie2D/Nodes/Graphics/GraphicTypes";
@@ -27,6 +28,12 @@ export default class hw3_scene extends Scene {
     // The player
     private player: AnimatedSprite;
 
+    // The crosshair
+    private crosshair: Sprite;
+
+    // The viewport mover
+    private viewportMover: Sprite;
+
     // A list of enemies
     private enemies: Array<AnimatedSprite>;
 
@@ -47,15 +54,15 @@ export default class hw3_scene extends Scene {
 
     loadScene(){
         // Load the player and enemy spritesheets
-        this.load.spritesheet("player", "hw3_assets/spritesheets/player.json");
+        // this.load.spritesheet("player", "hw3_assets/spritesheets/player.json");
+        this.load.spritesheet("player", "hw3_assets/spritesheets/car.json");
         this.load.spritesheet("enemy", "hw3_assets/spritesheets/enemy.json");
 
         // Load the tilemap
         // HOMEWORK 3 - TODO - DONE
         // Change this file to be your own tilemap
-        // this.load.tilemap("level", "hw3_assets/tilemaps/TopDown_hw3.json");
-        // this.load.tilemap("level", "hw3_assets/tilemaps/rpersico-hw3-tilemap.json");
-        this.load.tilemap("level", "hw3_assets/tilemaps/rpersico-hw3-tilemap2.json");
+        this.load.tilemap("level", "hw3_assets/tilemaps/road-level1.json");
+        // this.load.tilemap("level", "hw3_assets/tilemaps/rpersico-hw3-tilemap2.json");
 
         // Load the scene info
         this.load.object("weaponData", "hw3_assets/data/weaponData.json");
@@ -77,6 +84,12 @@ export default class hw3_scene extends Scene {
         this.load.image("knife", "hw3_assets/sprites/knife.png");
         this.load.image("lasergun", "hw3_assets/sprites/lasergun.png");
         this.load.image("smg", "hw3_assets/sprites/smg.png");
+
+        // Load crosshair sprite
+        this.load.image("crosshair", "hw3_assets/sprites/crosshair.png");
+
+        // Load viewport mover sprite
+        this.load.image("viewportMover", "hw3_assets/sprites/viewportMover.png");
     }
 
     startScene(){
@@ -113,12 +126,18 @@ export default class hw3_scene extends Scene {
         // Create the player
         this.initializePlayer();
 
-        // Make the viewport follow the player
-        this.viewport.follow(this.player);
+        // Create the crosshair
+        this.initializeCrosshair();
+
+        // Create the viewport mover
+        this.initViewportMover();
+
+        // Make the viewport follow the viewport mover
+        this.viewport.follow(this.viewportMover);
 
         // Zoom in to a reasonable level
-        this.viewport.enableZoom();
-        this.viewport.setZoomLevel(4);
+        // this.viewport.enableZoom();
+        this.viewport.setZoomLevel(3.125);
 
         // Create the navmesh
         this.createNavmesh();
@@ -144,6 +163,13 @@ export default class hw3_scene extends Scene {
     }
 
     updateScene(deltaT: number): void {
+
+        // Set crosshair to mouse position
+        this.crosshair.position.set(Input.getGlobalMousePosition().x, Input.getGlobalMousePosition().y);
+
+        // Move the viewport mover up a little bit
+        this.viewportMover.position.set(this.viewportMover.position.x, this.viewportMover.position.y-1);
+
         while(this.receiver.hasNextEvent()){
             let event = this.receiver.getNextEvent();
 
@@ -252,19 +278,29 @@ export default class hw3_scene extends Scene {
         }
     }
 
+    initViewportMover(): void {
+        this.viewportMover = this.add.sprite("viewportMover", "primary");
+        this.viewportMover.position.set(this.player.position.x, this.player.position.y);
+    }
+
+    initializeCrosshair(): void {
+        this.crosshair = this.add.sprite("crosshair", "primary");
+        this.crosshair.position.set(Input.getGlobalMousePosition().x, Input.getGlobalMousePosition().y);
+    }
+
     initializePlayer(): void {
         // Create the inventory
         let inventory = new InventoryManager(this, 2, "inventorySlot", new Vec2(16, 16), 4);
-        let startingWeapon = this.createWeapon("knife");
+        let startingWeapon = this.createWeapon("lasergun");
         inventory.addItem(startingWeapon);
 
         // Create the player
         this.player = this.add.animatedSprite("player", "primary");
-        this.player.position.set(2.5*16, 61.5*16);
+        this.player.position.set(12*16, 62*16);
         this.player.addPhysics(new AABB(Vec2.ZERO, new Vec2(5, 5)));
         this.player.addAI(PlayerController,
             {
-                speed: 100,
+                speed: 150,
                 inventory: inventory,
                 items: this.items
             });

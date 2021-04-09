@@ -45,7 +45,7 @@ export default class MainMenu extends Scene {
 
         // HOMEWORK 3 - TODO - DONE
         // Give yourself credit for your work on this game!
-        const text1 = "This game was created by Rocco Persico, Joe Weaver, and Richard McKenna";
+        const text1 = "This game was created by Rocco Persico, Jerry Ding, and Ryan Chung";
         const text2 = "using the Wolfie2D game engine, a TypeScript game engine created by";
         const text3 = "Joe Weaver and Richard McKenna.";
 

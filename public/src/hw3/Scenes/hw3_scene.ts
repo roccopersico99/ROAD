@@ -14,6 +14,7 @@ import RegistryManager from "../../Wolfie2D/Registry/RegistryManager";
 import Weapon from "../GameSystems/items/Weapon";
 import Healthpack from "../GameSystems/items/Healthpack";
 import InventoryManager from "../GameSystems/InventoryManager";
+import HealthManager from "../GameSystems/HealthManager";
 import Item from "../GameSystems/items/Item";
 import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
 import BattleManager from "../GameSystems/BattleManager";
@@ -52,6 +53,9 @@ export default class hw3_scene extends Scene {
     // Player health
     private healthDisplay: Label;
 
+    // Health Manager
+    private healthManager: HealthManager; 
+
     loadScene(){
         // Load the player and enemy spritesheets
         // this.load.spritesheet("player", "hw3_assets/spritesheets/player.json");
@@ -87,6 +91,10 @@ export default class hw3_scene extends Scene {
 
         // Load crosshair sprite
         this.load.image("crosshair", "hw3_assets/sprites/crosshair.png");
+
+        // Load heart container sprites
+        this.load.image("fullHeart", "hw3_assets/sprites/full_heart.png");
+        this.load.image("halfHeart", "hw3_assets/sprites/half_heart.png");
 
         // Load viewport mover sprite
         this.load.image("viewportMover", "hw3_assets/sprites/viewportMover.png");
@@ -155,11 +163,13 @@ export default class hw3_scene extends Scene {
         // Spawn items into the world
         this.spawnItems();
 
-        // Add a UI for health
-        this.addUILayer("health");
+        // //Add a UI for health
+        // this.addUILayer("health");
 
-        this.healthDisplay = <Label>this.add.uiElement(UIElementType.LABEL, "health", {position: new Vec2(32, 16), text: "Health: " + (<BattlerAI>this.player._ai).health});
-        this.healthDisplay.textColor = Color.GREEN;
+        // this.healthDisplay = <Label>this.add.uiElement(UIElementType.LABEL, "health", {position: new Vec2(32, 16), text: "Health: " + (<BattlerAI>this.player._ai).health});
+        // this.healthDisplay.textColor = Color.GREEN;
+
+        this.healthManager = new HealthManager(this, (<BattlerAI>this.player._ai).health, "fullHeart", "halfHeart", new Vec2(12, 16));
     }
 
     updateScene(deltaT: number): void {
@@ -184,8 +194,11 @@ export default class hw3_scene extends Scene {
             this.sceneManager.changeScene(GameOver);
         }
 
+        // // Update health gui
+        // this.healthDisplay.text = "Health: " + health;
+
         // Update health gui
-        this.healthDisplay.text = "Health: " + health;
+        this.healthManager.updateHealth(health);
 
         // Debug mode graph
         if(Input.isKeyJustPressed("g")){
@@ -290,7 +303,7 @@ export default class hw3_scene extends Scene {
 
     initializePlayer(): void {
         // Create the inventory
-        let inventory = new InventoryManager(this, 3, "inventorySlot", new Vec2(348, 16), 4);
+        let inventory = new InventoryManager(this, 3, "inventorySlot", new Vec2(348, 16), 1);
         let startingWeapon = this.createWeapon("lasergun");
         inventory.addItem(startingWeapon);
 

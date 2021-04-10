@@ -137,7 +137,7 @@ export default class hw3_scene extends Scene {
 
         // Zoom in to a reasonable level
         // this.viewport.enableZoom();
-        this.viewport.setZoomLevel(3.125);
+        this.viewport.setZoomLevel(3);
 
         // Create the navmesh
         this.createNavmesh();

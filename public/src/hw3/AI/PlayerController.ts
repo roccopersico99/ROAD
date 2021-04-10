@@ -79,7 +79,7 @@ export default class PlayerController implements BattlerAI {
         }
 
         // Rotate the player
-        this.owner.rotation = Vec2.UP.angleToCCW(this.lookDirection);
+        //this.owner.rotation = Vec2.UP.angleToCCW(this.lookDirection);
 
         // Inventory
 

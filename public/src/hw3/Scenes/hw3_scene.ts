@@ -158,8 +158,8 @@ export default class hw3_scene extends Scene {
         // Add a UI for health
         this.addUILayer("health");
 
-        this.healthDisplay = <Label>this.add.uiElement(UIElementType.LABEL, "health", {position: new Vec2(200, 16), text: "Health: " + (<BattlerAI>this.player._ai).health});
-        this.healthDisplay.textColor = Color.WHITE;
+        this.healthDisplay = <Label>this.add.uiElement(UIElementType.LABEL, "health", {position: new Vec2(32, 16), text: "Health: " + (<BattlerAI>this.player._ai).health});
+        this.healthDisplay.textColor = Color.GREEN;
     }
 
     updateScene(deltaT: number): void {
@@ -290,7 +290,7 @@ export default class hw3_scene extends Scene {
 
     initializePlayer(): void {
         // Create the inventory
-        let inventory = new InventoryManager(this, 2, "inventorySlot", new Vec2(16, 16), 4);
+        let inventory = new InventoryManager(this, 3, "inventorySlot", new Vec2(348, 16), 4);
         let startingWeapon = this.createWeapon("lasergun");
         inventory.addItem(startingWeapon);
 

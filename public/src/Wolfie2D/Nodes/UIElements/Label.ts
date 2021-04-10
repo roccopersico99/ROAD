@@ -9,9 +9,9 @@ export default class Label extends UIElement{
 	/** The value of the text of this UIElement */
 	text: string;
 	/** The name of the font */
-	protected font: string;
+	font: string;
 	/** The size of the font */
-	protected fontSize: number;
+	fontSize: number;
 	/** The horizontal alignment of the text within the label */
 	protected hAlign: string;
 	/** The vertical alignment of text within the label */
@@ -24,7 +24,7 @@ export default class Label extends UIElement{
 		super(position);
 		this.text = text;
 		this.textColor = new Color(0, 0, 0, 1);
-		this.font = "Arial";
+		this.font = "PixelSimple";
 		this.fontSize = 30;
 		this.hAlign = "center";
 		this.vAlign = "center";

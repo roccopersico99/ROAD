@@ -12,44 +12,66 @@ export default class HealthManager {
     private heartSize: Vec2;
     private padding: number;
     private heartLayer: string;
-    private hearts: number;
-    private halfHearts: number;
     private position: Vec2;
 
-    constructor(scene: Scene, health: number, fullHeart: string, halfHeart: string, position: Vec2){
+    //Game Variables
+    private totalHealth: number;
+    private currentHealth: number;
+
+    //Sprites
+    private fullHeart: string;
+    private fullHalfHeart: string;
+    private emptyHeart: string;
+    private halfHeart: string;
+    private emptyHalfHeart: string;
+
+    constructor(scene: Scene, totalHealth: number, fullHeart: string, fullHalfHeart: string, emptyHeart: string, halfHeart: string, emptyHalfHeart: string, position: Vec2){
         this.padding = -4.5;
         this.position = position;
 
-        if(health % 1 == .5) {
-            this.hearts = health - .5;
-            this.halfHearts = 1;
+        this.totalHealth = totalHealth;
+        this.currentHealth = totalHealth;
+
+        let hearts;
+        let halfHearts;
+
+        if(this.totalHealth % 1 == .5) {
+            hearts = this.totalHealth - .5;
+            halfHearts = 1;
         } else {
-            this.hearts = health;
-            this.halfHearts = 0;
+            hearts = this.totalHealth;
+            halfHearts = 0;
         }
 
-        this.heartContainers = new Array(this.hearts + this.halfHearts);
+        this.fullHeart = fullHeart;
+        this.fullHalfHeart = fullHalfHeart;
+        this.emptyHeart = emptyHeart;
+        this.halfHeart = halfHeart;
+        this.emptyHalfHeart = emptyHalfHeart;
+
+        this.heartContainers = new Array(hearts + halfHearts);
 
         // Add layers
-        this.heartLayer = "healthContainers";
+        this.heartLayer = "totalHealthContainers";
         scene.addUILayer(this.heartLayer).setDepth(100);
 
         // Create the full hearts
-        for(let i = 0; i < this.hearts; i++){
-            this.heartContainers[i] = scene.add.sprite(fullHeart, this.heartLayer);
+        for(let i = 0; i < hearts; i++){
+            this.heartContainers[i] = scene.add.sprite(this.fullHeart, this.heartLayer);
         }
 
         // Create the half hearts
-        if(this.halfHearts == 1) {
-            this.heartContainers[this.hearts] = scene.add.sprite(halfHeart, this.heartLayer);
+        if(halfHearts == 1) {
+            this.heartContainers[hearts] = scene.add.sprite(this.fullHalfHeart, this.heartLayer);
+            scene.add
         }
 
         this.heartSize = this.heartContainers[0].size.clone();
 
-        // Position the inventory slots
+        // Position the hearts
         let row = 0;
         let positionY = this.position.y;
-        for(let i = 0; i < this.hearts + this.halfHearts; i++){
+        for(let i = 0; i < hearts + halfHearts; i++){
             if(i != 0 && i % 3 == 0) {
                 positionY += 20;
                 row = 0;
@@ -59,25 +81,7 @@ export default class HealthManager {
         }
     }
 
-    updateHealth(health: number) {
-        if(health % 1 == .5) {
-            this.hearts = health - .5;
-            this.halfHearts = 1;
-        } else {
-            this.hearts = health;
-            this.halfHearts = 0;
-        }
-
-        // Position the inventory slots
-        let row = 0;
-        let positionY = this.position.y;
-        for(let i = 0; i < this.hearts + this.halfHearts; i++){
-            if(i != 0 && i % 3 == 0) {
-                positionY += 20;
-                row = 0;
-            }
-            this.heartContainers[i].position.set(this.position.x + row*(this.heartSize.x + this.padding), positionY);
-            row += 1;
-        }
+    updateCurrentHealth(newHealth: number) {
+        
     }
 }

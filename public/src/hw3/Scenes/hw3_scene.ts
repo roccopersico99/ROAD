@@ -94,7 +94,10 @@ export default class hw3_scene extends Scene {
 
         // Load heart container sprites
         this.load.image("fullHeart", "hw3_assets/sprites/full_heart.png");
+        this.load.image("fullHalfHeart", "hw3_assets/sprites/full_half_heart.png");
         this.load.image("halfHeart", "hw3_assets/sprites/half_heart.png");
+        this.load.image("emptyHeart", "hw3_assets/sprites/empty_heart.png");
+        this.load.image("emptyHalfHeart", "hw3_assets/sprites/empty_half_heart.png");
 
         // Load viewport mover sprite
         this.load.image("viewportMover", "hw3_assets/sprites/viewportMover.png");
@@ -169,7 +172,7 @@ export default class hw3_scene extends Scene {
         // this.healthDisplay = <Label>this.add.uiElement(UIElementType.LABEL, "health", {position: new Vec2(32, 16), text: "Health: " + (<BattlerAI>this.player._ai).health});
         // this.healthDisplay.textColor = Color.GREEN;
 
-        this.healthManager = new HealthManager(this, (<BattlerAI>this.player._ai).health, "fullHeart", "halfHeart", new Vec2(12, 16));
+        this.healthManager = new HealthManager(this, (<BattlerAI>this.player._ai).health + .5, "fullHeart", "fullHalfHeart", "emptyHeart", "halfHeart", "emptyHalfHeart", new Vec2(12, 16));
     }
 
     updateScene(deltaT: number): void {
@@ -198,7 +201,7 @@ export default class hw3_scene extends Scene {
         // this.healthDisplay.text = "Health: " + health;
 
         // Update health gui
-        this.healthManager.updateHealth(health);
+        this.healthManager.updateCurrentHealth(health);
 
         // Debug mode graph
         if(Input.isKeyJustPressed("g")){

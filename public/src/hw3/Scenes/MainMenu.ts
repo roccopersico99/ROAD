@@ -19,8 +19,12 @@ export default class MainMenu extends Scene {
     // The cursor
     private cursor: Sprite;
 
+    // The Logo
+    private logo: Sprite;
+
     loadScene(){
         this.load.image("cursor", "hw3_assets/sprites/crosshair2.png");
+        this.load.image("logo", "hw3_assets/sprites/logo_large.png");
     }
 
     startScene(){
@@ -28,14 +32,17 @@ export default class MainMenu extends Scene {
 
         this.addUILayer("primary").setDepth(101);
 
+        this.logo = this.add.sprite("logo", "primary");
+        this.logo.position.set(center.x, center.y+10);
+
         // The main menu
         this.mainMenu = this.addUILayer("mainMenu");
         this.mainMenu.setDepth(100);
 
         // Add ROAD logo label
-        const logo = <Label>this.add.uiElement(UIElementType.LABEL, "mainMenu", {position: new Vec2(center.x+10, center.y - 230), text: "ROAD"});
-        logo.textColor = Color.BLACK;
-        logo.fontSize = 250;
+        // const logo = <Label>this.add.uiElement(UIElementType.LABEL, "mainMenu", {position: new Vec2(center.x+10, center.y - 230), text: "ROAD"});
+        // logo.textColor = Color.BLACK;
+        // logo.fontSize = 250;
 
         // Add play button, and give it an event to emit on press
         const play = <Label>this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y - 50), text: "Play"});

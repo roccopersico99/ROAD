@@ -90,7 +90,7 @@ export default class hw3_scene extends Scene {
         this.load.image("smg", "hw3_assets/sprites/smg.png");
 
         // Load crosshair sprite
-        this.load.image("crosshair", "hw3_assets/sprites/crosshair.png");
+        this.load.image("crosshair", "hw3_assets/sprites/crosshair2.png");
 
         // Load heart container sprites
         this.load.image("fullHeart", "hw3_assets/sprites/full_heart.png");

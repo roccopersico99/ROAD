@@ -125,6 +125,7 @@ export default class hw3_scene extends Scene {
         this.viewport.setBounds(0, 0, tilemapSize.x, tilemapSize.y);
 
         this.addLayer("primary", 10);
+        //this.addUILayer("crosshairLayer").setDepth(11);
 
         // Create the battle manager
         this.battleManager = new BattleManager();

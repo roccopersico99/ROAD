@@ -15,6 +15,7 @@ import Weapon from "../GameSystems/items/Weapon";
 import Healthpack from "../GameSystems/items/Healthpack";
 import InventoryManager from "../GameSystems/InventoryManager";
 import HealthManager from "../GameSystems/HealthManager";
+import WeaponManager from "../GameSystems/WeaponManager";
 import Item from "../GameSystems/items/Item";
 import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
 import BattleManager from "../GameSystems/BattleManager";
@@ -84,6 +85,7 @@ export default class hw3_scene extends Scene {
         // Load item sprites
         this.load.image("healthpack", "hw3_assets/sprites/healthpack.png");
         this.load.image("inventorySlot", "hw3_assets/sprites/inventory.png");
+        this.load.image("inventorySlot2x", "hw3_assets/sprites/inventory2x.png");
         this.load.image("pistol", "hw3_assets/sprites/pistol.png");
         this.load.image("knife", "hw3_assets/sprites/knife.png");
         this.load.image("lasergun", "hw3_assets/sprites/lasergun.png");
@@ -306,7 +308,7 @@ export default class hw3_scene extends Scene {
 
     initializePlayer(): void {
         // Create the inventory
-        let inventory = new InventoryManager(this, 3, "inventorySlot", new Vec2(348, 16), 1);
+        let inventory = new WeaponManager(this, "inventorySlot", "inventorySlot2x", new Vec2(348, 16));
         let startingWeapon = this.createWeapon("lasergun");
         inventory.addItem(startingWeapon);
 

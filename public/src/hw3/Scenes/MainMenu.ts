@@ -7,6 +7,7 @@ import Label from "../../Wolfie2D/Nodes/UIElements/Label";
 import hw3_scene from "./hw3_scene";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import Input from "../../Wolfie2D/Input/Input";
+import PlayerController from "../AI/PlayerController";
 
 export default class MainMenu extends Scene {
     // Layers, for multiple main menu screens
@@ -19,19 +20,17 @@ export default class MainMenu extends Scene {
     private cursor: Sprite;
 
     loadScene(){
-        this.load.image("cursor", "hw3_assets/sprites/crosshair.png");
+        this.load.image("cursor", "hw3_assets/sprites/crosshair2.png");
     }
 
     startScene(){
         const center = this.viewport.getCenter();
 
-        this.addLayer("primary", 10);
+        this.addUILayer("primary").setDepth(101);
 
         // The main menu
         this.mainMenu = this.addUILayer("mainMenu");
-
-        //initialize cursor
-        this.initializeCursor();
+        this.mainMenu.setDepth(100);
 
         // Add ROAD logo label
         const logo = <Label>this.add.uiElement(UIElementType.LABEL, "mainMenu", {position: new Vec2(center.x+10, center.y - 230), text: "ROAD"});
@@ -40,22 +39,24 @@ export default class MainMenu extends Scene {
 
         // Add play button, and give it an event to emit on press
         const play = <Label>this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y - 50), text: "Play"});
-        play.size.set(200, 50);
+        play.size.set(300, 50);
         play.borderWidth = 2;
         play.borderColor = Color.RED;
         play.backgroundColor = Color.ORANGE;
         play.onClickEventId = "play";
         play.textColor = Color.BLACK;
+        play.fontSize = 40;
 
         // Add control layer and button
         this.control = this.addUILayer("control");
         this.control.setHidden(true);
         const controls = <Label>this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y+150), text: "Controls"});
-        controls.size.set(200, 50);
+        controls.size.set(300, 50);
         controls.borderWidth = 2;
         controls.borderColor = Color.RED;
         controls.backgroundColor = Color.ORANGE;
         controls.textColor = Color.BLACK;
+        controls.fontSize = 40;
         controls.onClickEventId = "control";
         const controlHeader = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 250), text: "Controls"});
         controlHeader.textColor = Color.BLACK;
@@ -80,21 +81,23 @@ export default class MainMenu extends Scene {
         ctrlLine5.textColor = Color.BLACK;
         ctrlLine6.textColor = Color.BLACK;
         const ctrlBack = <Label>this.add.uiElement(UIElementType.BUTTON, "control", {position: new Vec2(center.x, center.y + 300), text: "Back"});
-        ctrlBack.size.set(200, 50);
+        ctrlBack.size.set(300, 50);
         ctrlBack.borderWidth = 2;
         ctrlBack.borderColor = Color.RED;
         ctrlBack.backgroundColor = Color.ORANGE;
         ctrlBack.textColor = Color.BLACK;
         ctrlBack.onClickEventId = "menu";
+        ctrlBack.fontSize = 40;
 
         // Add about button
         const about = <Label>this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y + 250), text: "About"});
-        about.size.set(200, 50);
+        about.size.set(300, 50);
         about.borderWidth = 2;
         about.borderColor = Color.RED;
         about.backgroundColor = Color.ORANGE;
         about.textColor = Color.BLACK
         about.onClickEventId = "about";
+        about.fontSize = 40;
 
         /* ########## ABOUT SCREEN ########## */
         this.about = this.addUILayer("about");
@@ -123,38 +126,42 @@ export default class MainMenu extends Scene {
         line5.textColor = Color.BLACK;
 
         const aboutBack = <Label>this.add.uiElement(UIElementType.BUTTON, "about", {position: new Vec2(center.x, center.y + 250), text: "Back"});
-        aboutBack.size.set(200, 50);
+        aboutBack.size.set(300, 50);
         aboutBack.borderWidth = 2;
         aboutBack.borderColor = Color.RED;
         aboutBack.backgroundColor = Color.ORANGE;
         aboutBack.onClickEventId = "menu";
         aboutBack.textColor = Color.BLACK;
+        aboutBack.fontSize = 40;
 
         // Level Select Screen
         this.levelSelect = this.addUILayer("levelSelect");
         this.levelSelect.setHidden(true);
         const levelSelect = <Label>this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y + 50), text: "Level Select"});
-        levelSelect.size.set(200, 50);
+        levelSelect.size.set(300, 50);
         levelSelect.borderWidth = 2;
         levelSelect.borderColor = Color.RED;
         levelSelect.backgroundColor = Color.ORANGE;
         levelSelect.textColor = Color.BLACK;
         levelSelect.onClickEventId = "levelSelect";
+        levelSelect.fontSize = 40;
         const lvlSelectHeader = <Label>this.add.uiElement(UIElementType.LABEL, "levelSelect", {position: new Vec2(center.x, center.y - 250), text: "Level Select"});
         lvlSelectHeader.textColor = Color.BLACK;
         lvlSelectHeader.fontSize = 100;
+        
 
         // *** LEVEL SELECT SCREEN ***
         const lvlSelectText = <Label>this.add.uiElement(UIElementType.LABEL, "levelSelect", {position: new Vec2(center.x, center.y), text: "Coming soon..."});
 
         // Level Select back button
         const lvlSelectBack = <Label>this.add.uiElement(UIElementType.BUTTON, "levelSelect", {position: new Vec2(center.x, center.y + 250), text: "Back"});
-        lvlSelectBack.size.set(200, 50);
+        lvlSelectBack.size.set(300, 50);
         lvlSelectBack.borderWidth = 2;
         lvlSelectBack.borderColor = Color.RED;
         lvlSelectBack.backgroundColor = Color.ORANGE;
         lvlSelectBack.textColor = Color.BLACK;
         lvlSelectBack.onClickEventId = "menu";
+        lvlSelectBack.fontSize = 40;
 
 
 
@@ -164,6 +171,9 @@ export default class MainMenu extends Scene {
         this.receiver.subscribe("menu");
         this.receiver.subscribe("control");
         this.receiver.subscribe("levelSelect");
+
+        //initialize cursor
+        this.initializeCursor();
     }
 
     updateScene(){

@@ -34,6 +34,7 @@ export default class MainMenu extends Scene {
 
         this.logo = this.add.sprite("logo", "primary");
         this.logo.position.set(center.x, center.y+10);
+        this.logo.size.set(800,800);
 
         // The main menu
         this.mainMenu = this.addUILayer("mainMenu");
@@ -197,6 +198,7 @@ export default class MainMenu extends Scene {
             if(event.type === "about"){
                 this.about.setHidden(false);
                 this.mainMenu.setHidden(true);
+                this.logo.size.set(0,0);
             }
 
             if(event.type === "menu"){
@@ -204,16 +206,19 @@ export default class MainMenu extends Scene {
                 this.about.setHidden(true);
                 this.control.setHidden(true);
                 this.levelSelect.setHidden(true);
+                this.logo.size.set(800,800);
             }
 
             if(event.type === "control"){
                 this.control.setHidden(false);
                 this.mainMenu.setHidden(true);
+                this.logo.size.set(0,0);
             }
 
             if(event.type === "levelSelect"){
                 this.levelSelect.setHidden(false);
                 this.mainMenu.setHidden(true);
+                this.logo.size.set(0,0);
             }
         }
     }

@@ -47,7 +47,12 @@ export default class PlayerController implements BattlerAI {
     update(deltaT: number): void {
         // Get the movement direction
         this.direction.x = (Input.isPressed("left") ? -1 : 0) + (Input.isPressed("right") ? 1 : 0);
-        this.direction.y = (Input.isPressed("forward") ? -1 : 0) + (Input.isPressed("backward") ? 1 : 0) + (Input.isPressed("left") ? -.45 : 0) + (Input.isPressed("right") ? -.45 : 0);
+        if(this.owner.autoMove){
+            this.direction.y = (Input.isPressed("forward") ? -1 : 0) + (Input.isPressed("backward") ? 1 : 0) + (Input.isPressed("left") ? -.45 : 0) + (Input.isPressed("right") ? -.45 : 0);
+        }
+        else{
+            this.direction.y = (Input.isPressed("forward") ? -1 : 0) + (Input.isPressed("backward") ? 1 : 0);
+        }
 
         if(!this.direction.isZero()){
             // Move the player
@@ -55,10 +60,14 @@ export default class PlayerController implements BattlerAI {
             this.owner.animation.playIfNotAlready("WALK", true);
         } else {
             // Player is idle
-            this.direction.y = -1;
-            this.owner.move(this.direction.normalized().scale(this.speed * deltaT * .42));
-            this.owner.animation.playIfNotAlready("WALK", true);
-            //this.owner.animation.playIfNotAlready("IDLE", true);
+            if(this.owner.autoMove){
+                this.direction.y = -1;
+                this.owner.move(this.direction.normalized().scale(this.speed * deltaT * .42));
+                this.owner.animation.playIfNotAlready("WALK", true);
+            }
+            else{
+                this.owner.animation.playIfNotAlready("WALK", true);
+            }
         }
 
         // Get the unit vector in the look direction

@@ -184,7 +184,12 @@ export default class hw3_scene extends Scene {
         this.crosshair.position.set(Input.getGlobalMousePosition().x, Input.getGlobalMousePosition().y);
 
         // Move the viewport mover up a little bit
-        this.viewportMover.position.set(this.viewportMover.position.x, this.viewportMover.position.y-1);
+        if(this.viewportMover.position.y > 20){
+            this.viewportMover.position.set(this.viewportMover.position.x, this.viewportMover.position.y-1);
+        }
+        else if(this.viewportMover.position.y === 20){
+            this.player.autoMove = false;
+        }
 
         while(this.receiver.hasNextEvent()){
             let event = this.receiver.getNextEvent();

@@ -22,8 +22,9 @@ import SplashScreen from "./hw3/Scenes/SplashScreen";
             {name: "right", keys: ["d"]},
             {name: "pickup", keys: ["e"]},
             {name: "drop", keys: ["q"]},
-            {name: "slot1", keys: ["1"]},
-            {name: "slot2", keys: ["2"]}
+            {name: "slot0", keys: ["1"]},
+            {name: "slot1", keys: ["2"]},
+            {name: "slot2", keys: ["3"]}
         ],
         useWebGL: false,                        // Tell the game we want to use webgl
         showDebug: false                       // Whether to show debug messages. You can change this to true if you want

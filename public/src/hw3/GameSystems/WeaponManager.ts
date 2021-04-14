@@ -16,6 +16,7 @@ export default class WeaponManager {
     private slotLayer: string;
     private itemLayer: string;
     private slots: number;
+    private currentSlot: number;
 
     constructor(scene: Scene, inventorySlot: string, inventorySlot2x: string, position: Vec2){
         this.slots = 3;
@@ -23,6 +24,7 @@ export default class WeaponManager {
         this.inventorySlots = new Array(this.slots);
         this.padding = 5.3;
         this.position = position;
+        this.currentSlot = 1;
 
         // Add layers
         this.slotLayer = "slots";
@@ -43,7 +45,11 @@ export default class WeaponManager {
     }
 
     getItem(): Item {
-        return this.items[1];
+        return this.items[this.currentSlot];
+    }
+
+    getCurrSlot(): number {
+        return this.currentSlot;
     }
 
     /**
@@ -51,16 +57,19 @@ export default class WeaponManager {
      */
     addItem(item: Item): boolean {
         if(!this.items[1]){
+            this.currentSlot = 1;
             this.items[1] = item;
             item.moveSprite(new Vec2(this.position.x + 1*(this.slotSize.x + this.padding), this.position.y), this.itemLayer);
             return true;
         } else {
             if(!this.items[0]) {
+                this.currentSlot = 0;
                 this.items[0] = item;
                 item.moveSprite(new Vec2(this.position.x + 0*(this.slotSize.x + this.padding), this.position.y), this.itemLayer);
                 return true;
             } else {
                 if(!this.items[2]){
+                    this.currentSlot = 2;
                     this.items[2] = item;
                     item.moveSprite(new Vec2(this.position.x + 2*(this.slotSize.x + this.padding), this.position.y), this.itemLayer);
                     return true;

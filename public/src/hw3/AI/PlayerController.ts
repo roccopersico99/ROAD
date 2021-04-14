@@ -81,12 +81,6 @@ export default class PlayerController implements BattlerAI {
             // If there is an item in the current slot, use it
             if(item){
                 item.use(this.owner, "player", this.lookDirection);
-
-                if(item instanceof Healthpack){
-                    // Destroy the used healthpack
-                    // this.inventory.removeItem();
-                    item.sprite.visible = false;
-                }
             }
         }
 
@@ -96,11 +90,33 @@ export default class PlayerController implements BattlerAI {
         // Inventory
 
         // Check for slot change
-        if(Input.isJustPressed("slot1")){
-            this.inventory.changeSlot(0);
+        if(Input.isJustPressed("slot0")){
+            // this.inventory.changeSlot(0);
+            this.inventory.setSlot(0);
+        } else if(Input.isJustPressed("slot1")){
+            // this.inventory.changeSlot(1);
+            this.inventory.setSlot(1);
+            this.inventory.getItem
         } else if(Input.isJustPressed("slot2")){
-            this.inventory.changeSlot(1);
+            // this.inventory.changeSlot(2);
+            this.inventory.setSlot(2);
         }
+        
+        // Check for scrolling
+        if(Input.didJustScroll()){
+            console.log("inventory slot: " + this.inventory.getSlot);
+            console.log(this.inventory);
+             console.log("item in current slot: " + this.inventory.getItem);
+
+             // User scrolled down
+             if(Input.getScrollDirection() === 1){
+                 console.log("Scrolled down");
+             }
+             // User scrolled up
+              else {
+                  console.log("Scrolled up");
+              }
+          }
         
         if(Input.isJustPressed("pickup")){
             // Check if there is an item to pick up

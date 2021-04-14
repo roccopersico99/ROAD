@@ -61,6 +61,10 @@ export default class InventoryManager {
         this.selectedSlot.position.copy(this.inventorySlots[slot].position);
     }
 
+    setSlot(slot: number): void {
+        this.currentSlot = slot;
+    }
+
     /**
      * Gets the currently selected slot
      */

@@ -33,6 +33,10 @@ export default class hw3_scene extends Scene {
     // The crosshair
     private crosshair: Sprite;
 
+    // The scraps
+    protected scrapCount: number = 0;
+    protected scrapCountLabel: Label;
+
     // The viewport mover
     private viewportMover: Sprite;
 
@@ -333,6 +337,10 @@ export default class hw3_scene extends Scene {
                 items: this.items
             });
         this.player.animation.play("IDLE");
+    }
+
+    protected incPlayerScraps(amount: number): void {
+        this.scrapCount
     }
 
     // HOMEWORK 3 - TODO - DONE

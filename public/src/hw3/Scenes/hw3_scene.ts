@@ -36,6 +36,7 @@ export default class hw3_scene extends Scene {
     // The scraps
     protected scrapCount: number = 0;
     protected scrapCountLabel: Label;
+    private scrap: Sprite;
 
     // The viewport mover
     private viewportMover: Sprite;
@@ -107,6 +108,9 @@ export default class hw3_scene extends Scene {
 
         // Load viewport mover sprite
         this.load.image("viewportMover", "hw3_assets/sprites/viewportMover.png");
+
+        // Load scrap metal sprite
+        this.load.image("scrap", "hw3_assets/sprites/scrap.png" )
     }
 
     startScene(){
@@ -129,6 +133,10 @@ export default class hw3_scene extends Scene {
         // Set the viewport bounds to the tilemap
         let tilemapSize: Vec2 = this.walls.size; 
         this.viewport.setBounds(0, 0, tilemapSize.x, tilemapSize.y);
+
+        // create UI layer
+        this.addUILayer("UI");
+        this.addUI();
 
         this.addLayer("primary", 10);
         //this.addUILayer("crosshairLayer").setDepth(11);
@@ -179,7 +187,7 @@ export default class hw3_scene extends Scene {
         // this.healthDisplay = <Label>this.add.uiElement(UIElementType.LABEL, "health", {position: new Vec2(32, 16), text: "Health: " + (<BattlerAI>this.player._ai).health});
         // this.healthDisplay.textColor = Color.GREEN;
 
-        this.healthManager = new HealthManager(this, (<BattlerAI>this.player._ai).health + .5, "fullHeart", "fullHalfHeart", "emptyHeart", "halfHeart", "emptyHalfHeart", new Vec2(12, 16));
+        this.healthManager = new HealthManager(this, (<BattlerAI>this.player._ai).health, "fullHeart", "emptyHeart", "halfHeart", new Vec2(12, 16));
     }
 
     updateScene(deltaT: number): void {
@@ -219,6 +227,12 @@ export default class hw3_scene extends Scene {
         if(Input.isKeyJustPressed("g")){
             this.getLayer("graph").setHidden(!this.getLayer("graph").isHidden());
         }
+    }
+
+    addUI(): void {
+        let scrapSprite = this.add.sprite("scrap", "UI");
+        scrapSprite.position.set(15.5, 56);
+        this.scrapCountLabel = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(32, 56), text: "" + this.scrapCount});
     }
 
     // HOMEWORK 3 - TODO - DONE
@@ -333,14 +347,16 @@ export default class hw3_scene extends Scene {
         this.player.addAI(PlayerController,
             {
                 speed: 150,
+                health: 6,
                 inventory: inventory,
-                items: this.items
+                items: this.items,
             });
         this.player.animation.play("IDLE");
     }
 
     protected incPlayerScraps(amount: number): void {
-        this.scrapCount
+        this.scrapCount += amount;
+        this.scrapCountLabel.text = "" + this.scrapCount;
     }
 
     // HOMEWORK 3 - TODO - DONE

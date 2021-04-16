@@ -20,20 +20,23 @@ export default class HealthManager {
 
     //Sprites
     private fullHeart: string;
-    private fullHalfHeart: string;
     private emptyHeart: string;
     private halfHeart: string;
-    private emptyHalfHeart: string;
 
-    constructor(scene: Scene, totalHealth: number, fullHeart: string, fullHalfHeart: string, emptyHeart: string, halfHeart: string, emptyHalfHeart: string, position: Vec2){
-        this.padding = -4.5;
+    constructor(scene: Scene, totalHealth: number, fullHeart: string, emptyHeart: string, halfHeart: string, position: Vec2){
+        // this.padding = -4.5;
+        this.padding = -3.5;
         this.position = position;
+
+        console.log("this.totalHealth: " + this.totalHealth);
+        console.log("totalHealth: " + totalHealth);
 
         this.totalHealth = totalHealth;
         this.currentHealth = totalHealth;
 
-        let hearts;
-        let halfHearts;
+
+        let hearts = 0;
+        let halfHearts = 0;
 
         if(this.totalHealth % 1 == .5) {
             hearts = this.totalHealth - .5;
@@ -44,12 +47,14 @@ export default class HealthManager {
         }
 
         this.fullHeart = fullHeart;
-        this.fullHalfHeart = fullHalfHeart;
         this.emptyHeart = emptyHeart;
         this.halfHeart = halfHeart;
-        this.emptyHalfHeart = emptyHalfHeart;
 
-        this.heartContainers = new Array(hearts + halfHearts);
+        console.log("hearts: " + hearts);
+        console.log("halfHearts: " + halfHearts);
+        let totalHeartContainers = hearts + halfHearts;
+        console.log("total heart containers: " + totalHeartContainers);
+        this.heartContainers = new Array(totalHeartContainers);
 
         // Add layers
         this.heartLayer = "totalHealthContainers";
@@ -62,8 +67,8 @@ export default class HealthManager {
 
         // Create the half hearts
         if(halfHearts == 1) {
-            this.heartContainers[hearts] = scene.add.sprite(this.fullHalfHeart, this.heartLayer);
-            scene.add
+            this.heartContainers[hearts] = scene.add.sprite(this.halfHeart, this.heartLayer);
+            //scene.add
         }
 
         this.heartSize = this.heartContainers[0].size.clone();

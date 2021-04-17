@@ -56,8 +56,15 @@ export default class PlayerController implements BattlerAI {
 
         if(!this.direction.isZero()){
             // Move the player
-            this.owner.move(this.direction.normalized().scale(this.speed * deltaT));
-            this.owner.animation.playIfNotAlready("WALK", true);
+            //console.log(this.direction.y);
+            if(this.direction.y > 0){
+                this.owner.move(this.direction.normalized().scale(this.speed * deltaT * 0.5));
+                this.owner.animation.playIfNotAlready("WALK", true);
+            }
+            else{
+                this.owner.move(this.direction.normalized().scale(this.speed * deltaT));
+                this.owner.animation.playIfNotAlready("WALK", true);
+            }
         } else {
             // Player is idle
             if(this.owner.autoMove){

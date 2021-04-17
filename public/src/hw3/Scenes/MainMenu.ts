@@ -8,6 +8,7 @@ import hw3_scene from "./hw3_scene";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import Input from "../../Wolfie2D/Input/Input";
 import PlayerController from "../AI/PlayerController";
+import Upgrade from "../Scenes/Upgrade";
 
 export default class MainMenu extends Scene {
     // Layers, for multiple main menu screens
@@ -159,7 +160,15 @@ export default class MainMenu extends Scene {
         
 
         // *** LEVEL SELECT SCREEN ***
-        const lvlSelectText = <Label>this.add.uiElement(UIElementType.LABEL, "levelSelect", {position: new Vec2(center.x, center.y), text: "Coming soon..."});
+        const lvlSelectText = <Label>this.add.uiElement(UIElementType.LABEL, "levelSelect", {position: new Vec2(center.x, center.y), text: "More levels coming soon..."});
+        const lvlSelect11 = <Label>this.add.uiElement(UIElementType.BUTTON, "levelSelect", {position: new Vec2(center.x - 250, center.y - 150), text: "Level 1-1"});
+        lvlSelect11.size.set(300, 50);
+        lvlSelect11.borderWidth = 2;
+        lvlSelect11.borderColor = Color.RED;
+        lvlSelect11.backgroundColor = Color.ORANGE;
+        lvlSelect11.textColor = Color.BLACK;
+        lvlSelect11.onClickEventId = "play";
+        lvlSelect11.fontSize = 40;
 
         // Level Select back button
         const lvlSelectBack = <Label>this.add.uiElement(UIElementType.BUTTON, "levelSelect", {position: new Vec2(center.x, center.y + 250), text: "Back"});
@@ -172,6 +181,17 @@ export default class MainMenu extends Scene {
         lvlSelectBack.fontSize = 40;
 
 
+        // temporary access to upgrades screen
+        const upgrade = <Label>this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y + 350), text: "Upgrade"});
+        upgrade.size.set(200, 50);
+        upgrade.borderWidth = 2;
+        upgrade.borderColor = Color.RED;
+        upgrade.backgroundColor = Color.ORANGE;
+        upgrade.textColor = Color.BLACK
+        upgrade.onClickEventId = "upgrade";
+        upgrade.fontSize = 40;
+
+
 
         // Subscribe to the button events
         this.receiver.subscribe("play");
@@ -179,6 +199,7 @@ export default class MainMenu extends Scene {
         this.receiver.subscribe("menu");
         this.receiver.subscribe("control");
         this.receiver.subscribe("levelSelect");
+        this.receiver.subscribe("upgrade");
 
         //initialize cursor
         this.initializeCursor();
@@ -193,6 +214,10 @@ export default class MainMenu extends Scene {
 
             if(event.type === "play"){
                 this.sceneManager.changeScene(hw3_scene, {});
+            }
+
+            if(event.type === "upgrade"){
+                this.sceneManager.changeScene(Upgrade, {});
             }
 
             if(event.type === "about"){

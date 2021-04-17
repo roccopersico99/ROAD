@@ -89,8 +89,8 @@ export default class MainMenu extends Scene {
         ctrlLine4.textColor = Color.BLACK;
         ctrlLine5.textColor = Color.BLACK;
         ctrlLine6.textColor = Color.BLACK;
-        const ctrlBack = <Label>this.add.uiElement(UIElementType.BUTTON, "control", {position: new Vec2(center.x, center.y + 300), text: "Back"});
-        ctrlBack.size.set(300, 50);
+        const ctrlBack = <Label>this.add.uiElement(UIElementType.BUTTON, "control", {position: new Vec2(40, center.y - 360), text: "<"});
+        ctrlBack.size.set(50, 50);
         ctrlBack.borderWidth = 2;
         ctrlBack.borderColor = Color.RED;
         ctrlBack.backgroundColor = Color.ORANGE;
@@ -99,7 +99,7 @@ export default class MainMenu extends Scene {
         ctrlBack.fontSize = 40;
 
         // Add about button
-        const about = <Label>this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y + 250), text: "About"});
+        const about = <Label>this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y + 250), text: "Help"});
         about.size.set(300, 50);
         about.borderWidth = 2;
         about.borderColor = Color.RED;
@@ -112,30 +112,46 @@ export default class MainMenu extends Scene {
         this.about = this.addUILayer("about");
         this.about.setHidden(true);
 
-        const aboutHeader = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y - 250), text: "About", fontSize: 50, fontColor: Color.GREEN});
+        const aboutHeader = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y - 350), text: "Help", fontSize: 50, fontColor: Color.GREEN});
         aboutHeader.textColor = Color.BLACK;
         aboutHeader.fontSize = 100;
 
-        const text1 = "This game was created by:";
-        const text2 = "Rocco Persico, Jerry Ding, and Ryan Chung";
-        const text3 = "using the Wolfie2D game engine,"; 
-        const text4 = "a TypeScript game engine created by";
-        const text5 = "Joe Weaver and Richard McKenna.";
+        const text1 = "Backstory: Max is a lone wanderer in a post-apocalyptic world, or";
+        const text2 = "at least he became alone the day the Scorpion Gang ruthlessly";
+        const text3 = "murdered his wife. Max was devastated and sought revenge against"; 
+        const text4 = "the Scorpions. Max used his prior tinkering skills to create";
+        const text5 = "a vehicle capable of fueling his revenge. Until Max successfully";
+        const text6 = "enacts his revenge, he continues to wander the lonely ROAD.";
 
-        const line1 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y - 100), text: text1});
-        const line2 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y - 50), text: text2});
-        const line3 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y), text: text3});
-        const line4 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y + 50), text: text4});
-        const line5 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y + 100), text: text5});
+        const text7 = "About Us: The developers are Jerry Ding, Ryan Chung, and Rocco Perisco."
+        const text8 = "They are students CSE380, a 2D game programming course at Stony Brook"
+        const text9 = "University. This game was made using the Wolife2D game engine, which"
+        const text10 = "was developed by Richard McKenna and Joe Weaver."
 
-        line1.textColor = Color.BLACK;
-        line2.textColor = Color.BLACK;
-        line3.textColor = Color.BLACK;
-        line4.textColor = Color.BLACK;
-        line5.textColor = Color.BLACK;
+        const line1 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y - 250), text: text1});
+        const line2 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y - 200), text: text2});
+        const line3 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y - 150), text: text3});
+        const line4 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y - 100), text: text4});
+        const line5 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y - 50), text: text5});
+        const line6 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y + 0), text: text6});
+        const line7 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y + 100), text: text7});
+        const line8 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y + 150), text: text8});
+        const line9 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y + 200), text: text9});
+        const line10 = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y + 250), text: text10});
 
-        const aboutBack = <Label>this.add.uiElement(UIElementType.BUTTON, "about", {position: new Vec2(center.x, center.y + 250), text: "Back"});
-        aboutBack.size.set(300, 50);
+        line1.textColor = Color.RED;
+        line2.textColor = Color.RED;
+        line3.textColor = Color.RED;
+        line4.textColor = Color.RED;
+        line5.textColor = Color.RED;
+        line6.textColor = Color.RED;
+        line7.textColor = Color.GREEN;
+        line8.textColor = Color.GREEN;
+        line9.textColor = Color.GREEN;
+        line10.textColor = Color.GREEN;
+
+        const aboutBack = <Label>this.add.uiElement(UIElementType.BUTTON, "about", {position: new Vec2(40, center.y - 360), text: "<"});
+        aboutBack.size.set(50, 50);
         aboutBack.borderWidth = 2;
         aboutBack.borderColor = Color.RED;
         aboutBack.backgroundColor = Color.ORANGE;
@@ -171,8 +187,8 @@ export default class MainMenu extends Scene {
         lvlSelect11.fontSize = 40;
 
         // Level Select back button
-        const lvlSelectBack = <Label>this.add.uiElement(UIElementType.BUTTON, "levelSelect", {position: new Vec2(center.x, center.y + 250), text: "Back"});
-        lvlSelectBack.size.set(300, 50);
+        const lvlSelectBack = <Label>this.add.uiElement(UIElementType.BUTTON, "levelSelect", {position: new Vec2(40, center.y - 360), text: "<"});
+        lvlSelectBack.size.set(50, 50);
         lvlSelectBack.borderWidth = 2;
         lvlSelectBack.borderColor = Color.RED;
         lvlSelectBack.backgroundColor = Color.ORANGE;

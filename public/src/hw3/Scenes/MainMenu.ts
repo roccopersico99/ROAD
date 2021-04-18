@@ -24,7 +24,7 @@ export default class MainMenu extends Scene {
     private logo: Sprite;
 
     loadScene(){
-        this.load.image("cursor", "hw3_assets/sprites/crosshair2.png");
+        this.load.image("cursor", "hw3_assets/sprites/cursor.png");
         this.load.image("logo", "hw3_assets/sprites/logo_large.png");
     }
 

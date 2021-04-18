@@ -19,7 +19,7 @@ export default class SplashScreen extends Scene {
     private splash: Sprite;
 
     loadScene(){
-        this.load.image("cursor", "hw3_assets/sprites/crosshair2.png");
+        this.load.image("cursor", "hw3_assets/sprites/cursor.png");
         this.load.image("splashImage", "hw3_assets/sprites/splashImage.png");
 
     }

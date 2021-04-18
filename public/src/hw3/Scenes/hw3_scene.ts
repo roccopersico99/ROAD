@@ -61,6 +61,7 @@ export default class hw3_scene extends Scene {
 
     // Health Manager
     private healthManager: HealthManager; 
+    
 
     loadScene(){
         // Load the player and enemy spritesheets

@@ -8,6 +8,7 @@ import Healthpack from "../GameSystems/items/Healthpack";
 import Item from "../GameSystems/items/Item";
 import Weapon from "../GameSystems/items/Weapon";
 import BattlerAI from "./BattlerAI";
+import WeaponManager from "../GameSystems/WeaponManager";
 
 export default class PlayerController implements BattlerAI {
     // Fields from BattlerAI
@@ -17,7 +18,7 @@ export default class PlayerController implements BattlerAI {
     owner: AnimatedSprite;
 
     // The inventory of the player
-    private inventory: InventoryManager;
+    private inventory: WeaponManager;
 
     /** A list of items in the game world */
     private items: Array<Item>;
@@ -95,35 +96,17 @@ export default class PlayerController implements BattlerAI {
         //this.owner.rotation = Vec2.UP.angleToCCW(this.lookDirection);
 
         // Inventory
-
-        // Check for slot change
-        if(Input.isJustPressed("slot0")){
-            // this.inventory.changeSlot(0);
-            this.inventory.setSlot(0);
-        } else if(Input.isJustPressed("slot1")){
-            // this.inventory.changeSlot(1);
-            this.inventory.setSlot(1);
-            this.inventory.getItem
-        } else if(Input.isJustPressed("slot2")){
-            // this.inventory.changeSlot(2);
-            this.inventory.setSlot(2);
-        }
         
-        // Check for scrolling
         if(Input.didJustScroll()){
-            console.log("inventory slot: " + this.inventory.getSlot);
-            console.log(this.inventory);
-             console.log("item in current slot: " + this.inventory.getItem);
-
              // User scrolled down
-             if(Input.getScrollDirection() === 1){
-                 console.log("Scrolled down");
-             }
-             // User scrolled up
-              else {
-                  console.log("Scrolled up");
-              }
-          }
+            if(Input.getScrollDirection() === 1){
+                this.inventory.changeWeapon(2);
+            }
+            // User scrolled up
+            else {
+                this.inventory.changeWeapon(0);
+            }
+        }
         
         if(Input.isJustPressed("pickup")){
             // Check if there is an item to pick up

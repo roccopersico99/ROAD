@@ -80,4 +80,29 @@ export default class WeaponManager {
         // Failed to add item, something was already in the slot
         return false;
     }
+
+    changeWeapon(slot: number): void {
+        if(slot === 2){
+            let tempItem = this.items[1];
+            this.items[1] = this.items[slot];
+            this.items[slot] = this.items[0];
+            this.items[0] = tempItem;
+                
+            // Update the gui
+            tempItem.moveSprite(new Vec2(this.position.x + slot*(this.slotSize.x + this.padding), this.position.y), this.itemLayer);
+            this.items[1].moveSprite(new Vec2(this.position.x + (this.slotSize.x + this.padding), this.position.y), this.itemLayer);
+            this.items[slot].moveSprite(new Vec2(this.position.x , this.position.y), this.itemLayer);
+        }
+        else if(slot === 0){
+            let tempItem = this.items[1];
+            this.items[1] = this.items[slot];
+            this.items[slot] = this.items[2];
+            this.items[2] = tempItem;
+                
+            // Update the gui
+            tempItem.moveSprite(new Vec2(this.position.x + slot*(this.slotSize.x + this.padding), this.position.y), this.itemLayer);
+            this.items[1].moveSprite(new Vec2(this.position.x + (this.slotSize.x + this.padding), this.position.y), this.itemLayer);
+            this.items[slot].moveSprite(new Vec2(this.position.x + 2*(this.slotSize.x + this.padding), this.position.y), this.itemLayer);
+        }
+    }
 }

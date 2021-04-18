@@ -81,7 +81,7 @@ export default class PlayerController implements BattlerAI {
         this.lookDirection = this.owner.position.dirTo(Input.getGlobalMousePosition());
 
         // Shoot a bullet
-        if(Input.isMouseJustPressed()){
+        if(Input.isMousePressed()){ // Input.isMouseJustPressed
             // Get the current item
             let item = this.inventory.getItem();
 

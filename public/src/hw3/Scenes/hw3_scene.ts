@@ -338,8 +338,8 @@ export default class hw3_scene extends Scene {
         let prevWeapon = this.createWeapon("smg");
         let nextWeapon = this.createWeapon("pistol");
         inventory.addItem(startingWeapon);
-        inventory.addItem(prevWeapon);
         inventory.addItem(nextWeapon);
+        inventory.addItem(prevWeapon);
 
         // Create the player
         this.player = this.add.animatedSprite("player", "primary");

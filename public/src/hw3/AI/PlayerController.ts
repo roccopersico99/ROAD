@@ -39,6 +39,9 @@ export default class PlayerController implements BattlerAI {
 
         this.items = options.items;
         this.inventory = options.inventory;
+
+        // Make sure player started with starting weapon
+        // this.inventory.changeWeapon(2);
     }
 
     activate(options: Record<string, any>): void {}

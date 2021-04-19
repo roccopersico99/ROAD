@@ -56,26 +56,6 @@ export default class WeaponManager {
      * Adds an item to the currently selected slot
      */
     addItem(item: Item): boolean {
-        // if(!this.items[1]){
-        //     this.currentSlot = 1;
-        //     this.items[1] = item;
-        //     item.moveSprite(new Vec2(this.position.x + 1*(this.slotSize.x + this.padding), this.position.y), this.itemLayer);
-        //     return true;
-        // } else {
-        //     if(!this.items[0]) {
-        //         this.currentSlot = 0;
-        //         this.items[0] = item;
-        //         item.moveSprite(new Vec2(this.position.x + 0*(this.slotSize.x + this.padding), this.position.y), this.itemLayer);
-        //         return true;
-        //     } else {
-        //         if(!this.items[2]){
-        //             this.currentSlot = 2;
-        //             this.items[2] = item;
-        //             item.moveSprite(new Vec2(this.position.x + 2*(this.slotSize.x + this.padding), this.position.y), this.itemLayer);
-        //             return true;
-        //         }
-        //     }
-        // }
         if(!this.items[0]){
             this.currentSlot = 0;
             this.items[0] = item;

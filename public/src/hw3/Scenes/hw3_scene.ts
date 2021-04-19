@@ -79,7 +79,7 @@ export default class hw3_scene extends Scene {
         this.load.object("weaponData", "hw3_assets/data/weaponData.json");
 
         // Load the nav mesh
-        // this.load.object("navmesh", "hw3_assets/data/navmesh.json");
+        //this.load.object("navmesh", "hw3_assets/data/navmesh.json");
         this.load.object("navmesh", "hw3_assets/data/my-navmesh.json");
 
         // Load in the enemy info

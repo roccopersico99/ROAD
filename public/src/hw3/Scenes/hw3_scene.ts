@@ -26,6 +26,7 @@ import Color from "../../Wolfie2D/Utils/Color";
 import Input from "../../Wolfie2D/Input/Input";
 import GameOver from "./GameOver";
 import Scrap from "../GameSystems/items/Scrap";
+import MainMenu from "./MainMenu";
 
 export default class hw3_scene extends Scene {
     // The player
@@ -223,6 +224,8 @@ export default class hw3_scene extends Scene {
         // Decide what happens when the player dies
         if(health === 0){
             this.sceneManager.changeScene(GameOver);
+            // let that = this;
+            // setTimeout(function() {that.sceneManager.changeScene(MainMenu);}, 3000);
         }
 
         // Update health gui

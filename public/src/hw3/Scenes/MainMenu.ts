@@ -198,14 +198,14 @@ export default class MainMenu extends Scene {
 
 
         // temporary access to upgrades screen
-        const upgrade = <Label>this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y + 350), text: "Upgrade"});
-        upgrade.size.set(200, 50);
-        upgrade.borderWidth = 2;
-        upgrade.borderColor = Color.RED;
-        upgrade.backgroundColor = Color.ORANGE;
-        upgrade.textColor = Color.BLACK
-        upgrade.onClickEventId = "upgrade";
-        upgrade.fontSize = 40;
+        // const upgrade = <Label>this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y + 350), text: "Upgrade"});
+        // upgrade.size.set(200, 50);
+        // upgrade.borderWidth = 2;
+        // upgrade.borderColor = Color.RED;
+        // upgrade.backgroundColor = Color.ORANGE;
+        // upgrade.textColor = Color.BLACK
+        // upgrade.onClickEventId = "upgrade";
+        // upgrade.fontSize = 40;
 
 
 

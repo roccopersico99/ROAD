@@ -68,7 +68,6 @@ export default class HealthManager {
         // Create the half hearts
         if(halfHearts == 1) {
             this.heartContainers[hearts] = scene.add.sprite(this.halfHeart, this.heartLayer);
-            //scene.add
         }
 
         this.heartSize = this.heartContainers[0].size.clone();
@@ -87,6 +86,37 @@ export default class HealthManager {
     }
 
     updateCurrentHealth(newHealth: number) {
-        
+        let hearts = 0;
+        let halfHearts = 0;
+        this.currentHealth = newHealth;
+
+        if(this.totalHealth % 1 == .5) {
+            hearts = this.totalHealth - .5;
+            halfHearts = 1;
+        } else {
+            hearts = this.totalHealth;
+            halfHearts = 0;
+        }
+
+        // Create the full hearts
+        for(let i = 0; i < hearts; i++){
+            this.heartContainers[i].imageId = "fullHeart";
+        }
+
+        // Create the half hearts
+        if(halfHearts == 1) {
+            this.heartContainers[hearts].imageId = "halfHeart";
+        }
+
+        // Create the empty hearts 
+        for(let i = Math.ceil(newHealth); i < this.totalHealth; i++){
+            this.heartContainers[i].imageId = "emptyHeart";
+        }
+
+        // // Create the empty hearts
+        // for(let i = this.totalHealth-1; i > (hearts + halfHearts); i--){
+        //     console.log("i: " + this.heartContainers[i].imageId);
+        //     this.heartContainers[i].imageId = "emptyHeart";
+        // }
     }
 }

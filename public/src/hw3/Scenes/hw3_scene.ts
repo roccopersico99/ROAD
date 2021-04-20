@@ -25,6 +25,7 @@ import { UIElementType } from "../../Wolfie2D/Nodes/UIElements/UIElementTypes";
 import Color from "../../Wolfie2D/Utils/Color";
 import Input from "../../Wolfie2D/Input/Input";
 import GameOver from "./GameOver";
+import Scrap from "../GameSystems/items/Scrap";
 
 export default class hw3_scene extends Scene {
     // The player
@@ -140,6 +141,7 @@ export default class hw3_scene extends Scene {
         this.addUI();
 
         this.addLayer("primary", 10);
+        this.addLayer("scraps", 9);
         //this.addUILayer("crosshairLayer").setDepth(11);
 
         // Create the battle manager
@@ -177,7 +179,7 @@ export default class hw3_scene extends Scene {
         this.battleManager.setEnemies(this.enemies.map(enemy => <BattlerAI>enemy._ai));
 
         // Subscribe to relevant events
-        this.receiver.subscribe("healthpack");
+        this.receiver.subscribe("scrap");
 
         // Spawn items into the world
         this.spawnItems();
@@ -207,19 +209,21 @@ export default class hw3_scene extends Scene {
         while(this.receiver.hasNextEvent()){
             let event = this.receiver.getNextEvent();
 
-            if(event.isType("healthpack")){
-                this.createHealthpack(event.data.get("position"));
+            if(event.isType("scrap")){
+                this.createScrap(event.data.get("position"));
             }
         }
 
         let health = (<BattlerAI>this.player._ai).health;
 
+        this.scrapCount = (<PlayerController>this.player._ai).scrap;
+        
+        this.scrapCountLabel.text =  "" + this.scrapCount;
+
+        // Decide what happens when the player dies
         if(health === 0){
             this.sceneManager.changeScene(GameOver);
         }
-
-        // // Update health gui
-        // this.healthDisplay.text = "Health: " + health;
 
         // Update health gui
         this.healthManager.updateCurrentHealth(health);
@@ -255,6 +259,10 @@ export default class hw3_scene extends Scene {
             if(item.type === "healthpack"){
                 // Create a healthpack
                 this.createHealthpack(new Vec2(item.position[0], item.position[1]));
+            }
+            else if (item.type === "scrap") {
+                // Create a scrap
+                this.createScrap(new Vec2(item.position[0], item.position[1]));
             } else {
                 let weapon = this.createWeapon(item.weaponType);
                 weapon.moveSprite(new Vec2(item.position[0], item.position[1]));
@@ -282,9 +290,17 @@ export default class hw3_scene extends Scene {
      */
     createHealthpack(position: Vec2): void {
         let sprite = this.add.sprite("healthpack", "primary");
-        let healthpack = new Healthpack(sprite)
+        let healthpack = new Healthpack(sprite);
         healthpack.moveSprite(position);
         this.items.push(healthpack);
+    }
+
+    createScrap(position: Vec2): void {
+        let sprite = this.add.sprite("scrap", "scraps");
+        let scrap = new Scrap(sprite);
+        scrap.moveSprite(position);
+        this.items.push(scrap);
+        //sprite.position.set(position.x, position.y);
     }
 
     // HOMEWORK 3 - TODO - DONE
@@ -349,9 +365,11 @@ export default class hw3_scene extends Scene {
             {
                 speed: 150,
                 health: 6,
+                scrap: 100,
                 inventory: inventory,
                 items: this.items,
             });
+        this.scrapCount = 100;
         this.player.animation.play("IDLE");
     }
 

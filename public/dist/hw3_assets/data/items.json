@@ -3,7 +3,12 @@
         {
             "type": "weapon",
             "weaponType": "pistol",
-            "position": [488, 296]
+            "position": [9999, 9999]
+        },
+        {
+            "type": "scrap",
+            "weaponType": "scrap",
+            "position": [9999, 9999]
         }
     ]
 }

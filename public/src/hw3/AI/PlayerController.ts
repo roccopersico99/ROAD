@@ -14,6 +14,9 @@ export default class PlayerController implements BattlerAI {
     // Fields from BattlerAI
     health: number;
 
+    // Scrap count for player
+    scrap: number;
+
     // The actual player sprite
     owner: AnimatedSprite;
 
@@ -35,13 +38,11 @@ export default class PlayerController implements BattlerAI {
         this.direction = Vec2.ZERO;
         this.lookDirection = Vec2.ZERO;
         this.speed = options.speed;
+        this.scrap = options.scrap;
         this.health = 3;
 
         this.items = options.items;
         this.inventory = options.inventory;
-
-        // Make sure player started with starting weapon
-        // this.inventory.changeWeapon(2);
     }
 
     activate(options: Record<string, any>): void {}
@@ -116,9 +117,20 @@ export default class PlayerController implements BattlerAI {
             for(let item of this.items){
                 if(this.owner.collisionShape.overlaps(item.sprite.boundary)){
                     // We overlap it, try to pick it up
-                    this.inventory.addItem(item);
+                    this.scrap += 10;
                     break;
                 }
+            }
+        }
+
+        // If player drives over scrap, add it to count
+        for(let item of this.items){
+            console.log("checking for scrap...");
+            if(this.owner.collisionShape.overlaps(item.sprite.boundary)){
+                // We overlap it, try to pick it up
+                console.log("picked up scrap");
+                item.sprite.position.set(9999,9999);
+                this.scrap += Math.floor((Math.random()*1)+2);
             }
         }
 

@@ -72,10 +72,13 @@ export default class EnemyAI extends StateMachineAI implements BattlerAI {
             this.owner.isCollidable = false;
             this.owner.visible = false;
 
-            if(Math.random() < 0.2){
-                // Spawn a healthpack
-                this.emitter.fireEvent("healthpack", {position: this.owner.position});
-            }
+            // Spawn a scrap
+            this.emitter.fireEvent("scrap", {position: this.owner.position});
+
+            // if(Math.random() < 0.2){
+            //     // Spawn a healthpack
+            //     this.emitter.fireEvent("healthpack", {position: this.owner.position});
+            // }
         }
     }
 

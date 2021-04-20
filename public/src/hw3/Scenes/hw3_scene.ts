@@ -235,6 +235,18 @@ export default class hw3_scene extends Scene {
         if(Input.isKeyJustPressed("g")){
             this.getLayer("graph").setHidden(!this.getLayer("graph").isHidden());
         }
+
+        // Permanently pauses game when 'p' pressed
+        // if(Input.isJustPressed("pause")){
+        //     if(this.running) {
+        //         console.log("pausing game...");
+        //         this.setRunning(false);
+        //     }
+        //     else{
+        //         console.log("resuming game...");
+        //         this.setRunning(true);
+        //     }
+        // }
     }
 
     addUI(): void {

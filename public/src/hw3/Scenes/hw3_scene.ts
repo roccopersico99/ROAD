@@ -141,6 +141,7 @@ export default class hw3_scene extends Scene {
         this.addUILayer("UI");
         this.addUI();
 
+        this.addLayer("crosshair", 11);
         this.addLayer("primary", 10);
         this.addLayer("scraps", 9);
         //this.addUILayer("crosshairLayer").setDepth(11);
@@ -358,7 +359,7 @@ export default class hw3_scene extends Scene {
     }
 
     initializeCrosshair(): void {
-        this.crosshair = this.add.sprite("crosshair", "primary");
+        this.crosshair = this.add.sprite("crosshair", "crosshair");
         this.crosshair.position.set(Input.getGlobalMousePosition().x, Input.getGlobalMousePosition().y);
     }
 

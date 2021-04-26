@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Game</title>
+    <title>ROAD</title>
     <style>
       #main {
         display: flex;
@@ -39,17 +39,17 @@
         left: 0px;
         pointer-events: none;
       }
-
+      
       @font-face {
         font-family: 'PixelSimple';
-        src: url('hw4_assets/fonts/PixelSimple.ttf');
+        src: url('../hw3_assets/fonts/PixelSimple.ttf');
       }
     </style>
   </head>
   <body>
     <div id="main">
       <!-- The main window of the game. This contains the rendered game and any debug text -->
-      <div id="game-window">
+      <div id="game-window" style="cursor: none;">
         <!-- This is the canvas where the actual game is rendered -->
         <canvas id="game-canvas"></canvas>
         <!-- This is the canvas where text is rendered in WebGL -->
@@ -66,6 +66,6 @@
         <div id="stats-display"></div>
       </div>
     </div>
-    <script src="bundle.js"></script>
+    <script src="../dist/bundle.js"></script>
   </body>
 </html>

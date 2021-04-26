@@ -5,6 +5,16 @@ import Vec2 from "../../DataTypes/Vec2";
 
 /** An sprite with specified animation frames. */
 export default class AnimatedSprite extends Sprite {
+    private autoMoving: boolean;
+
+    get autoMove(): boolean{
+        return this.autoMoving;
+    }
+
+    set autoMove(flag: boolean){
+        this.autoMoving = flag;
+    }
+
     /** The number of columns in this sprite sheet */
     protected numCols: number;
 
@@ -26,6 +36,7 @@ export default class AnimatedSprite extends Sprite {
         super(spritesheet.name);
         this.numCols = spritesheet.columns;
         this.numRows = spritesheet.rows;
+        this.autoMoving = true;
 
         // Set the size of the sprite to the sprite size specified by the spritesheet
         this.size.set(spritesheet.spriteWidth, spritesheet.spriteHeight);

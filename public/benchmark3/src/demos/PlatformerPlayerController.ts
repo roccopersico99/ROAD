@@ -1,4 +1,3 @@
-import ControllerAI from "../Wolfie2D/AI/ControllerAI";
 import AI from "../Wolfie2D/DataTypes/Interfaces/AI";
 import Emitter from "../Wolfie2D/Events/Emitter";
 import GameEvent from "../Wolfie2D/Events/GameEvent";
@@ -6,8 +5,8 @@ import { GameEventType } from "../Wolfie2D/Events/GameEventType";
 import Input from "../Wolfie2D/Input/Input";
 import AnimatedSprite from "../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 
-export default class PlayerController extends ControllerAI {
-    public owner: AnimatedSprite;
+export default class PlayerController implements AI {
+    protected owner: AnimatedSprite;
     protected jumpSoundKey: string;
     protected emitter: Emitter;
 

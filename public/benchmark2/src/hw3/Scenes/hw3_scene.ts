@@ -74,9 +74,9 @@ export default class hw3_scene extends Scene {
         // Load the tilemap
         // HOMEWORK 3 - TODO - DONE
         // Change this file to be your own tilemap
-        //this.load.tilemap("level", "hw3_assets/tilemaps/road-level1v2.json");
-        //this.load.tilemap("level", "hw3_assets/tilemaps/road-level2.json");
-        this.load.tilemap("level", "hw3_assets/tilemaps/road-level3.json");
+        this.load.tilemap("level", "hw3_assets/tilemaps/road-level1v2.json");
+        // this.load.tilemap("level", "hw3_assets/tilemaps/road-level2.json");
+        // this.load.tilemap("level", "hw3_assets/tilemaps/road-level3.json");
 
         // Load the scene info
         this.load.object("weaponData", "hw3_assets/data/weaponData.json");

@@ -1,11 +1,7 @@
 {
   "hosting": {
     "site": "road-game-sbu",
-    "public": "public/dist",
-    "ignore": [
-      "firebase.json",
-      "**/.*"
-    ],
+    "public": "public",
     "rewrites": [
       {
         "source": "/benchmark1",
@@ -13,11 +9,11 @@
       },
       {
         "source": "/benchmark2",
-        "destination": "/index.html"
+        "destination": "/benchmark2/dist/index.html"
       },
       {
         "source": "/benchmark3",
-        "destination": "/benchmark3.html"
+        "destination": "/benchmark3/dist/index.html"
       },
       {
         "source": "**",

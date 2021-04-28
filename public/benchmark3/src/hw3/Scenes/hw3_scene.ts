@@ -234,6 +234,9 @@ export default class hw3_scene extends Scene {
         this.scrapCount = (<PlayerController>this.player._ai).scrap;
         
         this.scrapCountLabel.text =  "" + this.scrapCount;
+        this.scrapCountLabel.textColor = Color.BLACK;
+        this.scrapCountLabel.fontSize = 35;
+        this.scrapCountLabel.font = "PixelSimple"
 
         // Decide what happens when the player dies
         if(health === 0){
@@ -266,7 +269,7 @@ export default class hw3_scene extends Scene {
     addUI(): void {
         let scrapSprite = this.add.sprite("scrap", "UI");
         scrapSprite.position.set(15.5, 250);
-        this.scrapCountLabel = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(32, 250), text: "" + this.scrapCount});
+        this.scrapCountLabel = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(34, 250), text: "" + this.scrapCount});
     }
 
     // HOMEWORK 3 - TODO - DONE

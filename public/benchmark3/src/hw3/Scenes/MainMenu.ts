@@ -59,6 +59,7 @@ export default class MainMenu extends Scene {
         play.onClickEventId = "play";
         play.textColor = Color.BLACK;
         play.fontSize = 40;
+        play.font = "PixelSimple";
 
         // Add control layer and button
         this.control = this.addUILayer("control");

@@ -46,6 +46,7 @@ export default class SplashScreen extends Scene {
         start.onClickEventId = "start";
         start.textColor = Color.BLACK;
         start.fontSize = 40;
+        start.font = "PixelSimple";
 
         // Subscribe to the button events
         this.receiver.subscribe("start");

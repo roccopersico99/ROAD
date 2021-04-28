@@ -71,10 +71,12 @@ export default class MainMenu extends Scene {
         controls.backgroundColor = Color.ORANGE;
         controls.textColor = Color.BLACK;
         controls.fontSize = 40;
+        controls.font = "PixelSimple";
         controls.onClickEventId = "control";
         const controlHeader = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 250), text: "Controls"});
         controlHeader.textColor = Color.BLACK;
         controlHeader.fontSize = 100;
+        controlHeader.font = "PixelSimple";
 
         const ctrlText1 = "WASD keys for movements";
         const ctrlText2 = "SPACE key to use item";
@@ -94,6 +96,12 @@ export default class MainMenu extends Scene {
         ctrlLine4.textColor = Color.BLACK;
         ctrlLine5.textColor = Color.BLACK;
         ctrlLine6.textColor = Color.BLACK;
+        ctrlLine1.font = "PixelSimple";
+        ctrlLine2.font = "PixelSimple";
+        ctrlLine3.font = "PixelSimple";
+        ctrlLine4.font = "PixelSimple";
+        ctrlLine5.font = "PixelSimple";
+        ctrlLine6.font = "PixelSimple";
         const ctrlBack = <Label>this.add.uiElement(UIElementType.BUTTON, "control", {position: new Vec2(40, center.y - 360), text: "<"});
         ctrlBack.size.set(50, 50);
         ctrlBack.borderWidth = 2;
@@ -102,6 +110,7 @@ export default class MainMenu extends Scene {
         ctrlBack.textColor = Color.BLACK;
         ctrlBack.onClickEventId = "menu";
         ctrlBack.fontSize = 40;
+        ctrlBack.font = "PixelSimple";
 
         // Add about button
         const about = <Label>this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y + 250), text: "Help"});
@@ -112,6 +121,7 @@ export default class MainMenu extends Scene {
         about.textColor = Color.BLACK
         about.onClickEventId = "about";
         about.fontSize = 40;
+        about.font = "PixelSimple";
 
         /* ########## ABOUT SCREEN ########## */
         this.about = this.addUILayer("about");
@@ -120,6 +130,7 @@ export default class MainMenu extends Scene {
         const aboutHeader = <Label>this.add.uiElement(UIElementType.LABEL, "about", {position: new Vec2(center.x, center.y - 350), text: "Help", fontSize: 50, fontColor: Color.GREEN});
         aboutHeader.textColor = Color.BLACK;
         aboutHeader.fontSize = 100;
+        aboutHeader.font = "PixelSimple";
 
         const text1 = "Backstory: Max is a lone wanderer in a post-apocalyptic world, or";
         const text2 = "at least he became alone the day the Scorpion Gang ruthlessly";
@@ -154,6 +165,16 @@ export default class MainMenu extends Scene {
         line8.textColor = Color.GREEN;
         line9.textColor = Color.GREEN;
         line10.textColor = Color.GREEN;
+        line1.font = "PixelSimple";
+        line2.font = "PixelSimple";
+        line3.font = "PixelSimple";
+        line4.font = "PixelSimple";
+        line5.font = "PixelSimple";
+        line6.font = "PixelSimple";
+        line7.font = "PixelSimple";
+        line8.font = "PixelSimple";
+        line9.font = "PixelSimple";
+        line10.font = "PixelSimple";
 
         const aboutBack = <Label>this.add.uiElement(UIElementType.BUTTON, "about", {position: new Vec2(40, center.y - 360), text: "<"});
         aboutBack.size.set(50, 50);
@@ -175,13 +196,16 @@ export default class MainMenu extends Scene {
         levelSelect.textColor = Color.BLACK;
         levelSelect.onClickEventId = "levelSelect";
         levelSelect.fontSize = 40;
+        levelSelect.font = "PixelSimple";
         const lvlSelectHeader = <Label>this.add.uiElement(UIElementType.LABEL, "levelSelect", {position: new Vec2(center.x, center.y - 250), text: "Level Select"});
         lvlSelectHeader.textColor = Color.BLACK;
         lvlSelectHeader.fontSize = 100;
+        lvlSelectHeader.font = "PixelSimple";
         
 
         // *** LEVEL SELECT SCREEN ***
         const lvlSelectText = <Label>this.add.uiElement(UIElementType.LABEL, "levelSelect", {position: new Vec2(center.x, center.y), text: "More levels coming soon..."});
+        lvlSelectText.font = "PixelSimple";
         const lvlSelect11 = <Label>this.add.uiElement(UIElementType.BUTTON, "levelSelect", {position: new Vec2(center.x - 250, center.y - 150), text: "Level 1-1"});
         lvlSelect11.size.set(300, 50);
         lvlSelect11.borderWidth = 2;
@@ -190,6 +214,7 @@ export default class MainMenu extends Scene {
         lvlSelect11.textColor = Color.BLACK;
         lvlSelect11.onClickEventId = "play";
         lvlSelect11.fontSize = 40;
+        lvlSelect11.font = "PixelSimple";
 
         // Level Select back button
         const lvlSelectBack = <Label>this.add.uiElement(UIElementType.BUTTON, "levelSelect", {position: new Vec2(40, center.y - 360), text: "<"});

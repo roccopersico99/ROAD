@@ -29,6 +29,10 @@ export default class MainMenu extends Scene {
     }
 
     startScene(){
+        //let size : Vec2 = this.viewport.getHalfSize();
+        //this.viewport.setFocus(size);
+        this.viewport.setZoomLevel(1);
+        this.viewport.setCenter(600, 400);
         const center = this.viewport.getCenter();
 
         this.addUILayer("primary").setDepth(101);
@@ -229,11 +233,23 @@ export default class MainMenu extends Scene {
             console.log(event);
 
             if(event.type === "play"){
-                this.sceneManager.changeScene(hw3_scene, {});
+                let sceneOptions = {
+                    physics: {
+                        groupNames: ["ground", "player", "enemy", "coin"],
+                        collisions:
+                        [
+                            [0, 1, 1, 0],
+                            [1, 0, 0, 1],
+                            [1, 0, 0, 0],
+                            [0, 1, 0, 0]
+                        ]
+                    }
+                }
+                this.sceneManager.changeToScene(hw3_scene, {lives: 3}, sceneOptions);
             }
 
             if(event.type === "upgrade"){
-                this.sceneManager.changeScene(Upgrade, {});
+                this.sceneManager.changeToScene(Upgrade, {});
             }
 
             if(event.type === "about"){

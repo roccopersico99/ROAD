@@ -96,7 +96,7 @@ export default class EnemyAI extends StateMachineAI implements BattlerAI {
         let maxY = Math.max(start.y, pos.y);
 
         // Get the wall tilemap
-        let walls = <OrthogonalTilemap>this.owner.getScene().getLayer("Wall").getItems()[0];
+        let walls = <OrthogonalTilemap>this.owner.getScene().getLayer("Main").getItems()[0];
 
         let minIndex = walls.getColRowAt(new Vec2(minX, minY));
         let maxIndex = walls.getColRowAt(new Vec2(maxX, maxY));

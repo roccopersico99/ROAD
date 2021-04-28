@@ -27,6 +27,7 @@ import Input from "../../Wolfie2D/Input/Input";
 import GameOver from "./GameOver";
 import Scrap from "../GameSystems/items/Scrap";
 import MainMenu from "./MainMenu";
+import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
 
 export default class hw3_scene extends Scene {
     // The player
@@ -63,6 +64,8 @@ export default class hw3_scene extends Scene {
 
     // Health Manager
     private healthManager: HealthManager; 
+
+    protected levelEndArea: Rect;
     
 
     loadScene(){
@@ -183,9 +186,12 @@ export default class hw3_scene extends Scene {
 
         // Subscribe to relevant events
         this.receiver.subscribe("scrap");
+        this.receiver.subscribe("levelEnd");
 
         // Spawn items into the world
         this.spawnItems();
+
+        this.addLevelEnd(new Vec2(2, 0), new Vec2(8.5, 0.5));
 
         // //Add a UI for health
         // this.addUILayer("health");
@@ -212,9 +218,15 @@ export default class hw3_scene extends Scene {
         while(this.receiver.hasNextEvent()){
             let event = this.receiver.getNextEvent();
 
-            if(event.isType("scrap")){
-                this.createScrap(event.data.get("position"));
+            switch(event.type){
+                case "scrap":
+                    this.createScrap(event.data.get("position"));
+                case "levelEnd":
+                    this.sceneManager.changeToScene(MainMenu);
             }
+            // if(event.isType("scrap")){
+            //     this.createScrap(event.data.get("position"));
+            // }
         }
 
         let health = (<BattlerAI>this.player._ai).health;
@@ -225,7 +237,7 @@ export default class hw3_scene extends Scene {
 
         // Decide what happens when the player dies
         if(health === 0){
-            this.sceneManager.changeScene(GameOver);
+            this.sceneManager.changeToScene(GameOver);
             // let that = this;
             // setTimeout(function() {that.sceneManager.changeScene(MainMenu);}, 3000);
         }
@@ -386,6 +398,7 @@ export default class hw3_scene extends Scene {
                 inventory: inventory,
                 items: this.items,
             });
+        this.player.setGroup("player");
         this.scrapCount = 100;
         this.player.animation.play("IDLE");
     }
@@ -442,6 +455,13 @@ export default class hw3_scene extends Scene {
         this.navManager.addNavigableEntity(hw3_Names.NAVMESH, navmesh);
     }
 
+    protected addLevelEnd(startingTile: Vec2, size: Vec2): void {
+        this.levelEndArea = <Rect>this.add.graphic(GraphicType.RECT, "primary", {position: startingTile.add(size.scaled(0.5)).scale(32), size: size.scale(32)});
+        this.levelEndArea.addPhysics(undefined, undefined, false, true);
+        this.levelEndArea.setTrigger("player", "levelEnd", null);
+        this.levelEndArea.color = new Color(0, 0, 0, 0);
+    }
+
     // HOMEWORK 3 - TODO - DONE
     /**
      * This function creates all enemies from the enemy.json file.
@@ -469,6 +489,7 @@ export default class hw3_scene extends Scene {
 
             // Activate physics
             this.enemies[i].addPhysics(new AABB(Vec2.ZERO, new Vec2(5, 5)));
+            this.enemies[i].setGroup("enemy");
 
             if(data.route){
                 data.route = data.route.map((index: number) => this.graph.getNodePosition(index));                

@@ -63,7 +63,7 @@ export default class Upgrade extends Scene {
             console.log(event);
 
             if(event.type === "back"){
-                this.sceneManager.changeScene(MainMenu, {});
+                this.sceneManager.changeToScene(MainMenu, {});
             }
         }
     }

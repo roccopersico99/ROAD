@@ -62,7 +62,7 @@ export default class SplashScreen extends Scene {
             console.log(event);
 
             if(event.type === "start"){
-                this.sceneManager.changeScene(MainMenu, {});
+                this.sceneManager.changeToScene(MainMenu, {});
             }
         }
     }

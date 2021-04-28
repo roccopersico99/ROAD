@@ -44,6 +44,10 @@ export default class hw3_scene extends Scene {
     // The viewport mover
     private viewportMover: Sprite;
 
+    // Invisible Walls
+    private topWall: Rect;
+    private bottomWall: Rect;
+
     // A list of enemies
     private enemies: Array<AnimatedSprite>;
 
@@ -193,6 +197,8 @@ export default class hw3_scene extends Scene {
 
         this.addLevelEnd(new Vec2(2, 0), new Vec2(8.5, 0.5));
 
+        this.initInvisibleWalls();
+
         // //Add a UI for health
         // this.addUILayer("health");
 
@@ -210,6 +216,16 @@ export default class hw3_scene extends Scene {
         // Move the viewport mover up a little bit
         if(this.viewportMover.position.y > 20){
             this.viewportMover.position.set(this.viewportMover.position.x, this.viewportMover.position.y-1);
+            let y = this.viewportMover.position.y - 129;
+            if(this.topWall.position.y > y) {
+                this.topWall.position.set(this.topWall.position.x, y);
+            }
+            y = this.viewportMover.position.y + 137;
+            if(this.bottomWall.position.y > y) {
+                console.log("hello");
+                this.bottomWall.position.set(this.bottomWall.position.x, y);
+            }
+            
         }
         else if(this.viewportMover.position.y === 20){
             this.player.autoMove = false;
@@ -374,6 +390,15 @@ export default class hw3_scene extends Scene {
     initViewportMover(): void {
         this.viewportMover = this.add.sprite("viewportMover", "primary");
         this.viewportMover.position.set(this.player.position.x, this.player.position.y);
+    }
+
+    initInvisibleWalls(): void {
+        this.topWall = <Rect>this.add.graphic(GraphicType.RECT, "Main", {position: new Vec2(12*16, 2293), size: new Vec2(20*16, 1)});
+        this.topWall.addPhysics();
+        this.topWall.visible = false;
+        this.bottomWall = <Rect>this.add.graphic(GraphicType.RECT, "Main", {position: new Vec2(12*16, 2559), size: new Vec2(20*16, 1)});
+        this.bottomWall.addPhysics();
+        this.bottomWall.visible = false;
     }
 
     initializeCrosshair(): void {

@@ -221,8 +221,10 @@ export default class hw3_scene extends Scene {
             switch(event.type){
                 case "scrap":
                     this.createScrap(event.data.get("position"));
+                    break;
                 case "levelEnd":
                     this.sceneManager.changeToScene(MainMenu);
+                    break;
             }
             // if(event.isType("scrap")){
             //     this.createScrap(event.data.get("position"));

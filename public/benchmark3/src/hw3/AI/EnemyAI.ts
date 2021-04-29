@@ -64,21 +64,25 @@ export default class EnemyAI extends StateMachineAI implements BattlerAI {
     }
 
     damage(damage: number): void {
-        console.log("Took damage");
-        this.health -= damage;
-    
-        if(this.health <= 0){
-            this.owner.setAIActive(false, {});
-            this.owner.isCollidable = false;
-            this.owner.visible = false;
+        if(this.health > 0){
+            console.log("Took damage");
+            this.owner.animation.play("DAMAGE");
+            this.health -= damage;
+            
+            if(this.health <= 0){
+                this.owner.animation.play("DEATH", false, "EnemyDied");
+                // this.owner.isCollidable = false;
+                // this.owner.visible = false;
 
-            // Spawn a scrap
-            this.emitter.fireEvent("scrap", {position: this.owner.position});
+                // // Spawn a scrap
+                // this.emitter.fireEvent("scrap", {position: this.owner.position});
 
-            // if(Math.random() < 0.2){
-            //     // Spawn a healthpack
-            //     this.emitter.fireEvent("healthpack", {position: this.owner.position});
-            // }
+
+                // if(Math.random() < 0.2){
+                //     // Spawn a healthpack
+                //     this.emitter.fireEvent("healthpack", {position: this.owner.position});
+                // }
+            }
         }
     }
 

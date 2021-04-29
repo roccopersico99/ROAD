@@ -59,11 +59,12 @@ export default class Attack extends EnemyState {
             // Fire at player
             let dir = this.playerPos.clone().sub(this.owner.position).normalize();
             dir.rotateCCW(Math.PI / 4 * Math.random() - Math.PI/8);
-            if(this.parent.weapon.use(this.owner, "enemy", dir)){
-                // If we fired, face that direction
-                this.owner.rotation = Vec2.UP.angleToCCW(dir);
+            if(this.owner.weaponActive){
+                if(this.parent.weapon.use(this.owner, "enemy", dir)){
+                    // If we fired, face that direction
+                    this.owner.rotation = Vec2.UP.angleToCCW(dir);
+                }
             }
-
         }
 
         if(this.exitTimer.isStopped()){

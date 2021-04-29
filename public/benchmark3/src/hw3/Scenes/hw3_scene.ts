@@ -44,6 +44,10 @@ export default class hw3_scene extends Scene {
     // The viewport mover
     private viewportMover: Sprite;
 
+    // Invisible Walls
+    private topWall: Rect;
+    private bottomWall: Rect;
+
     // A list of enemies
     private enemies: Array<AnimatedSprite>;
 
@@ -187,11 +191,14 @@ export default class hw3_scene extends Scene {
         // Subscribe to relevant events
         this.receiver.subscribe("scrap");
         this.receiver.subscribe("levelEnd");
+        this.receiver.subscribe("EnemyDied");
 
         // Spawn items into the world
         this.spawnItems();
 
         this.addLevelEnd(new Vec2(2, 0), new Vec2(8.5, 0.5));
+
+        this.initInvisibleWalls();
 
         // //Add a UI for health
         // this.addUILayer("health");
@@ -208,10 +215,20 @@ export default class hw3_scene extends Scene {
         this.crosshair.position.set(Input.getGlobalMousePosition().x, Input.getGlobalMousePosition().y);
 
         // Move the viewport mover up a little bit
-        if(this.viewportMover.position.y > 20){
+        if(this.viewportMover.position.y > 128){
             this.viewportMover.position.set(this.viewportMover.position.x, this.viewportMover.position.y-1);
+            let y = this.viewportMover.position.y - 129;
+            if(this.topWall.position.y > y) {
+                this.topWall.position.set(this.topWall.position.x, y);
+            }
+            y = this.viewportMover.position.y + 137;
+            if(this.bottomWall.position.y > y) {
+                console.log("hello");
+                this.bottomWall.position.set(this.bottomWall.position.x, y);
+            }
+            
         }
-        else if(this.viewportMover.position.y === 20){
+        else if(this.viewportMover.position.y === 128){
             this.player.autoMove = false;
         }
 
@@ -221,8 +238,20 @@ export default class hw3_scene extends Scene {
             switch(event.type){
                 case "scrap":
                     this.createScrap(event.data.get("position"));
+                    break;
                 case "levelEnd":
                     this.sceneManager.changeToScene(MainMenu);
+                    break;
+                case "EnemyDied":
+                    let node = this.sceneGraph.getNode(event.data.get("owner"));
+                    node.visible = false;
+                    node.weaponActive = false;
+                    node.setAIActive(false, {});
+                    node.disablePhysics();
+                    // Spawn a scrap
+                    this.emitter.fireEvent("scrap", {position: node.position});
+                    node.destroy();
+                    break;
             }
             // if(event.isType("scrap")){
             //     this.createScrap(event.data.get("position"));
@@ -372,6 +401,15 @@ export default class hw3_scene extends Scene {
     initViewportMover(): void {
         this.viewportMover = this.add.sprite("viewportMover", "primary");
         this.viewportMover.position.set(this.player.position.x, this.player.position.y);
+    }
+
+    initInvisibleWalls(): void {
+        this.topWall = <Rect>this.add.graphic(GraphicType.RECT, "Main", {position: new Vec2(12*16, 2293), size: new Vec2(20*16, 1)});
+        this.topWall.addPhysics();
+        this.topWall.visible = false;
+        this.bottomWall = <Rect>this.add.graphic(GraphicType.RECT, "Main", {position: new Vec2(12*16, 2559), size: new Vec2(20*16, 1)});
+        this.bottomWall.addPhysics();
+        this.bottomWall.visible = false;
     }
 
     initializeCrosshair(): void {

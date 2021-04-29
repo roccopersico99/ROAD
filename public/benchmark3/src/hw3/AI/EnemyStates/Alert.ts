@@ -18,7 +18,7 @@ export default class Alert extends EnemyState {
     constructor(parent: EnemyAI, owner: GameNode){
         super(parent, owner);
 
-        this.alertTimer = new Timer(10000);
+        this.alertTimer = new Timer(100);
     }
     
     // Receives options.target

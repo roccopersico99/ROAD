@@ -28,8 +28,8 @@
             "spriteKey": "pistol",
             "damage": 1,
             "cooldown": 1000,
-            "useVolume": 320,
-            "color": "#FFEEDD"
+            "useVolume": 10,
+            "color": "#000000"
         },
         {
             "weaponType": "semiAutoGun",
@@ -48,7 +48,7 @@
             "spriteKey": "smg",
             "damage": 0.5,
             "cooldown": 100,
-            "useVolume": 1000,
+            "useVolume": 150,
             "color": "#FDBFBF"
         }
     ]

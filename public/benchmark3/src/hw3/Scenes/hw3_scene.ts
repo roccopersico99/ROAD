@@ -191,6 +191,7 @@ export default class hw3_scene extends Scene {
         // Subscribe to relevant events
         this.receiver.subscribe("scrap");
         this.receiver.subscribe("levelEnd");
+        this.receiver.subscribe("EnemyDied");
 
         // Spawn items into the world
         this.spawnItems();
@@ -214,7 +215,7 @@ export default class hw3_scene extends Scene {
         this.crosshair.position.set(Input.getGlobalMousePosition().x, Input.getGlobalMousePosition().y);
 
         // Move the viewport mover up a little bit
-        if(this.viewportMover.position.y > 20){
+        if(this.viewportMover.position.y > 128){
             this.viewportMover.position.set(this.viewportMover.position.x, this.viewportMover.position.y-1);
             let y = this.viewportMover.position.y - 129;
             if(this.topWall.position.y > y) {
@@ -227,7 +228,7 @@ export default class hw3_scene extends Scene {
             }
             
         }
-        else if(this.viewportMover.position.y === 20){
+        else if(this.viewportMover.position.y === 128){
             this.player.autoMove = false;
         }
 
@@ -240,6 +241,16 @@ export default class hw3_scene extends Scene {
                     break;
                 case "levelEnd":
                     this.sceneManager.changeToScene(MainMenu);
+                    break;
+                case "EnemyDied":
+                    let node = this.sceneGraph.getNode(event.data.get("owner"));
+                    node.visible = false;
+                    node.weaponActive = false;
+                    node.setAIActive(false, {});
+                    node.disablePhysics();
+                    // Spawn a scrap
+                    this.emitter.fireEvent("scrap", {position: node.position});
+                    node.destroy();
                     break;
             }
             // if(event.isType("scrap")){

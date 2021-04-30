@@ -28,6 +28,7 @@ import GameOver from "./GameOver";
 import Scrap from "../GameSystems/items/Scrap";
 import MainMenu from "./MainMenu";
 import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
+import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 
 export default class hw3_scene extends Scene {
     // The player
@@ -121,7 +122,13 @@ export default class hw3_scene extends Scene {
         this.load.image("viewportMover", "hw3_assets/sprites/viewportMover.png");
 
         // Load scrap metal sprite
-        this.load.image("scrap", "hw3_assets/sprites/scrap.png" )
+        this.load.image("scrap", "hw3_assets/sprites/scrap.png" );
+
+        // Load sound effects
+        this.load.audio("game_over", "hw3_assets/sounds/game_over.mp3");
+        this.load.audio("player_damaged", "hw3_assets/sounds/player_damage.mp3");
+        this.load.audio("enemy_damaged", "hw3_assets/sounds/enemy_damage.mp3");
+        this.load.audio("explosion", "hw3_assets/sounds/explosion.mp3");
     }
 
     startScene(){
@@ -192,6 +199,11 @@ export default class hw3_scene extends Scene {
         this.receiver.subscribe("scrap");
         this.receiver.subscribe("levelEnd");
         this.receiver.subscribe("EnemyDied");
+        this.receiver.subscribe("PlayerDied");
+        this.receiver.subscribe("PlayerDamaged");
+        this.receiver.subscribe("EnemyDamaged");
+        this.receiver.subscribe("GameOver");
+
 
         // Spawn items into the world
         this.spawnItems();
@@ -223,7 +235,6 @@ export default class hw3_scene extends Scene {
             }
             y = this.viewportMover.position.y + 137;
             if(this.bottomWall.position.y > y) {
-                console.log("hello");
                 this.bottomWall.position.set(this.bottomWall.position.x, y);
             }
             
@@ -243,6 +254,7 @@ export default class hw3_scene extends Scene {
                     this.sceneManager.changeToScene(MainMenu);
                     break;
                 case "EnemyDied":
+                    this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "explosion", loop: false, holdReference: false});
                     let node = this.sceneGraph.getNode(event.data.get("owner"));
                     node.visible = false;
                     node.weaponActive = false;
@@ -251,6 +263,21 @@ export default class hw3_scene extends Scene {
                     // Spawn a scrap
                     this.emitter.fireEvent("scrap", {position: node.position});
                     node.destroy();
+                    break;
+                case "PlayerDied":
+                    //Input.disableInput(); 
+                    this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "game_over", loop: false, holdReference: false});
+                    this.emitter.fireEvent("GameOver");
+                    break;
+                case "GameOver":
+                    this.sceneManager.changeToScene(GameOver);
+                    break;
+                case "PlayerDamaged": 
+                    this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "player_damaged", loop: false, holdReference: false});
+                    this.player.animation.playIfNotAlready("WALK", true);
+                    break;
+                case "EnemyDamaged": 
+                    this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "enemy_damaged", loop: false, holdReference: false});
                     break;
             }
             // if(event.isType("scrap")){
@@ -268,11 +295,12 @@ export default class hw3_scene extends Scene {
         this.scrapCountLabel.font = "PixelSimple"
 
         // Decide what happens when the player dies
-        if(health === 0){
-            this.sceneManager.changeToScene(GameOver);
-            // let that = this;
-            // setTimeout(function() {that.sceneManager.changeScene(MainMenu);}, 3000);
-        }
+        // if(health === 0){ 
+        //     this.player.animation.play("DEATH", false, "PlayerDied");
+        //     //this.sceneManager.changeToScene(GameOver);
+        //     // let that = this;
+        //     // setTimeout(function() {that.sceneManager.changeScene(MainMenu);}, 3000);
+        // }
 
         // Update health gui
         this.healthManager.updateCurrentHealth(health);
@@ -431,7 +459,7 @@ export default class hw3_scene extends Scene {
         this.player = this.add.animatedSprite("player", "primary");
         this.player.position.set(12*16, 156*16);
         this.player.addPhysics(new AABB(Vec2.ZERO, new Vec2(5, 5)));
-        this.player.addAI(PlayerController,
+        this.player.addAI(PlayerController, 
             {
                 speed: 150,
                 health: 6,
@@ -441,7 +469,7 @@ export default class hw3_scene extends Scene {
             });
         this.player.setGroup("player");
         this.scrapCount = 100;
-        this.player.animation.play("IDLE");
+        this.player.animation.play("WALK", true);
     }
 
     protected incPlayerScraps(amount: number): void {

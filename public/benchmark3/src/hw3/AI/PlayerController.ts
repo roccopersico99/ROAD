@@ -47,6 +47,8 @@ export default class PlayerController implements BattlerAI {
 
         this.items = options.items;
         this.inventory = options.inventory;
+
+        
     }
 
     activate(options: Record<string, any>): void {}
@@ -79,11 +81,11 @@ export default class PlayerController implements BattlerAI {
             if(this.owner.autoMove){
                 this.direction.y = -1;
                 this.owner.move(this.direction.normalized().scale(this.speed * deltaT * .42));
-                this.owner.animation.playIfNotAlready("WALK", true);
+                //this.owner.animation.playIfNotAlready("WALK", true);
             }
-            else{
-                this.owner.animation.playIfNotAlready("WALK", true);
-            }
+            // else{
+            //     this.owner.animation.playIfNotAlready("WALK", true);
+            // }
         }
 
         // Get the unit vector in the look direction
@@ -129,10 +131,11 @@ export default class PlayerController implements BattlerAI {
 
         // If player drives over scrap, add it to count
         for(let item of this.items){
-            console.log("checking for scrap...");
+            //console.log("checking for scrap...");
             if(this.owner.collisionShape.overlaps(item.sprite.boundary)){
                 // We overlap it, try to pick it up
                 console.log("picked up scrap");
+                //item.sprite.destroy();
                 item.sprite.position.set(9999,9999);
                 this.scrap += Math.floor((Math.random()*1)+2);
             }
@@ -154,10 +157,15 @@ export default class PlayerController implements BattlerAI {
     }
 
     damage(damage: number): void {
-        this.health -= damage;
+        if(this.health > 0) {
+            this.owner.animation.play("DAMAGE", false, "PlayerDamaged");
+            console.log("player took damage");
+            this.health -= damage;
 
-        if(this.health <= 0){
-            console.log("Game Over");
+            if(this.health <= 0){
+                console.log("Game Over");
+                this.owner.animation.play("DEATH", false, "PlayerDied");
+            }
         }
     }
 }

@@ -252,7 +252,7 @@ export default class MainMenu extends Scene {
     }
 
     updateScene(){
-        this.cursor.position.set(Input.getGlobalMousePosition().x, Input.getGlobalMousePosition().y);
+        this.cursor.position.set(Input.getMousePosition().x, Input.getMousePosition().y);
         while(this.receiver.hasNextEvent()){
             let event = this.receiver.getNextEvent();
 
@@ -308,6 +308,6 @@ export default class MainMenu extends Scene {
 
     initializeCursor(): void {
         this.cursor = this.add.sprite("cursor", "primary");
-        this.cursor.position.set(Input.getGlobalMousePosition().x, Input.getGlobalMousePosition().y);
+        this.cursor.position.set(Input.getMousePosition().x, Input.getMousePosition().y);
     }
 }

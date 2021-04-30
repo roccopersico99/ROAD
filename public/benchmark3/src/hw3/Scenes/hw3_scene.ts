@@ -237,9 +237,12 @@ export default class hw3_scene extends Scene {
             if(this.bottomWall.position.y > y) {
                 this.bottomWall.position.set(this.bottomWall.position.x, y);
             }
+            if(this.bottomWall.position.y <= this.player.position.y) {
+                this.player.position.y -= 5;
+            }
             
         }
-        else if(this.viewportMover.position.y === 128){
+        else if(this.viewportMover.position.y <= 128){
             this.player.autoMove = false;
         }
 

@@ -239,7 +239,7 @@ export default class hw3_scene extends Scene {
         this.crosshair.position.set(Input.getGlobalMousePosition().x, Input.getGlobalMousePosition().y);
 
         // Pauses game when 'p' pressed
-        if(Input.isJustPressed("pause")){
+        if(Input.isJustPressed("pause")) {
             console.log("pause pressed...");
             this.isPaused = !this.isPaused;
 
@@ -254,7 +254,6 @@ export default class hw3_scene extends Scene {
             console.log("hiding pause screen");
             this.pauseLayer.setHidden(true);
         }
-
         if(!this.isPaused) {
 
             // Move the viewport mover up a little bit
@@ -268,9 +267,12 @@ export default class hw3_scene extends Scene {
                 if(this.bottomWall.position.y > y) {
                     this.bottomWall.position.set(this.bottomWall.position.x, y);
                 }
+                if(this.bottomWall.position.y <= this.player.position.y) {
+                    this.player.position.y -= 5;
+                }
                 
             }
-            else if(this.viewportMover.position.y === 128){
+            else if(this.viewportMover.position.y <= 128){
                 this.player.autoMove = false;
             }
 

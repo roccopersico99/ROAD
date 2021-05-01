@@ -29,6 +29,7 @@ import Scrap from "../GameSystems/items/Scrap";
 import MainMenu from "./MainMenu";
 import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
+import Layer from "../../Wolfie2D/Scene/Layer";
 
 export default class hw3_scene extends Scene {
     // The player
@@ -71,6 +72,10 @@ export default class hw3_scene extends Scene {
     private healthManager: HealthManager; 
 
     protected levelEndArea: Rect;
+
+    private pauseLayer: Layer;
+
+    private isPaused: boolean;
     
 
     loadScene(){
@@ -104,7 +109,6 @@ export default class hw3_scene extends Scene {
         this.load.image("inventorySlot", "hw3_assets/sprites/inventory.png");
         this.load.image("inventorySlot2x", "hw3_assets/sprites/inventory2x.png");
         this.load.image("pistol", "hw3_assets/sprites/pistol.png");
-        this.load.image("knife", "hw3_assets/sprites/knife.png");
         this.load.image("lasergun", "hw3_assets/sprites/lasergun.png");
         this.load.image("smg", "hw3_assets/sprites/smg.png");
 
@@ -132,6 +136,8 @@ export default class hw3_scene extends Scene {
     }
 
     startScene(){
+        this.isPaused = false;
+        
         // Add in the tilemap
         let tilemapLayers = this.add.tilemap("level");
 
@@ -153,10 +159,17 @@ export default class hw3_scene extends Scene {
         this.viewport.setBounds(0, 0, tilemapSize.x, tilemapSize.y);
 
         // create UI layer
-        this.addUILayer("UI");
+        this.addUILayer("UI").setDepth(11);
         this.addUI();
 
-        this.addLayer("crosshair", 11);
+        // create pause menu UI
+        this.pauseLayer = this.addUILayer("pause");
+        this.pauseLayer.setDepth(20);
+        this.addPauseUI();
+        this.pauseLayer.setHidden(true);
+
+        
+        this.addLayer("crosshair", 12);
         this.addLayer("primary", 10);
         this.addLayer("scraps", 9);
         //this.addUILayer("crosshairLayer").setDepth(11);
@@ -222,111 +235,167 @@ export default class hw3_scene extends Scene {
     }
 
     updateScene(deltaT: number): void {
-
         // Set crosshair to mouse position
         this.crosshair.position.set(Input.getGlobalMousePosition().x, Input.getGlobalMousePosition().y);
 
-        // Move the viewport mover up a little bit
-        if(this.viewportMover.position.y > 128){
-            this.viewportMover.position.set(this.viewportMover.position.x, this.viewportMover.position.y-1);
-            let y = this.viewportMover.position.y - 129;
-            if(this.topWall.position.y > y) {
-                this.topWall.position.set(this.topWall.position.x, y);
+        // Pauses game when 'p' pressed
+        if(Input.isJustPressed("pause")){
+            console.log("pause pressed...");
+            this.isPaused = !this.isPaused;
+
+            this.player.unfreeze();
+            this.player.animation.resume();
+            this.player.setAIActive(true, {});
+            for(let i = 0; i < this.enemies.length; i++) {
+                this.enemies[i].unfreeze();
+                this.enemies[i].setAIActive(true, {});
+                this.enemies[i].animation.resume();
             }
-            y = this.viewportMover.position.y + 137;
-            if(this.bottomWall.position.y > y) {
-                this.bottomWall.position.set(this.bottomWall.position.x, y);
+            console.log("hiding pause screen");
+            this.pauseLayer.setHidden(true);
+        }
+
+        if(!this.isPaused) {
+
+            // Move the viewport mover up a little bit
+            if(this.viewportMover.position.y > 128){
+                this.viewportMover.position.set(this.viewportMover.position.x, this.viewportMover.position.y-1);
+                let y = this.viewportMover.position.y - 129;
+                if(this.topWall.position.y > y) {
+                    this.topWall.position.set(this.topWall.position.x, y);
+                }
+                y = this.viewportMover.position.y + 137;
+                if(this.bottomWall.position.y > y) {
+                    this.bottomWall.position.set(this.bottomWall.position.x, y);
+                }
+                
             }
+            else if(this.viewportMover.position.y === 128){
+                this.player.autoMove = false;
+            }
+
+            while(this.receiver.hasNextEvent()){
+                let event = this.receiver.getNextEvent();
+
+                switch(event.type){
+                    case "scrap":
+                        this.createScrap(event.data.get("position"));
+                        break;
+                    case "levelEnd":
+                        this.sceneManager.changeToScene(MainMenu);
+                        break;
+                    case "EnemyDied":
+                        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "explosion", loop: false, holdReference: false});
+                        let node = this.sceneGraph.getNode(event.data.get("owner"));
+                        node.visible = false;
+                        node.weaponActive = false;
+                        node.setAIActive(false, {});
+                        node.disablePhysics();
+                        // Spawn a scrap
+                        this.emitter.fireEvent("scrap", {position: node.position});
+                        node.destroy();
+                        break;
+                    case "PlayerDied":
+                        //Input.disableInput();
+                        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "game_over", loop: false, holdReference: false});
+                        this.emitter.fireEvent("GameOver");
+                        break;
+                    case "GameOver":
+                        this.sceneManager.changeToScene(GameOver);
+                        //this.setRunning(true);
+                        break;
+                    case "PlayerDamaged": 
+                        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "player_damaged", loop: false, holdReference: false});
+                        this.player.animation.playIfNotAlready("WALK", true);
+                        break;
+                    case "EnemyDamaged": 
+                        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "enemy_damaged", loop: false, holdReference: false});
+                        break;
+                }
+                // if(event.isType("scrap")){
+                //     this.createScrap(event.data.get("position"));
+                // }
+            }
+
+            let health = (<BattlerAI>this.player._ai).health;
+
+            this.scrapCount = (<PlayerController>this.player._ai).scrap;
             
-        }
-        else if(this.viewportMover.position.y === 128){
-            this.player.autoMove = false;
-        }
+            this.scrapCountLabel.text =  "" + this.scrapCount;
+            this.scrapCountLabel.textColor = Color.BLACK;
+            this.scrapCountLabel.fontSize = 35;
+            this.scrapCountLabel.font = "PixelSimple"
 
-        while(this.receiver.hasNextEvent()){
-            let event = this.receiver.getNextEvent();
-
-            switch(event.type){
-                case "scrap":
-                    this.createScrap(event.data.get("position"));
-                    break;
-                case "levelEnd":
-                    this.sceneManager.changeToScene(MainMenu);
-                    break;
-                case "EnemyDied":
-                    this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "explosion", loop: false, holdReference: false});
-                    let node = this.sceneGraph.getNode(event.data.get("owner"));
-                    node.visible = false;
-                    node.weaponActive = false;
-                    node.setAIActive(false, {});
-                    node.disablePhysics();
-                    // Spawn a scrap
-                    this.emitter.fireEvent("scrap", {position: node.position});
-                    node.destroy();
-                    break;
-                case "PlayerDied":
-                    //Input.disableInput(); 
-                    this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "game_over", loop: false, holdReference: false});
-                    this.emitter.fireEvent("GameOver");
-                    break;
-                case "GameOver":
-                    this.sceneManager.changeToScene(GameOver);
-                    break;
-                case "PlayerDamaged": 
-                    this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "player_damaged", loop: false, holdReference: false});
-                    this.player.animation.playIfNotAlready("WALK", true);
-                    break;
-                case "EnemyDamaged": 
-                    this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "enemy_damaged", loop: false, holdReference: false});
-                    break;
-            }
-            // if(event.isType("scrap")){
-            //     this.createScrap(event.data.get("position"));
+            // Decide what happens when the player dies
+            // if(health === 0){ 
+            //     this.player.animation.play("DEATH", false, "PlayerDied");
+            //     //this.sceneManager.changeToScene(GameOver);
+            //     // let that = this;
+            //     // setTimeout(function() {that.sceneManager.changeScene(MainMenu);}, 3000);
             // }
+
+            // Update health gui
+            this.healthManager.updateCurrentHealth(health);
+
+            // Debug mode graph
+            if(Input.isKeyJustPressed("g")){
+                this.getLayer("graph").setHidden(!this.getLayer("graph").isHidden());
+            }
         }
-
-        let health = (<BattlerAI>this.player._ai).health;
-
-        this.scrapCount = (<PlayerController>this.player._ai).scrap;
-        
-        this.scrapCountLabel.text =  "" + this.scrapCount;
-        this.scrapCountLabel.textColor = Color.BLACK;
-        this.scrapCountLabel.fontSize = 35;
-        this.scrapCountLabel.font = "PixelSimple"
-
-        // Decide what happens when the player dies
-        // if(health === 0){ 
-        //     this.player.animation.play("DEATH", false, "PlayerDied");
-        //     //this.sceneManager.changeToScene(GameOver);
-        //     // let that = this;
-        //     // setTimeout(function() {that.sceneManager.changeScene(MainMenu);}, 3000);
-        // }
-
-        // Update health gui
-        this.healthManager.updateCurrentHealth(health);
-
-        // Debug mode graph
-        if(Input.isKeyJustPressed("g")){
-            this.getLayer("graph").setHidden(!this.getLayer("graph").isHidden());
+        else{
+            this.player.freeze();
+            this.player.animation.pause();
+            this.player.setAIActive(false, {});
+            for(let i = 0; i < this.enemies.length; i++) {
+                this.enemies[i].freeze();
+                this.enemies[i].setAIActive(false, {});
+                this.enemies[i].animation.pause();
+            }
+            this.pauseLayer.setHidden(false);
+            console.log("showing pause screen");
         }
-
-        // Permanently pauses game when 'p' pressed
-        // if(Input.isJustPressed("pause")){
-        //     if(this.running) {
-        //         console.log("pausing game...");
-        //         this.setRunning(false);
-        //     }
-        //     else{
-        //         console.log("resuming game...");
-        //         this.setRunning(true);
-        //     }
-        // }
     }
 
     addUI(): void {
         let scrapSprite = this.add.sprite("scrap", "UI");
         scrapSprite.position.set(15.5, 250);
         this.scrapCountLabel = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(34, 250), text: "" + this.scrapCount});
+    }
+
+    addPauseUI(): void {
+        let center = this.viewport.getCenter();
+        console.log("center: " + center);
+        console.log(center.x + ", " + center.y);
+        //let pauseHeader = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(34, 250), text: "" + this.scrapCount});
+        const controlHeader = <Label>this.add.uiElement(UIElementType.LABEL, "pause", {position: new Vec2(200, 200), text: "Controls"});
+        controlHeader.textColor = Color.BLACK;
+        controlHeader.fontSize = 100;
+        controlHeader.font = "PixelSimple";
+
+        const ctrlText1 = "WASD keys for movements";
+        const ctrlText2 = "SPACE key to use item";
+        const ctrlText3 = "Move Mouse to aim weapon";
+        const ctrlText4 = "Left Mouse Click to fire weapon";
+        const ctrlText5 = "Scroll Wheel for cycling through weapons";
+        const ctrlText6 = "ESC for pausing the game"
+        const ctrlLine1 = <Label>this.add.uiElement(UIElementType.LABEL, "pause", {position: new Vec2(center.x, center.y - 100), text: ctrlText1});
+        const ctrlLine2 = <Label>this.add.uiElement(UIElementType.LABEL, "pause", {position: new Vec2(center.x, center.y - 50), text: ctrlText2});
+        const ctrlLine3 = <Label>this.add.uiElement(UIElementType.LABEL, "pause", {position: new Vec2(center.x, center.y), text: ctrlText3});
+        const ctrlLine4 = <Label>this.add.uiElement(UIElementType.LABEL, "pause", {position: new Vec2(center.x, center.y + 50), text: ctrlText4});
+        const ctrlLine5 = <Label>this.add.uiElement(UIElementType.LABEL, "pause", {position: new Vec2(center.x, center.y + 100), text: ctrlText5});
+        const ctrlLine6 = <Label>this.add.uiElement(UIElementType.LABEL, "pause", {position: new Vec2(center.x, center.y + 150), text: ctrlText6});
+        ctrlLine1.textColor = Color.BLACK;
+        ctrlLine2.textColor = Color.BLACK;
+        ctrlLine3.textColor = Color.BLACK;
+        ctrlLine4.textColor = Color.BLACK;
+        ctrlLine5.textColor = Color.BLACK;
+        ctrlLine6.textColor = Color.BLACK;
+        ctrlLine1.font = "PixelSimple";
+        ctrlLine2.font = "PixelSimple";
+        ctrlLine3.font = "PixelSimple";
+        ctrlLine4.font = "PixelSimple";
+        ctrlLine5.font = "PixelSimple";
+        ctrlLine6.font = "PixelSimple";
     }
 
     // HOMEWORK 3 - TODO - DONE

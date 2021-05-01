@@ -159,6 +159,7 @@ export default class PlayerController implements BattlerAI {
     damage(damage: number): void {
         if(this.health > 0) {
             this.owner.animation.play("DAMAGE", false, "PlayerDamaged");
+            
             console.log("player took damage");
             this.health -= damage;
 

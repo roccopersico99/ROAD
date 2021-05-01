@@ -87,8 +87,8 @@ export default class hw3_scene extends Scene {
         // Load the tilemap
         // HOMEWORK 3 - TODO - DONE
         // Change this file to be your own tilemap
-        // this.load.tilemap("level", "hw3_assets/tilemaps/road-level1v2.json");
-        this.load.tilemap("level", "hw3_assets/tilemaps/road-level2.json");
+        this.load.tilemap("level", "hw3_assets/tilemaps/road-level1.json");
+        //this.load.tilemap("level", "hw3_assets/tilemaps/road-level2.json");
         // this.load.tilemap("level", "hw3_assets/tilemaps/road-level3.json");
 
         // Load the scene info
@@ -117,10 +117,8 @@ export default class hw3_scene extends Scene {
 
         // Load heart container sprites
         this.load.image("fullHeart", "hw3_assets/sprites/full_heart.png");
-        this.load.image("fullHalfHeart", "hw3_assets/sprites/full_half_heart.png");
         this.load.image("halfHeart", "hw3_assets/sprites/half_heart.png");
         this.load.image("emptyHeart", "hw3_assets/sprites/empty_heart.png");
-        this.load.image("emptyHalfHeart", "hw3_assets/sprites/empty_half_heart.png");
 
         // Load viewport mover sprite
         this.load.image("viewportMover", "hw3_assets/sprites/viewportMover.png");
@@ -169,7 +167,7 @@ export default class hw3_scene extends Scene {
         this.pauseLayer.setHidden(true);
 
         
-        this.addLayer("crosshair", 12);
+        this.addLayer("crosshair", 100);
         this.addLayer("primary", 10);
         this.addLayer("scraps", 9);
         //this.addUILayer("crosshairLayer").setDepth(11);

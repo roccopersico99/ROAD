@@ -1,16 +1,6 @@
 {
-    "numWeapons": 5,
+    "numWeapons": 4,
     "weapons": [
-        {
-            "weaponType": "slice",
-            "name": "knife",
-            "displayName": "Knife",
-            "animationSprite": "slice",
-            "spriteKey": "knife",
-            "damage": 1,
-            "cooldown": 200,
-            "useVolume": 0
-        },
         {
             "weaponType": "semiAutoGun",
             "name": "pistol",

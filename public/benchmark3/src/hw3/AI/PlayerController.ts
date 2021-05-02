@@ -40,6 +40,8 @@ export default class PlayerController implements BattlerAI {
     private lookDirection: Vec2;
     private takingDmg: boolean;
 
+    invincible: boolean;
+
     destroy(): void {
         delete this.owner;
     }
@@ -191,34 +193,42 @@ export default class PlayerController implements BattlerAI {
         // }
     }
 
-    damage(damage: number): void {
-        if(this.health > 0) {
-            // Freeze enemy or player for half second on hit
-            //this.owner.setAIActive(false, {});
-            this.takingDmg = true;
-            //this.owner.animation.pause();
-            //this.owner.animation.playIfNotAlready("DAMAGE", false, "PlayerDamaged");
-            
-            console.log("player took damage");
-            this.health -= damage;
-            if(this.health > 0){
-                this.owner.tweens.play("180", false);
-            }
-
-            // if(this.health <= 0){
-            //     console.log("inner game Over");
-            //     this.owner.setAIActive(false, {});
-            //     this.owner.animation.play("DEATH", false, "PlayerDied");
-            // }
-            // this.takingDmg = false;
-            // return;
-        }
-        if(this.health <= 0){
-            console.log("outer game over");
-            this.owner.tweens.stopAll();
-            this.owner.setAIActive(false, {});
-            this.owner.animation.play("DEATH", false, "PlayerDied");
-        }
-        this.takingDmg = false;
+    setInvincible(flag: boolean) {
+        this.invincible = flag;
     }
+
+    damage(damage: number): void {
+        console.log(this.invincible);
+        if(!this.invincible){
+            if(this.health > 0) {
+                // Freeze enemy or player for half second on hit
+                //this.owner.setAIActive(false, {});
+                this.takingDmg = true;
+                //this.owner.animation.pause();
+                //this.owner.animation.playIfNotAlready("DAMAGE", false, "PlayerDamaged");
+                
+                console.log("player took damage");
+                this.health -= damage;
+                if(this.health > 0){
+                    this.owner.tweens.play("180", false);
+                }
+    
+                // if(this.health <= 0){
+                //     console.log("inner game Over");
+                //     this.owner.setAIActive(false, {});
+                //     this.owner.animation.play("DEATH", false, "PlayerDied");
+                // }
+                // this.takingDmg = false;
+                // return;
+            }
+            if(this.health <= 0){
+                console.log("outer game over");
+                this.owner.tweens.stopAll();
+                this.owner.setAIActive(false, {});
+                this.owner.animation.play("DEATH", false, "PlayerDied");
+            }
+            this.takingDmg = false;
+        }
+    }
+
 }

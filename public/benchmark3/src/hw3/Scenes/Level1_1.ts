@@ -86,7 +86,10 @@ export default class Level1_1 extends Scene {
     private controlLayer: Layer;
 
     private splash: Sprite;
+
+    private invFlag: boolean;
     
+    private instakill: boolean;
 
     loadScene(){
         // Load the player and enemy spritesheets
@@ -175,6 +178,8 @@ export default class Level1_1 extends Scene {
 
     startScene(){
         this.isPaused = false;
+        this.invFlag = false;
+        this.instakill = false;
         
         // Add in the tilemap
         let tilemapLayers = this.add.tilemap("level");
@@ -291,6 +296,12 @@ export default class Level1_1 extends Scene {
     updateScene(deltaT: number): void {
         // Set crosshair to mouse position
         this.crosshair.position.set(Input.getMousePosition().x, Input.getMousePosition().y);
+
+        if(Input.isJustPressed("invincible")){
+            this.invFlag = !this.invFlag;
+            (<PlayerController>this.player._ai).setInvincible(this.invFlag);
+            console.log("Invincible: " + this.invFlag);
+        }
 
         // Pauses game when 'p' pressed
         if(Input.isJustPressed("pause")) {

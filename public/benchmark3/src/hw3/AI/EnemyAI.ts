@@ -3,6 +3,7 @@ import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
 import State from "../../Wolfie2D/DataTypes/State/State";
 import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
 import GameEvent from "../../Wolfie2D/Events/GameEvent";
+import Input from "../../Wolfie2D/Input/Input";
 import GameNode from "../../Wolfie2D/Nodes/GameNode";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
@@ -34,8 +35,11 @@ export default class EnemyAI extends StateMachineAI implements BattlerAI {
 
     viewport: Sprite;
 
+    instakill: boolean;
+
     initializeAI(owner: AnimatedSprite, options: Record<string, any>): void {
         this.owner = owner;
+        this.instakill = false;
 
         if(options.defaultMode === "guard"){
             // Guard mode
@@ -69,11 +73,23 @@ export default class EnemyAI extends StateMachineAI implements BattlerAI {
     activate(options: Record<string, any>): void {
     }
 
+    update(deltaT: number): void {
+        if(Input.isJustPressed("instakill")){
+            this.instakill = !this.instakill;
+            console.log("instakill: " + this.instakill);
+        }
+    }
+
     damage(damage: number): void {
         if(this.health > 0){
             console.log("enemy took damage");
             this.owner.animation.play("DAMAGE", false, "EnemyDamaged");
-            this.health -= damage;
+            if(this.instakill){
+                this.health = 0;
+            }
+            else{
+                this.health -= damage;
+            }
             
             if(this.health <= 0){
                 this.owner.animation.play("DEATH", false, "EnemyDied");

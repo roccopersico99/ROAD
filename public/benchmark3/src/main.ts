@@ -27,7 +27,8 @@ import SplashScreen from "./hw3/Scenes/SplashScreen";
             {name: "level3", keys: ["3"]},
             {name: "pause", keys: ["escape"]},
             {name: "invincible", keys: ["i"]},
-            {name: "instakill", keys: ["k"]}
+            {name: "instakill", keys: ["k"]},
+            {name: "money", keys: ["m"]}
         ],
         useWebGL: false,                        // Tell the game we want to use webgl
         showDebug: false                       // Whether to show debug messages. You can change this to true if you want

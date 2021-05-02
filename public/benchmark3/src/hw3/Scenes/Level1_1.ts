@@ -297,24 +297,6 @@ export default class Level1_1 extends Scene {
         // Set crosshair to mouse position
         this.crosshair.position.set(Input.getMousePosition().x, Input.getMousePosition().y);
 
-        if(Input.isJustPressed("invincible")){
-            this.invFlag = !this.invFlag;
-            (<PlayerController>this.player._ai).setInvincible(this.invFlag);
-            console.log("Invincible: " + this.invFlag);
-        }
-
-        if(Input.isJustPressed("instakill")){
-            this.instakill = !this.instakill;
-            console.log("instakill: " + this.instakill);
-            for(let i = 0; i < this.enemies.length; i++) {
-                //console.log(i + ": " + this.enemies[i]._ai);
-                if(this.enemies[i]._ai !== undefined) {
-                    (<EnemyAI>this.enemies[i]._ai).setInstakill(this.instakill);
-                }
-            }
-            
-        }
-
         // Pauses game when 'p' pressed
         if(Input.isJustPressed("pause")) {
             this.isPaused = !this.isPaused;
@@ -336,6 +318,29 @@ export default class Level1_1 extends Scene {
         }
 
         if(!this.isPaused) {
+            if(Input.isJustPressed("invincible")){
+                this.invFlag = !this.invFlag;
+                (<PlayerController>this.player._ai).setInvincible(this.invFlag);
+                console.log("Invincible: " + this.invFlag);
+            }
+    
+            if(Input.isJustPressed("instakill")){
+                this.instakill = !this.instakill;
+                console.log("instakill: " + this.instakill);
+                for(let i = 0; i < this.enemies.length; i++) {
+                    //console.log(i + ": " + this.enemies[i]._ai);
+                    if(this.enemies[i]._ai !== undefined) {
+                        (<EnemyAI>this.enemies[i]._ai).setInstakill(this.instakill);
+                    }
+                }
+            }
+    
+            if(Input.isJustPressed("money")){
+                console.log("money cheat used...");
+                (<PlayerController>this.player._ai).scrap += 1000;
+                //this.incPlayerScraps(1000);
+            }
+
             // Move the viewport mover up a little bit
             if(this.viewportMover.position.y > 128){
                 this.viewportMover.position.set(this.viewportMover.position.x, this.viewportMover.position.y-1);

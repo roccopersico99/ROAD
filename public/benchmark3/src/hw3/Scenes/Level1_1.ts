@@ -76,9 +76,13 @@ export default class Level1_1 extends Scene {
 
     protected levelEndArea: Rect;
 
-    private pauseLayer: Layer;
-
     private isPaused: boolean;
+
+    private crosshairLayer: Layer;
+
+    //Pause Menu Layers
+    private pauseLayer: Layer;
+    private controlLayer: Layer;
     
 
     loadScene(){
@@ -184,11 +188,17 @@ export default class Level1_1 extends Scene {
         // create pause menu UI
         this.pauseLayer = this.addUILayer("pause");
         this.pauseLayer.setDepth(20);
+        this.controlLayer = this.addUILayer("control");
+        this.pauseLayer.setDepth(21);
         this.addPauseUI();
         this.pauseLayer.setHidden(true);
+        this.controlLayer.setHidden(true);
+
+        // 
 
         
-        this.addLayer("crosshair", 100);
+        this.crosshairLayer = this.addUILayer("crosshairLayer");
+        this.crosshairLayer.setDepth(102);
         this.addLayer("primary", 10);
         this.addLayer("scraps", 9);
         //this.addUILayer("crosshairLayer").setDepth(11);
@@ -236,6 +246,9 @@ export default class Level1_1 extends Scene {
         this.receiver.subscribe("EnemyDamaged");
         this.receiver.subscribe("GameOver");
 
+        // Pause Menu Events
+        this.receiver.subscribe("Controls");
+        this.receiver.subscribe("Exit");
 
         // Spawn items into the world
         this.spawnItems();
@@ -255,11 +268,10 @@ export default class Level1_1 extends Scene {
 
     updateScene(deltaT: number): void {
         // Set crosshair to mouse position
-        this.crosshair.position.set(Input.getGlobalMousePosition().x, Input.getGlobalMousePosition().y);
+        this.crosshair.position.set(Input.getMousePosition().x, Input.getMousePosition().y);
 
         // Pauses game when 'p' pressed
         if(Input.isJustPressed("pause")) {
-            console.log("pause pressed...");
             this.isPaused = !this.isPaused;
 
             this.player.unfreeze();
@@ -270,11 +282,11 @@ export default class Level1_1 extends Scene {
                 this.enemies[i].setAIActive(true, {});
                 this.enemies[i].animation.resume();
             }
-            console.log("hiding pause screen");
+            this.viewport.setZoomLevel(3);
             this.pauseLayer.setHidden(true);
         }
-        if(!this.isPaused) {
 
+        if(!this.isPaused) {
             // Move the viewport mover up a little bit
             if(this.viewportMover.position.y > 128){
                 this.viewportMover.position.set(this.viewportMover.position.x, this.viewportMover.position.y-1);
@@ -333,9 +345,6 @@ export default class Level1_1 extends Scene {
                         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "enemy_damaged", loop: false, holdReference: false});
                         break;
                 }
-                // if(event.isType("scrap")){
-                //     this.createScrap(event.data.get("position"));
-                // }
             }
 
             let health = (<BattlerAI>this.player._ai).health;
@@ -373,7 +382,8 @@ export default class Level1_1 extends Scene {
                 this.enemies[i].animation.pause();
             }
             this.pauseLayer.setHidden(false);
-            console.log("showing pause screen");
+            this.viewport.setZoomLevel(1);
+            //console.log("showing pause screen");
         }
     }
 
@@ -384,39 +394,26 @@ export default class Level1_1 extends Scene {
     }
 
     addPauseUI(): void {
-        let center = this.viewport.getCenter();
-        console.log("center: " + center);
-        console.log(center.x + ", " + center.y);
-        //let pauseHeader = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(34, 250), text: "" + this.scrapCount});
-        const controlHeader = <Label>this.add.uiElement(UIElementType.LABEL, "pause", {position: new Vec2(200, 200), text: "Controls"});
-        controlHeader.textColor = Color.BLACK;
-        controlHeader.fontSize = 100;
-        controlHeader.font = "PixelSimple";
+        const controls = <Label>this.add.uiElement(UIElementType.BUTTON, "pause", {position: new Vec2(200, 100), text: "Controls"});
+        controls.size.set(300, 50);
+        controls.borderWidth = 2;
+        controls.borderColor = Color.RED;
+        controls.backgroundColor = Color.ORANGE;
+        controls.textColor = Color.BLACK;
+        controls.fontSize = 40;
+        controls.font = "PixelSimple";
+        controls.onClickEventId = "control";
 
-        const ctrlText1 = "WASD keys for movements";
-        const ctrlText2 = "SPACE key to use item";
-        const ctrlText3 = "Move Mouse to aim weapon";
-        const ctrlText4 = "Left Mouse Click to fire weapon";
-        const ctrlText5 = "Scroll Wheel for cycling through weapons";
-        const ctrlText6 = "ESC for pausing the game"
-        const ctrlLine1 = <Label>this.add.uiElement(UIElementType.LABEL, "pause", {position: new Vec2(center.x, center.y - 100), text: ctrlText1});
-        const ctrlLine2 = <Label>this.add.uiElement(UIElementType.LABEL, "pause", {position: new Vec2(center.x, center.y - 50), text: ctrlText2});
-        const ctrlLine3 = <Label>this.add.uiElement(UIElementType.LABEL, "pause", {position: new Vec2(center.x, center.y), text: ctrlText3});
-        const ctrlLine4 = <Label>this.add.uiElement(UIElementType.LABEL, "pause", {position: new Vec2(center.x, center.y + 50), text: ctrlText4});
-        const ctrlLine5 = <Label>this.add.uiElement(UIElementType.LABEL, "pause", {position: new Vec2(center.x, center.y + 100), text: ctrlText5});
-        const ctrlLine6 = <Label>this.add.uiElement(UIElementType.LABEL, "pause", {position: new Vec2(center.x, center.y + 150), text: ctrlText6});
-        ctrlLine1.textColor = Color.BLACK;
-        ctrlLine2.textColor = Color.BLACK;
-        ctrlLine3.textColor = Color.BLACK;
-        ctrlLine4.textColor = Color.BLACK;
-        ctrlLine5.textColor = Color.BLACK;
-        ctrlLine6.textColor = Color.BLACK;
-        ctrlLine1.font = "PixelSimple";
-        ctrlLine2.font = "PixelSimple";
-        ctrlLine3.font = "PixelSimple";
-        ctrlLine4.font = "PixelSimple";
-        ctrlLine5.font = "PixelSimple";
-        ctrlLine6.font = "PixelSimple";
+        const exit = <Label>this.add.uiElement(UIElementType.BUTTON, "pause", {position: new Vec2(200, 150), text: "Exit"});
+        exit.size.set(300, 50);
+        exit.borderWidth = 2;
+        exit.borderColor = Color.RED;
+        exit.backgroundColor = Color.ORANGE;
+        exit.textColor = Color.BLACK;
+        exit.fontSize = 40;
+        exit.font = "PixelSimple";
+        exit.onClickEventId = "Exit";
+
     }
 
     // HOMEWORK 3 - TODO - DONE
@@ -531,8 +528,8 @@ export default class Level1_1 extends Scene {
     }
 
     initializeCrosshair(): void {
-        this.crosshair = this.add.sprite("crosshair", "crosshair");
-        this.crosshair.position.set(Input.getGlobalMousePosition().x, Input.getGlobalMousePosition().y);
+        this.crosshair = this.add.sprite("crosshair", "crosshairLayer");
+        this.crosshair.position.set(Input.getMousePosition().x, Input.getMousePosition().y);
     }
 
     initializePlayer(): void {

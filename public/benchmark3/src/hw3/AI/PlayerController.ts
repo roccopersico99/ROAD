@@ -11,6 +11,7 @@ import BattlerAI from "./BattlerAI";
 import WeaponManager from "../GameSystems/WeaponManager";
 import Emitter from "../../Wolfie2D/Events/Emitter";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
+import { EaseFunctionType } from "../../Wolfie2D/Utils/EaseFunctions";
 
 export default class PlayerController implements BattlerAI {
     // Event Emitter
@@ -37,6 +38,7 @@ export default class PlayerController implements BattlerAI {
 
     // Attacking
     private lookDirection: Vec2;
+    private takingDmg: boolean;
 
     destroy(): void {
         delete this.owner;
@@ -54,6 +56,21 @@ export default class PlayerController implements BattlerAI {
         this.inventory = options.inventory;
 
         this.emitter = new Emitter();
+
+        this.owner.tweens.add("180", {
+            startDelay: 0,
+            duration: 300,
+            effects: [
+                {
+                    property: "alpha",
+                    start: 1,
+                    end: 0.4,
+                    ease: EaseFunctionType.IN_OUT_QUAD
+                }
+            ],
+            onEnd: "PlayerDamaged",
+            reverseOnComplete: true,
+        });
     }
 
     activate(options: Record<string, any>): void {}
@@ -76,10 +93,22 @@ export default class PlayerController implements BattlerAI {
             if(this.direction.y > 0){
                 this.owner.move(this.direction.normalized().scale(this.speed * deltaT * 0.5));
                 this.owner.animation.playIfNotAlready("WALK", true);
+                // if(!this.takingDmg){
+                //     this.owner.animation.playIfNotAlready("WALK", true);
+                // }
+                // else{
+                //     this.owner.animation.playIfNotAlready("DAMAGE", false, "PlayerDamaged");
+                // }
             }
             else{
                 this.owner.move(this.direction.normalized().scale(this.speed * deltaT));
                 this.owner.animation.playIfNotAlready("WALK", true);
+                // if(!this.takingDmg){
+                //     this.owner.animation.playIfNotAlready("WALK", true);
+                // }
+                // else{
+                //     this.owner.animation.playIfNotAlready("DAMAGE", false, "PlayerDamaged");
+                // }
             }
         } else {
             // Player is idle
@@ -164,15 +193,32 @@ export default class PlayerController implements BattlerAI {
 
     damage(damage: number): void {
         if(this.health > 0) {
-            this.owner.animation.play("DAMAGE", false, "PlayerDamaged");
+            // Freeze enemy or player for half second on hit
+            //this.owner.setAIActive(false, {});
+            this.takingDmg = true;
+            //this.owner.animation.pause();
+            //this.owner.animation.playIfNotAlready("DAMAGE", false, "PlayerDamaged");
             
             console.log("player took damage");
             this.health -= damage;
-
-            if(this.health <= 0){
-                console.log("Game Over");
-                this.owner.animation.play("DEATH", false, "PlayerDied");
+            if(this.health > 0){
+                this.owner.tweens.play("180", false);
             }
+
+            // if(this.health <= 0){
+            //     console.log("inner game Over");
+            //     this.owner.setAIActive(false, {});
+            //     this.owner.animation.play("DEATH", false, "PlayerDied");
+            // }
+            // this.takingDmg = false;
+            // return;
         }
+        if(this.health <= 0){
+            console.log("outer game over");
+            this.owner.tweens.stopAll();
+            this.owner.setAIActive(false, {});
+            this.owner.animation.play("DEATH", false, "PlayerDied");
+        }
+        this.takingDmg = false;
     }
 }

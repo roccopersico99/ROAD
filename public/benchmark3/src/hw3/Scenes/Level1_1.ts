@@ -360,15 +360,18 @@ export default class Level1_1 extends Scene {
                     case "PlayerDied":
                         //Input.disableInput();
                         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "game_over", loop: false, holdReference: false});
+                        this.player.visible = false;
                         this.emitter.fireEvent("GameOver");
                         break;
                     case "GameOver":
                         this.sceneManager.changeToScene(GameOver);
                         //this.setRunning(true);
                         break;
-                    case "PlayerDamaged": 
+                    case "PlayerDamaged":
+                        console.log("player damaged");
                         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "player_damaged", loop: false, holdReference: false});
                         this.player.animation.playIfNotAlready("WALK", true);
+                        //this.player.setAIActive(true, {});
                         break;
                     case "EnemyDamaged": 
                         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "enemy_damaged", loop: false, holdReference: false});

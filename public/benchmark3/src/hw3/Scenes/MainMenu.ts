@@ -194,6 +194,7 @@ export default class MainMenu extends Scene {
         aboutBack.onClickEventId = "menu";
         aboutBack.textColor = Color.BLACK;
         aboutBack.fontSize = 40;
+        aboutBack.font = "PixelSimple";
 
         // Level Select Screen
         this.levelSelect = this.addUILayer("levelSelect");
@@ -235,6 +236,7 @@ export default class MainMenu extends Scene {
         lvlSelectBack.textColor = Color.BLACK;
         lvlSelectBack.onClickEventId = "menu";
         lvlSelectBack.fontSize = 40;
+        lvlSelectBack.font = "PixelSimple";
 
 
         // temporary access to upgrades screen
@@ -284,7 +286,7 @@ export default class MainMenu extends Scene {
                         ]
                     }
                 }
-                this.sceneManager.changeToScene(Level1_1, {scrap: 123, health: 6}, sceneOptions);
+                this.sceneManager.changeToScene(Level1_1, {scrap: 123, health: 3}, sceneOptions);
             }
 
             if(event.type === "upgrade"){

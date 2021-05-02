@@ -38,6 +38,9 @@ export default class Level1_1 extends Scene {
     // The crosshair
     private crosshair: Sprite;
 
+    // Health
+    protected hpCount: number;
+
     // The scraps
     protected scrapCount: number;
     protected scrapCountLabel: Label;
@@ -134,8 +137,21 @@ export default class Level1_1 extends Scene {
     }
 
     initScene(init: Record<string, any>): void {
-        this.scrapCount = init.scrap == null ? 999 : init.scrap;
+        //this.scrapCount = init.scrap == null ? 999 : init.scrap;
         //(<BattlerAI>this.player._ai).health = init.health == null ? 5 : init.health;
+        if(init.scrap == undefined){
+            this.scrapCount = 120;
+        }
+        else{
+            this.scrapCount = init.scrap;
+        }
+
+        if(init.health == undefined){
+            this.hpCount = 6;
+        }
+        else{
+            this.hpCount = init.health;
+        }
     }
 
     startScene(){
@@ -536,13 +552,13 @@ export default class Level1_1 extends Scene {
         this.player.addAI(PlayerController, 
             {
                 speed: 150,
-                health: 6,
-                scrap: 100,
+                health: this.hpCount,
+                scrap: this.scrapCount,
                 inventory: inventory,
                 items: this.items,
             });
         this.player.setGroup("player");
-        this.scrapCount = 100;
+        //this.scrapCount = 100;
         this.player.animation.play("WALK", true);
     }
 

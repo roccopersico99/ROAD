@@ -83,57 +83,57 @@ export default class Level1_1 extends Scene {
 
     loadScene(){
         // Load the player and enemy spritesheets
-        // this.load.spritesheet("player", "hw3_assets/spritesheets/player.json");
-        this.load.spritesheet("player", "hw3_assets/spritesheets/car.json");
-        this.load.spritesheet("enemy", "hw3_assets/spritesheets/enemy.json");
+        // this.load.spritesheet("player", "road_assets/spritesheets/player.json");
+        this.load.spritesheet("player", "road_assets/spritesheets/car.json");
+        this.load.spritesheet("enemy", "road_assets/spritesheets/enemy.json");
 
         // Load the tilemap
         // HOMEWORK 3 - TODO - DONE
         // Change this file to be your own tilemap
-        this.load.tilemap("level", "hw3_assets/tilemaps/road-level1.json");
-        //this.load.tilemap("level", "hw3_assets/tilemaps/road-level2.json");
-        // this.load.tilemap("level", "hw3_assets/tilemaps/road-level3.json");
+        this.load.tilemap("level", "road_assets/tilemaps/road-level1.json");
+        //this.load.tilemap("level", "road_assets/tilemaps/road-level2.json");
+        // this.load.tilemap("level", "road_assets/tilemaps/road-level3.json");
 
         // Load the scene info
-        this.load.object("weaponData", "hw3_assets/data/weaponData.json");
+        this.load.object("weaponData", "road_assets/data/weaponData.json");
 
         // Load the nav mesh
-        //this.load.object("navmesh", "hw3_assets/data/navmesh.json");
-        this.load.object("navmesh", "hw3_assets/data/my-navmesh.json");
+        //this.load.object("navmesh", "road_assets/data/navmesh.json");
+        this.load.object("navmesh", "road_assets/data/my-navmesh.json");
 
         // Load in the enemy info
-        this.load.object("enemyData", "hw3_assets/data/enemy.json");
+        this.load.object("enemyData", "road_assets/data/enemy.json");
 
         // Load in item info
-        this.load.object("itemData", "hw3_assets/data/items.json");
+        this.load.object("itemData", "road_assets/data/items.json");
 
         // Load item sprites
-        this.load.image("healthpack", "hw3_assets/sprites/healthpack.png");
-        this.load.image("inventorySlot", "hw3_assets/sprites/inventory.png");
-        this.load.image("inventorySlot2x", "hw3_assets/sprites/inventory2x.png");
-        this.load.image("pistol", "hw3_assets/sprites/pistol.png");
-        this.load.image("lasergun", "hw3_assets/sprites/lasergun.png");
-        this.load.image("smg", "hw3_assets/sprites/smg.png");
+        this.load.image("healthpack", "road_assets/sprites/healthpack.png");
+        this.load.image("inventorySlot", "road_assets/sprites/inventory.png");
+        this.load.image("inventorySlot2x", "road_assets/sprites/inventory2x.png");
+        this.load.image("pistol", "road_assets/sprites/pistol.png");
+        this.load.image("lasergun", "road_assets/sprites/lasergun.png");
+        this.load.image("smg", "road_assets/sprites/smg.png");
 
         // Load crosshair sprite
-        this.load.image("crosshair", "hw3_assets/sprites/crosshair2.png");
+        this.load.image("crosshair", "road_assets/sprites/crosshair2.png");
 
         // Load heart container sprites
-        this.load.image("fullHeart", "hw3_assets/sprites/full_heart.png");
-        this.load.image("halfHeart", "hw3_assets/sprites/half_heart.png");
-        this.load.image("emptyHeart", "hw3_assets/sprites/empty_heart.png");
+        this.load.image("fullHeart", "road_assets/sprites/full_heart.png");
+        this.load.image("halfHeart", "road_assets/sprites/half_heart.png");
+        this.load.image("emptyHeart", "road_assets/sprites/empty_heart.png");
 
         // Load viewport mover sprite
-        this.load.image("viewportMover", "hw3_assets/sprites/viewportMover.png");
+        this.load.image("viewportMover", "road_assets/sprites/viewportMover.png");
 
         // Load scrap metal sprite
-        this.load.image("scrap", "hw3_assets/sprites/scrap.png" );
+        this.load.image("scrap", "road_assets/sprites/scrap.png" );
 
         // Load sound effects
-        this.load.audio("game_over", "hw3_assets/sounds/game_over.mp3");
-        this.load.audio("player_damaged", "hw3_assets/sounds/player_damage.mp3");
-        this.load.audio("enemy_damaged", "hw3_assets/sounds/enemy_damage.mp3");
-        this.load.audio("explosion", "hw3_assets/sounds/explosion.mp3");
+        this.load.audio("game_over", "road_assets/sounds/game_over.mp3");
+        this.load.audio("player_damaged", "road_assets/sounds/player_damage.mp3");
+        this.load.audio("enemy_damaged", "road_assets/sounds/enemy_damage.mp3");
+        this.load.audio("explosion", "road_assets/sounds/explosion.mp3");
     }
 
     initScene(init: Record<string, any>): void {

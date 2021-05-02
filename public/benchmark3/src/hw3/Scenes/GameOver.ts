@@ -13,7 +13,7 @@ export default class GameOver extends Scene {
     private cursor: Sprite;
 
     loadScene(){
-        this.load.image("cursor", "hw3_assets/sprites/cursor.png");
+        this.load.image("cursor", "road_assets/sprites/cursor.png");
     }
 
     startScene() {

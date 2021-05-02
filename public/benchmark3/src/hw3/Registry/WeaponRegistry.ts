@@ -9,7 +9,7 @@ export default class WeaponTemplateRegistry extends Registry<WeaponConstructor> 
         const rm = ResourceManager.getInstance();
 
         // Load sprites
-        rm.image("pistol", "hw3_assets/sprites/pistol.png");
+        rm.image("pistol", "road_assets/sprites/pistol.png");
 
         this.registerItem("semiAutoGun", SemiAutoGun);
     }

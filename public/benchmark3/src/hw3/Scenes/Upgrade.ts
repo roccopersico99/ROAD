@@ -21,8 +21,8 @@ export default class Upgrade extends Scene {
     private logo: Sprite;
 
     loadScene(){
-        this.load.image("cursor", "hw3_assets/sprites/crosshair2.png");
-        //this.load.image("logo", "hw3_assets/sprites/logo_large.png");
+        this.load.image("cursor", "road_assets/sprites/crosshair2.png");
+        //this.load.image("logo", "road_assets/sprites/logo_large.png");
     }
 
     startScene(){

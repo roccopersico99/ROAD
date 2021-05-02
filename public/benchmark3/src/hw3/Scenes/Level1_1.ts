@@ -84,6 +84,8 @@ export default class Level1_1 extends Scene {
     //Pause Menu Layers
     private pauseLayer: Layer;
     private controlLayer: Layer;
+
+    private splash: Sprite;
     
 
     loadScene(){
@@ -144,11 +146,17 @@ export default class Level1_1 extends Scene {
         this.load.audio("player_damaged", "road_assets/sounds/PLAYER_HIT.mp3");
         this.load.audio("enemy_damaged", "road_assets/sounds/ENEMY_HIT.mp3");
         this.load.audio("explosion", "road_assets/sounds/explosion.mp3");
+<<<<<<< HEAD
         this.load.audio("explode1", "road_assets/sounds/explode1.mp3");
         this.load.audio("explode2", "road_assets/sounds/explode2.mp3");
         this.load.audio("explode3", "road_assets/sounds/explode3.mp3");
         this.load.audio("scrap_pickup", "road_assets/sounds/SCRAP.mp3");
         this.load.audio("shot_fired", "road_assets/sounds/shoot1.mp3");
+=======
+
+
+        this.load.image("pauseImage", "road_assets/sprites/pauseimage.png");
+>>>>>>> 40c4ff342ac7b023b7df6dfc9676756583b035b6
     }
 
     initScene(init: Record<string, any>): void {
@@ -198,18 +206,16 @@ export default class Level1_1 extends Scene {
 
         // create pause menu UI
         this.pauseLayer = this.addUILayer("pause");
-        this.pauseLayer.setDepth(20);
+        this.pauseLayer.setDepth(102);
         this.controlLayer = this.addUILayer("control");
-        this.pauseLayer.setDepth(21);
+        this.controlLayer.setDepth(103);
         this.addPauseUI();
         this.pauseLayer.setHidden(true);
         this.controlLayer.setHidden(true);
 
-        // 
-
         
         this.crosshairLayer = this.addUILayer("crosshairLayer");
-        this.crosshairLayer.setDepth(102);
+        this.crosshairLayer.setDepth(104);
         this.addLayer("primary", 10);
         this.addLayer("scraps", 9);
         //this.addUILayer("crosshairLayer").setDepth(11);
@@ -297,7 +303,7 @@ export default class Level1_1 extends Scene {
             this.player.unfreeze();
             this.player.animation.resume();
             this.player.setAIActive(true, {});
-            console.log("unfreezing enemies...");
+            //console.log("unfreezing enemies...");
             for(let i = 0; i < this.enemies.length; i++) {
                 //console.log(i + ": " + this.enemies[i]._ai);
                 if(this.enemies[i]._ai !== undefined) {
@@ -403,7 +409,7 @@ export default class Level1_1 extends Scene {
             this.player.freeze();
             this.player.animation.pause();
             this.player.setAIActive(false, {});
-            console.log("freezing enemies...");
+            //console.log("freezing enemies...");
             for(let i = 0; i < this.enemies.length; i++) {
                 //console.log(i + ": " + this.enemies[i]);
                 if(this.enemies[i]._ai !== undefined) {
@@ -425,7 +431,10 @@ export default class Level1_1 extends Scene {
     }
 
     addPauseUI(): void {
-        const controls = <Label>this.add.uiElement(UIElementType.BUTTON, "pause", {position: new Vec2(200, 100), text: "Controls"});
+        this.splash = this.add.sprite("pauseImage", "pause");
+        let center = this.viewport.getCenter();
+        this.splash.position.set(center.x, center.y);
+        const controls = <Label>this.add.uiElement(UIElementType.BUTTON, "pause", {position: new Vec2(center.x, center.y - 50), text: "Controls"});
         controls.size.set(300, 50);
         controls.borderWidth = 2;
         controls.borderColor = Color.RED;
@@ -435,7 +444,7 @@ export default class Level1_1 extends Scene {
         controls.font = "PixelSimple";
         controls.onClickEventId = "control";
 
-        const exit = <Label>this.add.uiElement(UIElementType.BUTTON, "pause", {position: new Vec2(200, 150), text: "Exit"});
+        const exit = <Label>this.add.uiElement(UIElementType.BUTTON, "pause", {position: new Vec2(center.x, center.y + 50), text: "Exit"});
         exit.size.set(300, 50);
         exit.borderWidth = 2;
         exit.borderColor = Color.RED;

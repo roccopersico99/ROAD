@@ -9,8 +9,13 @@ import Item from "../GameSystems/items/Item";
 import Weapon from "../GameSystems/items/Weapon";
 import BattlerAI from "./BattlerAI";
 import WeaponManager from "../GameSystems/WeaponManager";
+import Emitter from "../../Wolfie2D/Events/Emitter";
+import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 
 export default class PlayerController implements BattlerAI {
+    // Event Emitter
+    protected emitter: Emitter;
+
     // Fields from BattlerAI
     health: number;
 
@@ -48,7 +53,7 @@ export default class PlayerController implements BattlerAI {
         this.items = options.items;
         this.inventory = options.inventory;
 
-        
+        this.emitter = new Emitter();
     }
 
     activate(options: Record<string, any>): void {}
@@ -135,7 +140,7 @@ export default class PlayerController implements BattlerAI {
             if(this.owner.collisionShape.overlaps(item.sprite.boundary)){
                 // We overlap it, try to pick it up
                 console.log("picked up scrap");
-                
+                this.emitter.fireEvent("ScrapPickup", {position: item.sprite.position.clone()});
                 //item.sprite.destroy();
                 item.sprite.position.set(9999,9999);
                 this.scrap += Math.floor((Math.random()*1)+2);

@@ -140,10 +140,15 @@ export default class Level1_1 extends Scene {
         this.load.audio("level3music", "road_assets/music/level3.mp3");
 
         // Load sound effects
-        this.load.audio("game_over", "road_assets/sounds/game_over.mp3");
-        this.load.audio("player_damaged", "road_assets/sounds/player_damage.mp3");
-        this.load.audio("enemy_damaged", "road_assets/sounds/enemy_damage.mp3");
+        this.load.audio("game_over", "road_assets/sounds/PLAYER_DEAD.mp3");
+        this.load.audio("player_damaged", "road_assets/sounds/PLAYER_HIT.mp3");
+        this.load.audio("enemy_damaged", "road_assets/sounds/ENEMY_HIT.mp3");
         this.load.audio("explosion", "road_assets/sounds/explosion.mp3");
+        this.load.audio("explode1", "road_assets/sounds/explode1.mp3");
+        this.load.audio("explode2", "road_assets/sounds/explode2.mp3");
+        this.load.audio("explode3", "road_assets/sounds/explode3.mp3");
+        this.load.audio("scrap_pickup", "road_assets/sounds/SCRAP.mp3");
+        this.load.audio("shot_fired", "road_assets/sounds/shoot1.mp3");
     }
 
     initScene(init: Record<string, any>): void {
@@ -251,6 +256,7 @@ export default class Level1_1 extends Scene {
         this.receiver.subscribe("PlayerDamaged");
         this.receiver.subscribe("EnemyDamaged");
         this.receiver.subscribe("GameOver");
+        this.receiver.subscribe("ScrapPickup");
 
         // Pause Menu Events
         this.receiver.subscribe("Controls");
@@ -331,6 +337,9 @@ export default class Level1_1 extends Scene {
                 switch(event.type){
                     case "scrap":
                         this.createScrap(event.data.get("position"));
+                        break;
+                    case "ScrapPickup":
+                        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "scrap_pickup", loop: false, holdReference: true});
                         break;
                     case "levelEnd":
                         this.sceneManager.changeToScene(MainMenu);

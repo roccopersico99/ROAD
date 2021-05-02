@@ -73,11 +73,15 @@ export default class EnemyAI extends StateMachineAI implements BattlerAI {
     activate(options: Record<string, any>): void {
     }
 
-    update(deltaT: number): void {
-        if(Input.isJustPressed("instakill")){
-            this.instakill = !this.instakill;
-            console.log("instakill: " + this.instakill);
-        }
+    // update(deltaT: number): void {
+    //     if(Input.isJustPressed("instakill")){
+    //         this.instakill = !this.instakill;
+    //         console.log("instakill: " + this.instakill);
+    //     }
+    // }
+
+    setInstakill(instakill: boolean) {
+        this.instakill = instakill;
     }
 
     damage(damage: number): void {

@@ -303,6 +303,18 @@ export default class Level1_1 extends Scene {
             console.log("Invincible: " + this.invFlag);
         }
 
+        if(Input.isJustPressed("instakill")){
+            this.instakill = !this.instakill;
+            console.log("instakill: " + this.instakill);
+            for(let i = 0; i < this.enemies.length; i++) {
+                //console.log(i + ": " + this.enemies[i]._ai);
+                if(this.enemies[i]._ai !== undefined) {
+                    (<EnemyAI>this.enemies[i]._ai).setInstakill(this.instakill);
+                }
+            }
+            
+        }
+
         // Pauses game when 'p' pressed
         if(Input.isJustPressed("pause")) {
             this.isPaused = !this.isPaused;
@@ -548,6 +560,10 @@ export default class Level1_1 extends Scene {
 
         for(let i = 0; i < weaponData.numWeapons; i++){
             let weapon = weaponData.weapons[i];
+            // use to change weapon damage using player stat
+            // weapon.damage = 10;
+            // console.log(weapon);
+            // console.log(weapon.displayName + ": " + weapon.damage);
 
             // Get the constructor of the prototype
             let constr = RegistryManager.getRegistry("weaponTemplates").get(weapon.weaponType);

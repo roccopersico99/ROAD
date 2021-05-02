@@ -347,7 +347,7 @@ export default class Level1_1 extends Scene {
                         this.sceneManager.changeToScene(MainMenu);
                         break;
                     case "EnemyDied":
-                        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "explosion", loop: false, holdReference: false});
+                        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "explode1", loop: false, holdReference: false});
                         let node = this.sceneGraph.getNode(event.data.get("owner"));
                         node.visible = false;
                         node.weaponActive = false;

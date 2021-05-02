@@ -132,7 +132,12 @@ export default class Level1_1 extends Scene {
         this.load.image("viewportMover", "road_assets/sprites/viewportMover.png");
 
         // Load scrap metal sprite
-        this.load.image("scrap", "road_assets/sprites/scrap.png" );
+        this.load.image("scrap", "road_assets/sprites/scrap.png");
+
+        // Load music tracks
+        this.load.audio("level1music", "road_assets/music/level1.mp3");
+        this.load.audio("level2music", "road_assets/music/level2.mp3");
+        this.load.audio("level3music", "road_assets/music/level3.mp3");
 
         // Load sound effects
         this.load.audio("game_over", "road_assets/sounds/game_over.mp3");
@@ -265,6 +270,14 @@ export default class Level1_1 extends Scene {
         // this.healthDisplay.textColor = Color.GREEN;
 
         this.healthManager = new HealthManager(this, (<BattlerAI>this.player._ai).health, "fullHeart", "emptyHeart", "halfHeart", new Vec2(12, 16));
+        
+        // Scene has finished loading, so start playing menu music
+        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "level1music", loop: true, holdReference: true});
+    }
+
+    unloadScene(): void {
+        // Scene has ended, so stop playing menu music
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level1music", loop: true, holdReference: true});
     }
 
     updateScene(deltaT: number): void {

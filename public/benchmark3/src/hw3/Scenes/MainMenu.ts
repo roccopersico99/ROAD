@@ -9,6 +9,7 @@ import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import Input from "../../Wolfie2D/Input/Input";
 import PlayerController from "../AI/PlayerController";
 import Upgrade from "../Scenes/Upgrade";
+import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 
 export default class MainMenu extends Scene {
     // Layers, for multiple main menu screens
@@ -24,11 +25,20 @@ export default class MainMenu extends Scene {
     private logo: Sprite;
 
     loadScene(){
+        // Load sprites
         this.load.image("cursor", "road_assets/sprites/cursor.png");
         this.load.image("logo", "road_assets/sprites/logo_large.png");
+
+        // Load music
+        this.load.audio("intro", "road_assets/music/mainmenu_intro.wav");
+        this.load.audio("mainmenu", "road_assets/music/mainmenu.wav");
+        this.load.audio("mainFull", "road_assets/music/mainmenu_full.wav")
     }
 
     startScene(){
+        // Scene has started, so start intro theme
+        // this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "intro", loop: false, holdReference: true});
+
         //let size : Vec2 = this.viewport.getHalfSize();
         //this.viewport.setFocus(size);
         this.viewport.setZoomLevel(1);
@@ -249,6 +259,9 @@ export default class MainMenu extends Scene {
 
         //initialize cursor
         this.initializeCursor();
+
+        // Scene has finished loading, so start playing menu music
+        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "mainFull", loop: true, holdReference: true});
     }
 
     updateScene(){
@@ -309,5 +322,10 @@ export default class MainMenu extends Scene {
     initializeCursor(): void {
         this.cursor = this.add.sprite("cursor", "primary");
         this.cursor.position.set(Input.getMousePosition().x, Input.getMousePosition().y);
+    }
+
+    unloadScene(): void {
+        // Scene has ended, so stop playing menu music
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "mainFull", loop: true, holdReference: true});
     }
 }

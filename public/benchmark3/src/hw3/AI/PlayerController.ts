@@ -135,6 +135,7 @@ export default class PlayerController implements BattlerAI {
             if(this.owner.collisionShape.overlaps(item.sprite.boundary)){
                 // We overlap it, try to pick it up
                 console.log("picked up scrap");
+                
                 //item.sprite.destroy();
                 item.sprite.position.set(9999,9999);
                 this.scrap += Math.floor((Math.random()*1)+2);

@@ -146,17 +146,13 @@ export default class Level1_1 extends Scene {
         this.load.audio("player_damaged", "road_assets/sounds/PLAYER_HIT.mp3");
         this.load.audio("enemy_damaged", "road_assets/sounds/ENEMY_HIT.mp3");
         this.load.audio("explosion", "road_assets/sounds/explosion.mp3");
-<<<<<<< HEAD
         this.load.audio("explode1", "road_assets/sounds/explode1.mp3");
         this.load.audio("explode2", "road_assets/sounds/explode2.mp3");
         this.load.audio("explode3", "road_assets/sounds/explode3.mp3");
         this.load.audio("scrap_pickup", "road_assets/sounds/SCRAP.mp3");
         this.load.audio("shot_fired", "road_assets/sounds/shoot1.mp3");
-=======
-
 
         this.load.image("pauseImage", "road_assets/sprites/pauseimage.png");
->>>>>>> 40c4ff342ac7b023b7df6dfc9676756583b035b6
     }
 
     initScene(init: Record<string, any>): void {

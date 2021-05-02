@@ -55,6 +55,7 @@ export default class Level1_1 extends Scene {
 
     // A list of enemies
     private enemies: Array<AnimatedSprite>;
+    private enemiesAI: Array<EnemyAI>;
 
     // The wall layer of the tilemap to use for bullet visualization
     private walls: OrthogonalTilemap;
@@ -277,10 +278,14 @@ export default class Level1_1 extends Scene {
             this.player.unfreeze();
             this.player.animation.resume();
             this.player.setAIActive(true, {});
+            console.log("unfreezing enemies...");
             for(let i = 0; i < this.enemies.length; i++) {
-                this.enemies[i].unfreeze();
-                this.enemies[i].setAIActive(true, {});
-                this.enemies[i].animation.resume();
+                //console.log(i + ": " + this.enemies[i]._ai);
+                if(this.enemies[i]._ai !== undefined) {
+                    this.enemies[i].unfreeze();
+                    this.enemies[i].setAIActive(true, {});
+                    this.enemies[i].animation.resume();
+                }
             }
             this.viewport.setZoomLevel(3);
             this.pauseLayer.setHidden(true);
@@ -376,10 +381,14 @@ export default class Level1_1 extends Scene {
             this.player.freeze();
             this.player.animation.pause();
             this.player.setAIActive(false, {});
+            console.log("freezing enemies...");
             for(let i = 0; i < this.enemies.length; i++) {
-                this.enemies[i].freeze();
-                this.enemies[i].setAIActive(false, {});
-                this.enemies[i].animation.pause();
+                //console.log(i + ": " + this.enemies[i]);
+                if(this.enemies[i]._ai !== undefined) {
+                    this.enemies[i].freeze();
+                    this.enemies[i].setAIActive(false, {});
+                    this.enemies[i].animation.pause();
+                }
             }
             this.pauseLayer.setHidden(false);
             this.viewport.setZoomLevel(1);

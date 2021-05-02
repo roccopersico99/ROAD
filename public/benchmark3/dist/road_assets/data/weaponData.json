@@ -36,8 +36,8 @@
             "name": "smg",
             "displayName": "SMG",
             "spriteKey": "smg",
-            "damage": 0.5,
-            "cooldown": 100,
+            "damage": 0.75,
+            "cooldown": 200,
             "useVolume": 150,
             "color": "#FDBFBF"
         }

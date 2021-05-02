@@ -59,7 +59,7 @@ export default class PlayerController implements BattlerAI {
 
         this.owner.tweens.add("180", {
             startDelay: 0,
-            duration: 300,
+            duration: 150,
             effects: [
                 {
                     property: "alpha",

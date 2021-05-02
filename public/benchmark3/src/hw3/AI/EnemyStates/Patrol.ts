@@ -71,12 +71,17 @@ export default class Patrol extends EnemyState {
         // else if(this.currentPath.isDone()){
         //     this.currentPath.handlePathProgress(this.owner);
         // }
-        if(this.currentPath.isDone()){
-            this.currentPath = this.getNextPath();
-        }
-        else {
-            this.owner.moveOnPath(this.parent.speed * deltaT, this.currentPath);
-            this.owner.rotation = Vec2.UP.angleToCCW(this.currentPath.getMoveDirection(this.owner));
+
+
+        // if(this.currentPath.isDone()){
+        //     this.currentPath = this.getNextPath();
+        // }
+        // else {
+        //     this.owner.moveOnPath(this.parent.speed * deltaT, this.currentPath);
+        //     this.owner.rotation = Vec2.UP.angleToCCW(this.currentPath.getMoveDirection(this.owner));
+        // }
+        if(this.owner.position.y >= this.parent.viewport.position.y - 200){
+            this.owner.position.add(Vec2.UP.scaled(16 * deltaT));
         }
     }
 

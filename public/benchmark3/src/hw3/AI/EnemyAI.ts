@@ -5,7 +5,9 @@ import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
 import GameEvent from "../../Wolfie2D/Events/GameEvent";
 import GameNode from "../../Wolfie2D/Nodes/GameNode";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
+import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import OrthogonalTilemap from "../../Wolfie2D/Nodes/Tilemaps/OrthogonalTilemap";
+import Viewport from "../../Wolfie2D/SceneGraph/Viewport";
 import Weapon from "../GameSystems/items/Weapon";
 import { hw3_Events } from "../hw3_constants";
 import BattlerAI from "./BattlerAI";
@@ -30,6 +32,8 @@ export default class EnemyAI extends StateMachineAI implements BattlerAI {
     /** A reference to the player object */
     player: GameNode;
 
+    viewport: Sprite;
+
     initializeAI(owner: AnimatedSprite, options: Record<string, any>): void {
         this.owner = owner;
 
@@ -49,6 +53,8 @@ export default class EnemyAI extends StateMachineAI implements BattlerAI {
         this.weapon = options.weapon;
 
         this.player = options.player;
+
+        this.viewport= options.viewport;
 
         // Subscribe to events
         this.receiver.subscribe(hw3_Events.SHOT_FIRED);

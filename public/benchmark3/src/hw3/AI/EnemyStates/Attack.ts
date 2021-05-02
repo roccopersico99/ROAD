@@ -62,7 +62,7 @@ export default class Attack extends EnemyState {
             if(this.owner.weaponActive){
                 if(this.parent.weapon.use(this.owner, "enemy", dir)){
                     // If we fired, face that direction
-                    this.owner.rotation = Vec2.UP.angleToCCW(dir);
+                    //this.owner.rotation = Vec2.UP.angleToCCW(dir);
                 }
             }
         }

@@ -4,7 +4,7 @@ import Layer from "../../Wolfie2D/Scene/Layer";
 import Scene from "../../Wolfie2D/Scene/Scene";
 import Color from "../../Wolfie2D/Utils/Color";
 import Label from "../../Wolfie2D/Nodes/UIElements/Label";
-import hw3_scene from "./hw3_scene";
+import Level1_1 from "./Level1_1";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import Input from "../../Wolfie2D/Input/Input";
 import PlayerController from "../AI/PlayerController";
@@ -271,7 +271,7 @@ export default class MainMenu extends Scene {
                         ]
                     }
                 }
-                this.sceneManager.changeToScene(hw3_scene, {lives: 3}, sceneOptions);
+                this.sceneManager.changeToScene(Level1_1, {scrap: 123, health: 6}, sceneOptions);
             }
 
             if(event.type === "upgrade"){

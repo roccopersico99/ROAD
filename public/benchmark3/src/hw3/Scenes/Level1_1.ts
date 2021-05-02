@@ -31,7 +31,7 @@ import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 import Layer from "../../Wolfie2D/Scene/Layer";
 
-export default class hw3_scene extends Scene {
+export default class Level1_1 extends Scene {
     // The player
     private player: AnimatedSprite;
 
@@ -39,7 +39,7 @@ export default class hw3_scene extends Scene {
     private crosshair: Sprite;
 
     // The scraps
-    protected scrapCount: number = 0;
+    protected scrapCount: number;
     protected scrapCountLabel: Label;
     private scrap: Sprite;
 
@@ -131,6 +131,11 @@ export default class hw3_scene extends Scene {
         this.load.audio("player_damaged", "hw3_assets/sounds/player_damage.mp3");
         this.load.audio("enemy_damaged", "hw3_assets/sounds/enemy_damage.mp3");
         this.load.audio("explosion", "hw3_assets/sounds/explosion.mp3");
+    }
+
+    initScene(init: Record<string, any>): void {
+        this.scrapCount = init.scrap == null ? 999 : init.scrap;
+        //(<BattlerAI>this.player._ai).health = init.health == null ? 5 : init.health;
     }
 
     startScene(){

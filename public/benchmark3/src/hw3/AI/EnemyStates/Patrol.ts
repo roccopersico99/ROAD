@@ -85,6 +85,7 @@ export default class Patrol extends EnemyState {
         }
         if(this.owner.position.y >= this.parent.viewport.position.y - 150){
             this.owner.position.add(Vec2.UP.scaled(16 * deltaT));
+            this.finished(EnemyStates.ATTACKING);
         }
     }
 

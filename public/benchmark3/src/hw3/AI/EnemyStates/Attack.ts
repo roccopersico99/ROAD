@@ -80,6 +80,7 @@ export default class Attack extends EnemyState {
                 this.finished(EnemyStates.DEFAULT);
             }
         }
+        this.owner.position.add(Vec2.UP.scaled(16 * deltaT));
     }
 
     onExit(): Record<string, any> {

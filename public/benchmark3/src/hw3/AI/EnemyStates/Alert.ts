@@ -45,7 +45,7 @@ export default class Alert extends EnemyState {
         }
         else{
             this.owner.moveOnPath(this.parent.speed * deltaT, this.path);
-            this.owner.rotation = Vec2.UP.angleToCCW(this.path.getMoveDirection(this.owner));
+            //this.owner.rotation = Vec2.UP.angleToCCW(this.path.getMoveDirection(this.owner));
         }
 
         if(this.parent.getPlayerPosition() !== null){

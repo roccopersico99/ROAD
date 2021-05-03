@@ -31,7 +31,7 @@ import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 import Layer from "../../Wolfie2D/Scene/Layer";
 
-export default class Level1_1 extends Scene {
+export default class Level2_1 extends Scene {
     // The player
     private player: AnimatedSprite;
 
@@ -110,8 +110,8 @@ export default class Level1_1 extends Scene {
         // Load the tilemap
         // HOMEWORK 3 - TODO - DONE
         // Change this file to be your own tilemap
-        this.load.tilemap("level", "road_assets/tilemaps/road-level1.json");
-        //this.load.tilemap("level", "road_assets/tilemaps/road-level2.json");
+        //this.load.tilemap("level", "road_assets/tilemaps/road-level1.json");
+        this.load.tilemap("level", "road_assets/tilemaps/road-level2.json");
         // this.load.tilemap("level", "road_assets/tilemaps/road-level3.json");
 
         // Load the scene info
@@ -190,7 +190,7 @@ export default class Level1_1 extends Scene {
             this.hpCount = 6;
         }
         else{
-            this.hpCount = init.health;
+            this.hpCount = init.hpCount;
         }
     }
 
@@ -313,12 +313,12 @@ export default class Level1_1 extends Scene {
         this.healthManager = new HealthManager(this, (<BattlerAI>this.player._ai).health, "fullHeart", "emptyHeart", "halfHeart", new Vec2(12, 16));
         
         // Scene has finished loading, so start playing menu music
-        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "level1music", loop: true, holdReference: true});
+        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "level2music", loop: true, holdReference: true});
     }
 
     unloadScene(): void {
         // Scene has ended, so stop playing menu music
-        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level1music", loop: true, holdReference: true});
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level2music", loop: true, holdReference: true});
     }
 
     updateScene(deltaT: number): void {
@@ -447,8 +447,7 @@ export default class Level1_1 extends Scene {
                         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "scrap_pickup", loop: false, holdReference: true});
                         break;
                     case "levelEnd":
-                        console.log(this.hpCount);
-                        this.sceneManager.changeToScene(MainMenu, {maxHP: this.maxHP, hpCount: this.hpCount, scrapCount: this.scrapCount, lvl2Lock: false});
+                        this.sceneManager.changeToScene(MainMenu, {});
                         break;
                     case "EnemyDied":
                         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "explode1", loop: false, holdReference: false});

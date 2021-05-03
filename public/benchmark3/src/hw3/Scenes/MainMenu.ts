@@ -10,6 +10,7 @@ import Input from "../../Wolfie2D/Input/Input";
 import PlayerController from "../AI/PlayerController";
 import Upgrade from "../Scenes/Upgrade";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
+import Level2_1 from "./Level2_1";
 
 export default class MainMenu extends Scene {
     // Layers, for multiple main menu screens
@@ -24,6 +25,14 @@ export default class MainMenu extends Scene {
     // The Logo
     private logo: Sprite;
 
+    // level 2 locked/unlocked
+    protected lvl2Lock: boolean;
+
+    //starting health and scrap count
+    protected maxHP: number;
+    protected hpCount: number;
+    protected scrapCount: number;
+
     loadScene(){
         // Load sprites
         this.load.image("cursor", "road_assets/sprites/cursor.png");
@@ -32,7 +41,37 @@ export default class MainMenu extends Scene {
         // Load music
         this.load.audio("intro", "road_assets/music/mainmenu_intro.wav");
         this.load.audio("mainmenu", "road_assets/music/mainmenu.wav");
-        this.load.audio("mainFull", "road_assets/music/mainmenu_full.wav")
+        this.load.audio("mainFull", "road_assets/music/mainmenu_full.wav");
+    }
+
+    initScene(init: Record<string, any>): void{
+        if(init.lvl2Lock == undefined){
+            this.lvl2Lock = true;
+        }
+        else{
+            this.lvl2Lock = init.lvl2Lock;
+        }
+
+        if(init.maxHP == undefined){
+            this.maxHP = 6;
+        }
+        else{
+            this.maxHP = init.maxHP;
+        }
+
+        if(init.hpCount == undefined){
+            this.hpCount = 6;
+        }
+        else{
+            this.hpCount= init.hpCount;
+        }
+
+        if(init.scrapCount == undefined){
+            this.scrapCount = 120;
+        }
+        else{
+            this.scrapCount = init.scrapCount;
+        }
     }
 
     startScene(){
@@ -66,7 +105,7 @@ export default class MainMenu extends Scene {
         play.borderWidth = 2;
         play.borderColor = Color.RED;
         play.backgroundColor = Color.ORANGE;
-        play.onClickEventId = "play";
+        play.onClickEventId = "levelSelect";
         play.textColor = Color.BLACK;
         play.fontSize = 40;
         play.font = "PixelSimple";
@@ -74,7 +113,7 @@ export default class MainMenu extends Scene {
         // Add control layer and button
         this.control = this.addUILayer("control");
         this.control.setHidden(true);
-        const controls = <Label>this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y+150), text: "Controls"});
+        const controls = <Label>this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y+75), text: "Controls"});
         controls.size.set(300, 50);
         controls.borderWidth = 2;
         controls.borderColor = Color.RED;
@@ -142,7 +181,7 @@ export default class MainMenu extends Scene {
         ctrlBack.font = "PixelSimple";
 
         // Add about button
-        const about = <Label>this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y + 250), text: "Help"});
+        const about = <Label>this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y + 200), text: "Help"});
         about.size.set(300, 50);
         about.borderWidth = 2;
         about.borderColor = Color.RED;
@@ -218,15 +257,15 @@ export default class MainMenu extends Scene {
         // Level Select Screen
         this.levelSelect = this.addUILayer("levelSelect");
         this.levelSelect.setHidden(true);
-        const levelSelect = <Label>this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y + 50), text: "Level Select"});
-        levelSelect.size.set(300, 50);
-        levelSelect.borderWidth = 2;
-        levelSelect.borderColor = Color.RED;
-        levelSelect.backgroundColor = Color.ORANGE;
-        levelSelect.textColor = Color.BLACK;
-        levelSelect.onClickEventId = "levelSelect";
-        levelSelect.fontSize = 40;
-        levelSelect.font = "PixelSimple";
+        // const levelSelect = <Label>this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y + 50), text: "Level Select"});
+        // levelSelect.size.set(300, 50);
+        // levelSelect.borderWidth = 2;
+        // levelSelect.borderColor = Color.RED;
+        // levelSelect.backgroundColor = Color.ORANGE;
+        // levelSelect.textColor = Color.BLACK;
+        // levelSelect.onClickEventId = "levelSelect";
+        // levelSelect.fontSize = 40;
+        // levelSelect.font = "PixelSimple";
         const lvlSelectHeader = <Label>this.add.uiElement(UIElementType.LABEL, "levelSelect", {position: new Vec2(center.x, center.y - 250), text: "Level Select"});
         lvlSelectHeader.textColor = Color.BLACK;
         lvlSelectHeader.fontSize = 100;
@@ -234,17 +273,42 @@ export default class MainMenu extends Scene {
         
 
         // *** LEVEL SELECT SCREEN ***
-        const lvlSelectText = <Label>this.add.uiElement(UIElementType.LABEL, "levelSelect", {position: new Vec2(center.x, center.y), text: "More levels coming soon..."});
+        const lvlSelectText = <Label>this.add.uiElement(UIElementType.LABEL, "levelSelect", {position: new Vec2(center.x, center.y + 100), text: "More levels coming soon..."});
         lvlSelectText.font = "PixelSimple";
+
+        // Level 1-1
         const lvlSelect11 = <Label>this.add.uiElement(UIElementType.BUTTON, "levelSelect", {position: new Vec2(center.x - 250, center.y - 150), text: "Level 1-1"});
         lvlSelect11.size.set(300, 50);
         lvlSelect11.borderWidth = 2;
         lvlSelect11.borderColor = Color.RED;
         lvlSelect11.backgroundColor = Color.ORANGE;
         lvlSelect11.textColor = Color.BLACK;
-        lvlSelect11.onClickEventId = "play";
+        lvlSelect11.onClickEventId = "level1-1";
         lvlSelect11.fontSize = 40;
         lvlSelect11.font = "PixelSimple";
+
+        // Level 2-1
+        let lvlSelect21;
+        if(this.lvl2Lock){
+            lvlSelect21 = <Label>this.add.uiElement(UIElementType.BUTTON, "levelSelect", {position: new Vec2(center.x - 250, center.y - 50), text: "Locked"});
+        }
+        else{
+            lvlSelect21 = <Label>this.add.uiElement(UIElementType.BUTTON, "levelSelect", {position: new Vec2(center.x - 250, center.y - 50), text: "Level 2-1"});
+            lvlSelect21.onClickEventId = "level2-1";
+        }
+        lvlSelect21.size.set(300, 50);
+        lvlSelect21.borderWidth = 2;
+        lvlSelect21.borderColor = Color.RED;
+        lvlSelect21.backgroundColor = Color.ORANGE;
+        lvlSelect21.textColor = Color.BLACK;
+        // lvlSelect21.onClickEventId = "level2-1";
+        lvlSelect21.fontSize = 40;
+        lvlSelect21.font = "PixelSimple";
+        //lvlSelect21.visible = false;
+        // if(this.lvl2Lock === false){
+        //     lvlSelect21.visible = true;
+        // }
+
 
         // Level Select back button
         const lvlSelectBack = <Label>this.add.uiElement(UIElementType.BUTTON, "levelSelect", {position: new Vec2(40, center.y - 360), text: "<"});
@@ -271,7 +335,8 @@ export default class MainMenu extends Scene {
 
 
         // Subscribe to the button events
-        this.receiver.subscribe("play");
+        this.receiver.subscribe("level1-1");
+        this.receiver.subscribe("level2-1");
         this.receiver.subscribe("about");
         this.receiver.subscribe("menu");
         this.receiver.subscribe("control");
@@ -292,7 +357,7 @@ export default class MainMenu extends Scene {
 
             console.log(event);
 
-            if(event.type === "play"){
+            if(event.type === "level1-1"){
                 let sceneOptions = {
                     physics: {
                         groupNames: ["ground", "player", "enemy", "coin"],
@@ -305,7 +370,23 @@ export default class MainMenu extends Scene {
                         ]
                     }
                 }
-                this.sceneManager.changeToScene(Level1_1, {scrap: 123, health: 3}, sceneOptions);
+                this.sceneManager.changeToScene(Level1_1, {}, sceneOptions);
+            }
+
+            if(event.type === "level2-1"){
+                let sceneOptions = {
+                    physics: {
+                        groupNames: ["ground", "player", "enemy", "coin"],
+                        collisions:
+                        [
+                            [0, 1, 1, 0],
+                            [1, 0, 0, 1],
+                            [1, 0, 0, 0],
+                            [0, 1, 0, 0]
+                        ]
+                    }
+                }
+                this.sceneManager.changeToScene(Level2_1, {scrap: this.scrapCount, maxHP: this.maxHP, hpCount: this.hpCount}, sceneOptions);
             }
 
             if(event.type === "upgrade"){

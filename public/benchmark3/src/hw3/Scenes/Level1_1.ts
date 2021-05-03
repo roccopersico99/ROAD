@@ -276,8 +276,10 @@ export default class Level1_1 extends Scene {
         this.receiver.subscribe("ScrapPickup");
 
         // Pause Menu Events
-        this.receiver.subscribe("Controls");
-        this.receiver.subscribe("Exit");
+        this.receiver.subscribe("resume");
+        this.receiver.subscribe("control");
+        this.receiver.subscribe("exit");
+        this.receiver.subscribe("back");
 
         // Spawn items into the world
         this.spawnItems();
@@ -308,26 +310,68 @@ export default class Level1_1 extends Scene {
         this.crosshair.position.set(Input.getMousePosition().x, Input.getMousePosition().y);
         this.cursor.position.set(Input.getMousePosition().x, Input.getMousePosition().y);
 
-        // Pauses game when 'p' pressed
-        if(Input.isJustPressed("pause")) {
+        let exitPause = false;
+
+        while(this.isPaused && this.receiver.hasNextEvent()){
+            let event = this.receiver.getNextEvent();
+            switch(event.type){
+                case "resume":
+                    exitPause = true;
+                    break;
+                case "control":
+                    console.log("hello");
+                    this.controlLayer.setHidden(false);
+                    this.pauseLayer.setHidden(true);
+                    break;
+                case "exit":
+                    this.sceneManager.changeToScene(MainMenu);
+                    break;
+                case "back":
+                    this.pauseLayer.setHidden(false);
+                    this.controlLayer.setHidden(true);
+                    break;
+            }
+        }
+
+        if(Input.isJustPressed("pause") || exitPause === true) {
             this.isPaused = !this.isPaused;
 
-            this.player.unfreeze();
-            this.player.animation.resume();
-            this.player.setAIActive(true, {});
-            //console.log("unfreezing enemies...");
-            for(let i = 0; i < this.enemies.length; i++) {
-                //console.log(i + ": " + this.enemies[i]._ai);
-                if(this.enemies[i]._ai !== undefined) {
-                    this.enemies[i].unfreeze();
-                    this.enemies[i].setAIActive(true, {});
-                    this.enemies[i].animation.resume();
+            if(this.isPaused) {
+                this.player.freeze();
+                this.player.animation.pause();
+                this.player.setAIActive(false, {});
+                //console.log("freezing enemies...");
+                for(let i = 0; i < this.enemies.length; i++) {
+                    //console.log(i + ": " + this.enemies[i]);
+                    if(this.enemies[i]._ai !== undefined) {
+                        this.enemies[i].freeze();
+                        this.enemies[i].setAIActive(false, {});
+                        this.enemies[i].animation.pause();
+                    }
                 }
+                this.pauseLayer.setHidden(false);
+                this.viewport.setZoomLevel(1);
+                this.cursorLayer.setHidden(false);
+                this.crosshairLayer.setHidden(true);
+            } else {
+                this.player.unfreeze();
+                this.player.animation.resume();
+                this.player.setAIActive(true, {});
+                //console.log("unfreezing enemies...");
+                for(let i = 0; i < this.enemies.length; i++) {
+                    //console.log(i + ": " + this.enemies[i]._ai);
+                    if(this.enemies[i]._ai !== undefined) {
+                        this.enemies[i].unfreeze();
+                        this.enemies[i].setAIActive(true, {});
+                        this.enemies[i].animation.resume();
+                    }
+                }
+                this.viewport.setZoomLevel(3);
+                this.pauseLayer.setHidden(true);
+                this.cursorLayer.setHidden(true);
+                this.crosshairLayer.setHidden(false);
+                this.controlLayer.setHidden(true);
             }
-            this.viewport.setZoomLevel(3);
-            this.pauseLayer.setHidden(true);
-            this.cursorLayer.setHidden(true);
-            this.crosshairLayer.setHidden(false);
         }
 
         if(!this.isPaused) {
@@ -445,25 +489,24 @@ export default class Level1_1 extends Scene {
                 this.getLayer("graph").setHidden(!this.getLayer("graph").isHidden());
             }
         }
-        else{
-            this.player.freeze();
-            this.player.animation.pause();
-            this.player.setAIActive(false, {});
-            //console.log("freezing enemies...");
-            for(let i = 0; i < this.enemies.length; i++) {
-                //console.log(i + ": " + this.enemies[i]);
-                if(this.enemies[i]._ai !== undefined) {
-                    this.enemies[i].freeze();
-                    this.enemies[i].setAIActive(false, {});
-                    this.enemies[i].animation.pause();
-                }
-            }
-            this.pauseLayer.setHidden(false);
-            this.viewport.setZoomLevel(1);
-            this.cursorLayer.setHidden(false);
-            this.crosshairLayer.setHidden(true);
-            //console.log("showing pause screen");
-        }
+        // else{
+        //     this.player.freeze();
+        //     this.player.animation.pause();
+        //     this.player.setAIActive(false, {});
+        //     //console.log("freezing enemies...");
+        //     for(let i = 0; i < this.enemies.length; i++) {
+        //         //console.log(i + ": " + this.enemies[i]);
+        //         if(this.enemies[i]._ai !== undefined) {
+        //             this.enemies[i].freeze();
+        //             this.enemies[i].setAIActive(false, {});
+        //             this.enemies[i].animation.pause();
+        //         }
+        //     }
+        //     this.pauseLayer.setHidden(false);
+        //     this.viewport.setZoomLevel(1);
+        //     this.cursorLayer.setHidden(false);
+        //     this.crosshairLayer.setHidden(true);
+        // }
     }
 
     addUI(): void {
@@ -487,7 +530,6 @@ export default class Level1_1 extends Scene {
         resume.font = "PixelSimple";
         resume.onClickEventId = "resume";
 
-
         const controls = <Label>this.add.uiElement(UIElementType.BUTTON, "pause", {position: new Vec2(center.x, center.y), text: "Controls"});
         controls.size.set(300, 50);
         controls.borderWidth = 2;
@@ -498,6 +540,47 @@ export default class Level1_1 extends Scene {
         controls.font = "PixelSimple";
         controls.onClickEventId = "control";
 
+        let controlBg = this.add.sprite("pauseImage", "control");
+        controlBg.position.set(center.x, center.y);
+
+        const controlHeader = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 250), text: "Controls"});
+        controlHeader.textColor = Color.BLACK;
+        controlHeader.fontSize = 100;
+        controlHeader.font = "PixelSimple";
+        const ctrlText1 = "WASD keys for movements";
+        const ctrlText2 = "SPACE key to use item";
+        const ctrlText3 = "Move Mouse to aim weapon";
+        const ctrlText4 = "Left Mouse Click to fire weapon";
+        const ctrlText5 = "Scroll Wheel for cycling through weapons";
+        const ctrlText6 = "ESC for pausing the game"
+        const ctrlLine1 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 100), text: ctrlText1});
+        const ctrlLine2 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 50), text: ctrlText2});
+        const ctrlLine3 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y), text: ctrlText3});
+        const ctrlLine4 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y + 50), text: ctrlText4});
+        const ctrlLine5 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y + 100), text: ctrlText5});
+        const ctrlLine6 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y + 150), text: ctrlText6});
+        ctrlLine1.textColor = Color.BLACK;
+        ctrlLine2.textColor = Color.BLACK;
+        ctrlLine3.textColor = Color.BLACK;
+        ctrlLine4.textColor = Color.BLACK;
+        ctrlLine5.textColor = Color.BLACK;
+        ctrlLine6.textColor = Color.BLACK;
+        ctrlLine1.font = "PixelSimple";
+        ctrlLine2.font = "PixelSimple";
+        ctrlLine3.font = "PixelSimple";
+        ctrlLine4.font = "PixelSimple";
+        ctrlLine5.font = "PixelSimple";
+        ctrlLine6.font = "PixelSimple";
+        const ctrlBack = <Label>this.add.uiElement(UIElementType.BUTTON, "control", {position: new Vec2(40, center.y - 360), text: "<"});
+        ctrlBack.size.set(50, 50);
+        ctrlBack.borderWidth = 2;
+        ctrlBack.borderColor = Color.RED;
+        ctrlBack.backgroundColor = Color.ORANGE;
+        ctrlBack.textColor = Color.BLACK;
+        ctrlBack.onClickEventId = "back";
+        ctrlBack.fontSize = 40;
+        ctrlBack.font = "PixelSimple";
+
         const exit = <Label>this.add.uiElement(UIElementType.BUTTON, "pause", {position: new Vec2(center.x, center.y + 100), text: "Exit"});
         exit.size.set(300, 50);
         exit.borderWidth = 2;
@@ -506,7 +589,7 @@ export default class Level1_1 extends Scene {
         exit.textColor = Color.BLACK;
         exit.fontSize = 40;
         exit.font = "PixelSimple";
-        exit.onClickEventId = "Exit";
+        exit.onClickEventId = "exit";
 
     }
 

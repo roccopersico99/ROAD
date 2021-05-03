@@ -38,6 +38,9 @@ export default class Level1_1 extends Scene {
     // The crosshair
     private crosshair: Sprite;
 
+    // The cursor
+    private cursor: Sprite;
+
     // Health
     protected hpCount: number;
 
@@ -80,6 +83,8 @@ export default class Level1_1 extends Scene {
     private isPaused: boolean;
 
     private crosshairLayer: Layer;
+
+    private cursorLayer: Layer;
 
     //Pause Menu Layers
     private pauseLayer: Layer;
@@ -127,6 +132,7 @@ export default class Level1_1 extends Scene {
 
         // Load crosshair sprite
         this.load.image("crosshair", "road_assets/sprites/crosshair2.png");
+        this.load.image("cursor", "road_assets/sprites/cursor.png");
 
         // Load heart container sprites
         this.load.image("fullHeart", "road_assets/sprites/full_heart.png");
@@ -214,9 +220,13 @@ export default class Level1_1 extends Scene {
         this.pauseLayer.setHidden(true);
         this.controlLayer.setHidden(true);
 
-        
         this.crosshairLayer = this.addUILayer("crosshairLayer");
         this.crosshairLayer.setDepth(104);
+
+        this.cursorLayer = this.addUILayer("cursorLayer");
+        this.cursorLayer.setDepth(104);
+        this.cursorLayer.setHidden(true);
+
         this.addLayer("primary", 10);
         this.addLayer("scraps", 9);
         //this.addUILayer("crosshairLayer").setDepth(11);
@@ -296,6 +306,7 @@ export default class Level1_1 extends Scene {
     updateScene(deltaT: number): void {
         // Set crosshair to mouse position
         this.crosshair.position.set(Input.getMousePosition().x, Input.getMousePosition().y);
+        this.cursor.position.set(Input.getMousePosition().x, Input.getMousePosition().y);
 
         // Pauses game when 'p' pressed
         if(Input.isJustPressed("pause")) {
@@ -315,6 +326,8 @@ export default class Level1_1 extends Scene {
             }
             this.viewport.setZoomLevel(3);
             this.pauseLayer.setHidden(true);
+            this.cursorLayer.setHidden(true);
+            this.crosshairLayer.setHidden(false);
         }
 
         if(!this.isPaused) {
@@ -447,6 +460,8 @@ export default class Level1_1 extends Scene {
             }
             this.pauseLayer.setHidden(false);
             this.viewport.setZoomLevel(1);
+            this.cursorLayer.setHidden(false);
+            this.crosshairLayer.setHidden(true);
             //console.log("showing pause screen");
         }
     }
@@ -461,7 +476,19 @@ export default class Level1_1 extends Scene {
         this.splash = this.add.sprite("pauseImage", "pause");
         let center = this.viewport.getCenter();
         this.splash.position.set(center.x, center.y);
-        const controls = <Label>this.add.uiElement(UIElementType.BUTTON, "pause", {position: new Vec2(center.x, center.y - 50), text: "Controls"});
+
+        const resume = <Label>this.add.uiElement(UIElementType.BUTTON, "pause", {position: new Vec2(center.x, center.y - 100), text: "Resume"});
+        resume.size.set(300, 50);
+        resume.borderWidth = 2;
+        resume.borderColor = Color.RED;
+        resume.backgroundColor = Color.ORANGE;
+        resume.textColor = Color.BLACK;
+        resume.fontSize = 40;
+        resume.font = "PixelSimple";
+        resume.onClickEventId = "resume";
+
+
+        const controls = <Label>this.add.uiElement(UIElementType.BUTTON, "pause", {position: new Vec2(center.x, center.y), text: "Controls"});
         controls.size.set(300, 50);
         controls.borderWidth = 2;
         controls.borderColor = Color.RED;
@@ -471,7 +498,7 @@ export default class Level1_1 extends Scene {
         controls.font = "PixelSimple";
         controls.onClickEventId = "control";
 
-        const exit = <Label>this.add.uiElement(UIElementType.BUTTON, "pause", {position: new Vec2(center.x, center.y + 50), text: "Exit"});
+        const exit = <Label>this.add.uiElement(UIElementType.BUTTON, "pause", {position: new Vec2(center.x, center.y + 100), text: "Exit"});
         exit.size.set(300, 50);
         exit.borderWidth = 2;
         exit.borderColor = Color.RED;
@@ -600,6 +627,8 @@ export default class Level1_1 extends Scene {
 
     initializeCrosshair(): void {
         this.crosshair = this.add.sprite("crosshair", "crosshairLayer");
+        this.crosshair.position.set(Input.getMousePosition().x, Input.getMousePosition().y);
+        this.cursor = this.add.sprite("cursor", "cursorLayer");
         this.crosshair.position.set(Input.getMousePosition().x, Input.getMousePosition().y);
     }
 

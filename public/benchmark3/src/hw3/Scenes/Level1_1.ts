@@ -86,6 +86,10 @@ export default class Level1_1 extends Scene {
 
     private cursorLayer: Layer;
 
+    private cheatsLayer: Layer;
+    private invincibleLabel: Label;
+    private instakillLabel: Label;
+
     //Pause Menu Layers
     private pauseLayer: Layer;
     private controlLayer: Layer;
@@ -229,6 +233,10 @@ export default class Level1_1 extends Scene {
 
         this.addLayer("primary", 10);
         this.addLayer("scraps", 9);
+
+        this.cheatsLayer = this.addUILayer("activeCheats");
+        this.cheatsLayer.setDepth(9);
+        this.addCheatsUI();
         //this.addUILayer("crosshairLayer").setDepth(11);
 
         // Create the battle manager
@@ -379,6 +387,7 @@ export default class Level1_1 extends Scene {
                 this.invFlag = !this.invFlag;
                 (<PlayerController>this.player._ai).setInvincible(this.invFlag);
                 console.log("Invincible: " + this.invFlag);
+                this.invincibleLabel.visible = this.invFlag;
             }
     
             if(Input.isJustPressed("instakill")){
@@ -390,6 +399,7 @@ export default class Level1_1 extends Scene {
                         (<EnemyAI>this.enemies[i]._ai).setInstakill(this.instakill);
                     }
                 }
+                this.instakillLabel.visible = this.instakill;
             }
     
             if(Input.isJustPressed("money")){
@@ -468,7 +478,16 @@ export default class Level1_1 extends Scene {
 
             this.scrapCount = (<PlayerController>this.player._ai).scrap;
             
-            this.scrapCountLabel.text =  "" + this.scrapCount;
+            // Adjust scrap count label, if necessary
+            if(this.scrapCount/10000 > 1){
+                this.scrapCountLabel.text =  "  " + this.scrapCount;
+            }
+            else if(this.scrapCount/1000 > 1){
+                this.scrapCountLabel.text =  " " + this.scrapCount;
+            }
+            else {
+                this.scrapCountLabel.text =  "" + this.scrapCount;
+            }
             this.scrapCountLabel.textColor = Color.BLACK;
             this.scrapCountLabel.fontSize = 35;
             this.scrapCountLabel.font = "PixelSimple"
@@ -507,6 +526,19 @@ export default class Level1_1 extends Scene {
         //     this.cursorLayer.setHidden(false);
         //     this.crosshairLayer.setHidden(true);
         // }
+    }
+
+    addCheatsUI(): void {
+        this.invincibleLabel = <Label>this.add.uiElement(UIElementType.LABEL, "activeCheats", {position: new Vec2(369, 250), text: "INVINCIBILITY"});
+        this.invincibleLabel.visible = false;
+        this.invincibleLabel.textColor = Color.RED;
+        this.invincibleLabel.fontSize = 25;
+        this.invincibleLabel.font = "PixelSimple"
+        this.instakillLabel = <Label>this.add.uiElement(UIElementType.LABEL, "activeCheats", {position: new Vec2(371, 260), text: "INSTAKILL"});
+        this.instakillLabel.visible = false;
+        this.instakillLabel.textColor = Color.RED;
+        this.instakillLabel.fontSize = 30;
+        this.instakillLabel.font = "PixelSimple"
     }
 
     addUI(): void {
@@ -597,7 +629,7 @@ export default class Level1_1 extends Scene {
         ctrlBack.borderColor = Color.RED;
         ctrlBack.backgroundColor = Color.ORANGE;
         ctrlBack.textColor = Color.BLACK;
-        ctrlBack.onClickEventId = "menu";
+        ctrlBack.onClickEventId = "back";
         ctrlBack.fontSize = 40;
         ctrlBack.font = "PixelSimple";
 

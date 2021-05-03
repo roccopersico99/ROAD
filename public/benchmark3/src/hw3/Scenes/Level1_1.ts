@@ -543,41 +543,61 @@ export default class Level1_1 extends Scene {
         let controlBg = this.add.sprite("pauseImage", "control");
         controlBg.position.set(center.x, center.y);
 
-        const controlHeader = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 250), text: "Controls"});
+        const controlHeader = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 350), text: "Controls"});
         controlHeader.textColor = Color.BLACK;
         controlHeader.fontSize = 100;
         controlHeader.font = "PixelSimple";
+
         const ctrlText1 = "WASD keys for movements";
         const ctrlText2 = "SPACE key to use item";
         const ctrlText3 = "Move Mouse to aim weapon";
         const ctrlText4 = "Left Mouse Click to fire weapon";
         const ctrlText5 = "Scroll Wheel for cycling through weapons";
-        const ctrlText6 = "ESC for pausing the game"
-        const ctrlLine1 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 100), text: ctrlText1});
-        const ctrlLine2 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 50), text: ctrlText2});
-        const ctrlLine3 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y), text: ctrlText3});
-        const ctrlLine4 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y + 50), text: ctrlText4});
-        const ctrlLine5 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y + 100), text: ctrlText5});
-        const ctrlLine6 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y + 150), text: ctrlText6});
+        const ctrlText6 = "ESC for pausing the game";
+        const ctrlText7 = "I for Invinciblity Cheat";
+        const ctrlText8 = "K for Instakill Cheat";
+        const ctrlText9 = "M for Free Scrap Cheat";
+
+        const cheatsHeader = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y + 175), text: "Cheats"});
+        cheatsHeader.textColor = Color.RED;
+        cheatsHeader.fontSize = 100;
+        cheatsHeader.font = "PixelSimple";
+        const lightRed = new Color(255, 0, 0, .8);
+
+        const ctrlLine1 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 275), text: ctrlText1});
+        const ctrlLine2 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 225), text: ctrlText2});
+        const ctrlLine3 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 175), text: ctrlText3});
+        const ctrlLine4 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 125), text: ctrlText4});
+        const ctrlLine5 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 75), text: ctrlText5});
+        const ctrlLine6 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 25), text: ctrlText6});
+        const ctrlLine7 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y + 250), text: ctrlText7});
+        const ctrlLine8 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y + 300), text: ctrlText8});
+        const ctrlLine9 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y + 350), text: ctrlText9});
         ctrlLine1.textColor = Color.BLACK;
         ctrlLine2.textColor = Color.BLACK;
         ctrlLine3.textColor = Color.BLACK;
         ctrlLine4.textColor = Color.BLACK;
         ctrlLine5.textColor = Color.BLACK;
         ctrlLine6.textColor = Color.BLACK;
+        ctrlLine7.textColor = lightRed;
+        ctrlLine8.textColor = lightRed;
+        ctrlLine9.textColor = lightRed;
         ctrlLine1.font = "PixelSimple";
         ctrlLine2.font = "PixelSimple";
         ctrlLine3.font = "PixelSimple";
         ctrlLine4.font = "PixelSimple";
         ctrlLine5.font = "PixelSimple";
         ctrlLine6.font = "PixelSimple";
+        ctrlLine7.font = "PixelSimple";
+        ctrlLine8.font = "PixelSimple";
+        ctrlLine9.font = "PixelSimple";
         const ctrlBack = <Label>this.add.uiElement(UIElementType.BUTTON, "control", {position: new Vec2(40, center.y - 360), text: "<"});
         ctrlBack.size.set(50, 50);
         ctrlBack.borderWidth = 2;
         ctrlBack.borderColor = Color.RED;
         ctrlBack.backgroundColor = Color.ORANGE;
         ctrlBack.textColor = Color.BLACK;
-        ctrlBack.onClickEventId = "back";
+        ctrlBack.onClickEventId = "menu";
         ctrlBack.fontSize = 40;
         ctrlBack.font = "PixelSimple";
 

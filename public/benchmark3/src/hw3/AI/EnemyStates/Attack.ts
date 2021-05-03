@@ -40,6 +40,9 @@ export default class Attack extends EnemyState {
     handleInput(event: GameEvent): void {}
 
     update(deltaT: number): void {
+        if(this.owner.position.y > this.parent.viewport.position.y + 150){
+            this.owner.destroy();
+        }
         if(this.pollTimer.isStopped()){
             // Restart the timer
             this.pollTimer.start();

@@ -41,7 +41,8 @@ export default class Attack extends EnemyState {
 
     update(deltaT: number): void {
         if(this.owner.position.y > this.parent.viewport.position.y + 150){
-            this.owner.destroy();
+            this.owner.setAIActive(false, {});
+            //this.owner.destroy();
         }
         if(this.pollTimer.isStopped()){
             // Restart the timer
@@ -79,6 +80,7 @@ export default class Attack extends EnemyState {
                 this.finished(EnemyStates.DEFAULT);
             }
         }
+        this.owner.position.add(Vec2.UP.scaled(16 * deltaT));
     }
 
     onExit(): Record<string, any> {

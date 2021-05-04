@@ -32,14 +32,6 @@ export default class Patrol extends EnemyState {
     }
 
     handleInput(event: GameEvent): void {
-        if(event.type === hw3_Events.SHOT_FIRED){
-            // Shot was fired. Go check it out if it was close to us
-            if(this.owner.position.distanceTo(event.data.get("position")) < event.data.get("volume")){
-                // Shot was close enough to hear, go to the alert state
-                this.retObj = {target: event.data.get("position")};
-                this.finished(EnemyStates.ALERT);
-            }
-        }
     }
 
     // HOMEWORK 3 - TODO
@@ -55,36 +47,16 @@ export default class Patrol extends EnemyState {
      * For inspiration, check out the Guard state, or look at the NavigationPath class or the GameNode class
      */
     update(deltaT: number): void {
-        // If the enemy sees the player, start attacking
-        // if(this.parent.getPlayerPosition() !== null){
-        //     this.finished(EnemyStates.ATTACKING);
-        // }
-        
-        // this.owner.moveOnPath(this.parent.speed * deltaT, this.currentPath);
-        // this.owner.rotation = Vec2.UP.angleToCCW(this.currentPath.getMoveDirection(this.owner));
-        // this.currentPath.handlePathProgress(this.owner);
-        // else if(!this.currentPath.isDone()){
-        //     this.owner.moveOnPath(this.parent.speed * deltaT, this.currentPath);
-        //     this.owner.rotation = Vec2.UP.angleToCCW(this.currentPath.getMoveDirection(this.owner));
-        //     this.currentPath.handlePathProgress(this.owner);
-        // }
-        // else if(this.currentPath.isDone()){
-        //     this.currentPath.handlePathProgress(this.owner);
-        // }
-
-
-        // if(this.currentPath.isDone()){
-        //     this.currentPath = this.getNextPath();
-        // }
-        // else {
-        //     this.owner.moveOnPath(this.parent.speed * deltaT, this.currentPath);
-        //     this.owner.rotation = Vec2.UP.angleToCCW(this.currentPath.getMoveDirection(this.owner));
-        // }
         if(this.owner.position.y > this.parent.viewport.position.y + 150){
             this.owner.destroy();
         }
         if(this.owner.position.y >= this.parent.viewport.position.y - 150){
             this.owner.position.add(Vec2.UP.scaled(16 * deltaT));
+            let dir = this.parent.player.position.clone().sub(this.owner.position).normalize();
+            dir.rotateCCW(Math.PI / 4 * Math.random() - Math.PI/8);
+            if(this.owner.weaponActive){
+                this.parent.weapon.use(this.owner, "enemy", dir);
+            }
         }
     }
 

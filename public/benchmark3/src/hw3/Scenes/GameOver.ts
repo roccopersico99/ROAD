@@ -53,7 +53,7 @@ export default class GameOver extends Scene {
             console.log(event);
 
             if(event.type === "restart"){
-                this.sceneManager.changeToScene(MainMenu);
+                this.sceneManager.changeToScene(MainMenu, {});
             }
         }
     }

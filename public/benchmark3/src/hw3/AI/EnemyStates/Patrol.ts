@@ -47,10 +47,13 @@ export default class Patrol extends EnemyState {
      * For inspiration, check out the Guard state, or look at the NavigationPath class or the GameNode class
      */
     update(deltaT: number): void {
+        if(this.owner.position.y <= 20){
+            return;
+        }
         if(this.owner.position.y > this.parent.viewport.position.y + 150){
             this.owner.destroy();
         }
-        if(this.owner.position.y >= this.parent.viewport.position.y - 150){
+        if(this.owner.position.y >= this.parent.viewport.position.y - 125){
             this.owner.position.add(Vec2.UP.scaled(16 * deltaT));
             let dir = this.parent.player.position.clone().sub(this.owner.position).normalize();
             dir.rotateCCW(Math.PI / 4 * Math.random() - Math.PI/8);

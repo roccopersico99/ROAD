@@ -105,7 +105,7 @@ export default class Level1_1 extends Scene {
         // Load the player and enemy spritesheets
         // this.load.spritesheet("player", "road_assets/spritesheets/player.json");
         this.load.spritesheet("player", "road_assets/spritesheets/car.json");
-        this.load.spritesheet("enemy", "road_assets/spritesheets/enemy.json");
+        this.load.spritesheet("patrol", "road_assets/spritesheets/enemy.json");
 
         // Load the tilemap
         // HOMEWORK 3 - TODO - DONE
@@ -459,6 +459,7 @@ export default class Level1_1 extends Scene {
                         node.disablePhysics();
                         // Spawn a scrap
                         this.emitter.fireEvent("scrap", {position: node.position});
+                        //node.position.set(9999,9999);
                         node.destroy();
                         break;
                     case "PlayerDied":
@@ -882,9 +883,11 @@ export default class Level1_1 extends Scene {
         // Initialize the enemies
         for(let i = 0; i < enemyData.numEnemies; i++){
             let data = enemyData.enemies[i];
+            //console.log(data.mode);
 
+            let image = data.mode;
             // Create an enemy
-            this.enemies[i] = this.add.animatedSprite("enemy", "primary");
+            this.enemies[i] = this.add.animatedSprite(image, "primary");
             this.enemies[i].position.set(data.position[0], data.position[1]);
             this.enemies[i].animation.play("IDLE");
 

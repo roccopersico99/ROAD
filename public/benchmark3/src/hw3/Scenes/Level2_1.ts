@@ -105,7 +105,7 @@ export default class Level2_1 extends Scene {
         // Load the player and enemy spritesheets
         // this.load.spritesheet("player", "road_assets/spritesheets/player.json");
         this.load.spritesheet("player", "road_assets/spritesheets/car.json");
-        this.load.spritesheet("enemy", "road_assets/spritesheets/enemy.json");
+        this.load.spritesheet("patrol", "road_assets/spritesheets/enemy.json");
 
         // Load the tilemap
         // HOMEWORK 3 - TODO - DONE
@@ -209,7 +209,6 @@ export default class Level2_1 extends Scene {
             
             This line is just getting the wall layer of your tilemap to use for some calculations.
             Make sure it is still doing so.
-
             What the line is saying is to get the first level from the bottom (tilemapLayers[1]),
             which in my case was the Walls layer.
         */
@@ -881,9 +880,10 @@ export default class Level2_1 extends Scene {
         // Initialize the enemies
         for(let i = 0; i < enemyData.numEnemies; i++){
             let data = enemyData.enemies[i];
-
+            
+            let image = data.mode;
             // Create an enemy
-            this.enemies[i] = this.add.animatedSprite("enemy", "primary");
+            this.enemies[i] = this.add.animatedSprite(image, "primary");
             this.enemies[i].position.set(data.position[0], data.position[1]);
             this.enemies[i].animation.play("IDLE");
 

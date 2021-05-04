@@ -11,6 +11,8 @@ import PlayerController from "../AI/PlayerController";
 import Upgrade from "../Scenes/Upgrade";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 import Level2_1 from "./Level2_1";
+import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
+import { EaseFunctionType } from "../../Wolfie2D/Utils/EaseFunctions";
 
 export default class MainMenu extends Scene {
     // Layers, for multiple main menu screens
@@ -24,6 +26,13 @@ export default class MainMenu extends Scene {
 
     // The Logo
     private logo: Sprite;
+    private background: Sprite;
+
+    // Player car animated sprite
+    private car: AnimatedSprite;
+
+    // Gear sprite
+    private gear: Sprite;
 
     // level 2 locked/unlocked
     protected lvl2Lock: boolean;
@@ -34,9 +43,14 @@ export default class MainMenu extends Scene {
     protected scrapCount: number;
 
     loadScene(){
+        // Load spritesheets for animated sprites
+        this.load.spritesheet("car", "road_assets/spritesheets/car.json");
+        this.load.image("gear", "road_assets/sprites/gear.png");
+
         // Load sprites
         this.load.image("cursor", "road_assets/sprites/cursor.png");
         this.load.image("logo", "road_assets/sprites/logo_large.png");
+        this.load.image("background", "road_assets/sprites/mainmenu_bg.png");
 
         // Load music
         this.load.audio("intro", "road_assets/music/mainmenu_intro.wav");
@@ -84,6 +98,35 @@ export default class MainMenu extends Scene {
         this.viewport.setCenter(600, 400);
         const center = this.viewport.getCenter();
 
+        this.addUILayer("background").setDepth(1);
+        this.background = this.add.sprite("background", "background");
+        this.background.position.set(center.x, center.y);
+        this.background.size.set(1200,800);
+
+        
+        this.gear = this.add.sprite("gear", "background");
+        this.gear.tweens.add("spin", {
+            startDelay: 0,
+            duration: 3000,
+            effects: [
+                {
+                    property: "rotation",
+                    start: 0,
+                    end: 2*Math.PI,
+                    ease: EaseFunctionType.IN_OUT_QUAD
+                }
+            ],
+        });
+        this.gear.position.set(center.x-420, center.y+135);
+        //this.gear.size.set(160, 160);
+        this.gear.scale = new Vec2(4, 4);
+        this.gear.tweens.play("spin", true);
+
+        this.car = this.add.animatedSprite("car", "background");
+        this.car.position.set(center.x+420, center.y+150);
+        this.car.scale = new Vec2(18, 18);
+        this.car.animation.play("WALK", true);
+
         this.addUILayer("primary").setDepth(101);
 
         this.logo = this.add.sprite("logo", "primary");
@@ -100,7 +143,7 @@ export default class MainMenu extends Scene {
         // logo.fontSize = 250;
 
         // Add play button, and give it an event to emit on press
-        const play = <Label>this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y - 50), text: "Play"});
+        const play = <Label>this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y + 50), text: "Play"});
         play.size.set(300, 50);
         play.borderWidth = 2;
         play.borderColor = Color.RED;
@@ -113,7 +156,7 @@ export default class MainMenu extends Scene {
         // Add control layer and button
         this.control = this.addUILayer("control");
         this.control.setHidden(true);
-        const controls = <Label>this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y+75), text: "Controls"});
+        const controls = <Label>this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y+150), text: "Controls"});
         controls.size.set(300, 50);
         controls.borderWidth = 2;
         controls.borderColor = Color.RED;
@@ -181,7 +224,7 @@ export default class MainMenu extends Scene {
         ctrlBack.font = "PixelSimple";
 
         // Add about button
-        const about = <Label>this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y + 200), text: "Help"});
+        const about = <Label>this.add.uiElement(UIElementType.BUTTON, "mainMenu", {position: new Vec2(center.x, center.y + 250), text: "Help"});
         about.size.set(300, 50);
         about.borderWidth = 2;
         about.borderColor = Color.RED;
@@ -371,6 +414,8 @@ export default class MainMenu extends Scene {
                     }
                 }
                 this.sceneManager.changeToScene(Level1_1, {}, sceneOptions);
+                this.gear.visible = false;
+                this.car.visible = false;
             }
 
             if(event.type === "level2-1"){
@@ -387,6 +432,8 @@ export default class MainMenu extends Scene {
                     }
                 }
                 this.sceneManager.changeToScene(Level2_1, {scrap: this.scrapCount, maxHP: this.maxHP, hpCount: this.hpCount}, sceneOptions);
+                this.gear.visible = false;
+                this.car.visible = false;
             }
 
             if(event.type === "upgrade"){
@@ -397,6 +444,9 @@ export default class MainMenu extends Scene {
                 this.about.setHidden(false);
                 this.mainMenu.setHidden(true);
                 this.logo.size.set(0,0);
+                this.background.visible = false;
+                this.gear.visible = false;
+                this.car.visible = false;
             }
 
             if(event.type === "menu"){
@@ -405,18 +455,27 @@ export default class MainMenu extends Scene {
                 this.control.setHidden(true);
                 this.levelSelect.setHidden(true);
                 this.logo.size.set(800,800);
+                this.background.visible = true;
+                this.gear.visible = true;
+                this.car.visible = true;
             }
 
             if(event.type === "control"){
                 this.control.setHidden(false);
                 this.mainMenu.setHidden(true);
                 this.logo.size.set(0,0);
+                this.background.visible = false;
+                this.gear.visible = false;
+                this.car.visible = false;
             }
 
             if(event.type === "levelSelect"){
                 this.levelSelect.setHidden(false);
                 this.mainMenu.setHidden(true);
                 this.logo.size.set(0,0);
+                this.background.visible = false;
+                this.gear.visible = false;
+                this.car.visible = false;
             }
         }
     }

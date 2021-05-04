@@ -483,7 +483,7 @@ export default class Level2_1 extends Scene {
                 }
             }
 
-            let health = this.hpCount;
+            let health = (<PlayerController>this.player._ai).health;
 
             this.scrapCount = (<PlayerController>this.player._ai).scrap;
             

@@ -190,7 +190,7 @@ export default class Level1_1 extends Scene {
             this.hpCount = 6;
         }
         else{
-            this.hpCount = init.health;
+            this.hpCount = init.hpCount;
         }
     }
 

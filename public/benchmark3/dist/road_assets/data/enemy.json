@@ -4,13 +4,11 @@
         {
             "position": [232, 1912],
             "mode": "patrol",
-            "route": [70, 71],
             "health": 6
         },
         {
             "position": [168, 2008],
             "mode": "patrol",
-            "route": [72, 73],
             "health": 6
         },
         {

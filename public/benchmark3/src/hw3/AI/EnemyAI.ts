@@ -16,6 +16,7 @@ import Alert from "./EnemyStates/Alert";
 import Attack from "./EnemyStates/Attack";
 import Guard from "./EnemyStates/Guard";
 import Patrol from "./EnemyStates/Patrol";
+import Tower from "./EnemyStates/Tower";
 
 export default class EnemyAI extends StateMachineAI implements BattlerAI {
     /** The owner of this AI */
@@ -41,13 +42,23 @@ export default class EnemyAI extends StateMachineAI implements BattlerAI {
         this.owner = owner;
         this.instakill = false;
 
-        if(options.defaultMode === "guard"){
-            // Guard mode
-            this.addState(EnemyStates.DEFAULT, new Guard(this, owner, options.guardPosition));
-        } else {
-            // Patrol mode
-            this.addState(EnemyStates.DEFAULT, new Patrol(this, owner, options.patrolRoute));
+        switch (options.defaultMode){
+            case "patrol":
+                this.addState(EnemyStates.DEFAULT, new Patrol(this, owner, options.patrolRoute));
+                break;
+            case "tower":
+                this.addState(EnemyStates.DEFAULT, new Tower(this, owner, options.guardPosition));
+                break;
         }
+
+
+        // if(options.defaultMode === "guard"){
+        //     // Guard mode
+        //     this.addState(EnemyStates.DEFAULT, new Guard(this, owner, options.guardPosition));
+        // } else {
+        //     // Patrol mode
+        //     this.addState(EnemyStates.DEFAULT, new Patrol(this, owner, options.patrolRoute));
+        // }
 
         this.addState(EnemyStates.ALERT, new Alert(this, owner));
         this.addState(EnemyStates.ATTACKING, new Attack(this, owner));

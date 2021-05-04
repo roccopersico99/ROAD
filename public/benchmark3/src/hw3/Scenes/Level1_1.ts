@@ -105,7 +105,8 @@ export default class Level1_1 extends Scene {
         // Load the player and enemy spritesheets
         // this.load.spritesheet("player", "road_assets/spritesheets/player.json");
         this.load.spritesheet("player", "road_assets/spritesheets/car.json");
-        this.load.spritesheet("patrol", "road_assets/spritesheets/enemy.json");
+        this.load.spritesheet("patrol", "road_assets/spritesheets/truck.json");
+        //this.load.spritesheet("tower", "road_assets/spritesheets/truck.json");
 
         // Load the tilemap
         // HOMEWORK 3 - TODO - DONE
@@ -117,10 +118,6 @@ export default class Level1_1 extends Scene {
         // Load the scene info
         this.load.object("weaponData", "road_assets/data/weaponData.json");
 
-        // Load the nav mesh
-        //this.load.object("navmesh", "road_assets/data/navmesh.json");
-        this.load.object("navmesh", "road_assets/data/my-navmesh.json");
-
         // Load in the enemy info
         this.load.object("enemyData", "road_assets/data/enemy.json");
 
@@ -128,7 +125,6 @@ export default class Level1_1 extends Scene {
         this.load.object("itemData", "road_assets/data/items.json");
 
         // Load item sprites
-        this.load.image("healthpack", "road_assets/sprites/healthpack.png");
         this.load.image("inventorySlot", "road_assets/sprites/inventory.png");
         this.load.image("inventorySlot2x", "road_assets/sprites/inventory2x.png");
         this.load.image("pistol", "road_assets/sprites/pistol.png");
@@ -271,8 +267,6 @@ export default class Level1_1 extends Scene {
         // this.viewport.enableZoom();
         this.viewport.setZoomLevel(3);
 
-        // Create the navmesh
-        this.createNavmesh();
 
         // Initialize all enemies
         this.initializeEnemies();
@@ -672,11 +666,7 @@ export default class Level1_1 extends Scene {
         let itemData = this.load.getObject("itemData");
 
         for(let item of itemData.items){
-            if(item.type === "healthpack"){
-                // Create a healthpack
-                this.createHealthpack(new Vec2(item.position[0], item.position[1]));
-            }
-            else if (item.type === "scrap") {
+            if (item.type === "scrap") {
                 // Create a scrap
                 this.createScrap(new Vec2(item.position[0], item.position[1]));
             } else {
@@ -698,17 +688,6 @@ export default class Level1_1 extends Scene {
         let sprite = this.add.sprite(weaponType.spriteKey, "primary");
 
         return new Weapon(sprite, weaponType, this.battleManager);
-    }
-
-    /**
-     * Creates a healthpack at a certain position in the world
-     * @param position 
-     */
-    createHealthpack(position: Vec2): void {
-        let sprite = this.add.sprite("healthpack", "primary");
-        let healthpack = new Healthpack(sprite);
-        healthpack.moveSprite(position);
-        this.items.push(healthpack);
     }
 
     createScrap(position: Vec2): void {
@@ -830,32 +809,6 @@ export default class Level1_1 extends Scene {
      * Your job here is to make a new graph to serve as the navmesh. Your graph should be designed
      * for your tilemap, and no edges should go through walls.
      */
-    createNavmesh(): void {
-        // Add a layer to display the graph
-        let gLayer = this.addLayer("graph");
-        gLayer.setHidden(true);
-
-        let navmeshData = this.load.getObject("navmesh");
-
-         // Create the graph
-        this.graph = new PositionGraph();
-
-        // Add all nodes to our graph
-        for(let node of navmeshData.nodes){
-            this.graph.addPositionedNode(new Vec2(node[0], node[1]));
-            this.add.graphic(GraphicType.POINT, "graph", {position: new Vec2(node[0], node[1])})
-        }
-
-        // Add all edges to our graph
-        for(let edge of navmeshData.edges){
-            this.graph.addEdge(edge[0], edge[1]);
-            this.add.graphic(GraphicType.LINE, "graph", {start: this.graph.getNodePosition(edge[0]), end: this.graph.getNodePosition(edge[1])})
-        }
-
-        // Set this graph as a navigable entity
-        let navmesh = new Navmesh(this.graph);
-        this.navManager.addNavigableEntity(hw3_Names.NAVMESH, navmesh);
-    }
 
     protected addLevelEnd(startingTile: Vec2, size: Vec2): void {
         this.levelEndArea = <Rect>this.add.graphic(GraphicType.RECT, "primary", {position: startingTile.add(size.scaled(0.5)).scale(32), size: size.scale(32)});
@@ -895,18 +848,13 @@ export default class Level1_1 extends Scene {
             this.enemies[i].addPhysics(new AABB(Vec2.ZERO, new Vec2(5, 5)));
             this.enemies[i].setGroup("enemy");
 
-            if(data.route){
-                data.route = data.route.map((index: number) => this.graph.getNodePosition(index));                
-            }
 
             if(data.guardPosition){
                 data.guardPosition = new Vec2(data.guardPosition[0], data.guardPosition[1]);
             }
 
             let enemyOptions = {
-                defaultMode: data.mode,
-                patrolRoute: data.route,            // This only matters if they're a patroller
-                guardPosition: data.guardPosition,  // This only matters if the're a guard
+                defaultMode: data.mode,  // This only matters if the're a guard
                 health: data.health,
                 player: this.player,
                 weapon: this.createWeapon("weak_pistol"),

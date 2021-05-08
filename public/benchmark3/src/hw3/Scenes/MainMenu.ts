@@ -49,7 +49,8 @@ export default class MainMenu extends Scene {
 
         // Load sprites
         this.load.image("cursor", "road_assets/sprites/cursor.png");
-        this.load.image("logo", "road_assets/sprites/logo_large.png");
+        //this.load.image("logo", "road_assets/sprites/logo_large.png");
+        this.load.image("logo", "road_assets/sprites/road_logo_final.png");
         this.load.image("background", "road_assets/sprites/mainmenu_bg.png");
 
         // Load music
@@ -130,8 +131,8 @@ export default class MainMenu extends Scene {
         this.addUILayer("primary").setDepth(101);
 
         this.logo = this.add.sprite("logo", "primary");
-        this.logo.position.set(center.x, center.y+10);
-        this.logo.size.set(800,800);
+        this.logo.position.set(center.x+7, center.y-260);
+        this.logo.scale = new Vec2(1.35,0.8);
 
         // The main menu
         this.mainMenu = this.addUILayer("mainMenu");
@@ -250,7 +251,7 @@ export default class MainMenu extends Scene {
         const text5 = "a vehicle capable of fueling his revenge. Until Max successfully";
         const text6 = "enacts his revenge, he continues to wander the lonely ROAD.";
 
-        const text7 = "About Us: The developers are Jerry Ding, Ryan Chung, and Rocco Perisco."
+        const text7 = "About Us: The developers are Jerry Ding, Ryan Chung, and Rocco Persico."
         const text8 = "They are students CSE380, a 2D game programming course at Stony Brook"
         const text9 = "University. This game was made using the Wolife2D game engine, which"
         const text10 = "was developed by Richard McKenna and Joe Weaver."
@@ -407,8 +408,8 @@ export default class MainMenu extends Scene {
                         collisions:
                         [
                             [0, 1, 1, 0],
-                            [1, 0, 0, 1],
-                            [1, 0, 0, 0],
+                            [1, 0, 1, 1],
+                            [1, 1, 0, 0],
                             [0, 1, 0, 0]
                         ]
                     }
@@ -434,6 +435,7 @@ export default class MainMenu extends Scene {
                 this.sceneManager.changeToScene(Level2_1, {scrap: this.scrapCount, maxHP: this.maxHP, hpCount: this.hpCount}, sceneOptions);
                 this.gear.visible = false;
                 this.car.visible = false;
+                this.logo.visible = false;
             }
 
             if(event.type === "upgrade"){
@@ -443,10 +445,11 @@ export default class MainMenu extends Scene {
             if(event.type === "about"){
                 this.about.setHidden(false);
                 this.mainMenu.setHidden(true);
-                this.logo.size.set(0,0);
+                //this.logo.size.set(0,0);
                 this.background.visible = false;
                 this.gear.visible = false;
                 this.car.visible = false;
+                this.logo.visible = false;
             }
 
             if(event.type === "menu"){
@@ -454,28 +457,31 @@ export default class MainMenu extends Scene {
                 this.about.setHidden(true);
                 this.control.setHidden(true);
                 this.levelSelect.setHidden(true);
-                this.logo.size.set(800,800);
+                //this.logo.size.set(800,800);
                 this.background.visible = true;
                 this.gear.visible = true;
                 this.car.visible = true;
+                this.logo.visible = true;
             }
 
             if(event.type === "control"){
                 this.control.setHidden(false);
                 this.mainMenu.setHidden(true);
-                this.logo.size.set(0,0);
+                //this.logo.size.set(0,0);
                 this.background.visible = false;
                 this.gear.visible = false;
                 this.car.visible = false;
+                this.logo.visible = false;
             }
 
             if(event.type === "levelSelect"){
                 this.levelSelect.setHidden(false);
                 this.mainMenu.setHidden(true);
-                this.logo.size.set(0,0);
+                //this.logo.size.set(0,0);
                 this.background.visible = false;
                 this.gear.visible = false;
                 this.car.visible = false;
+                this.logo.visible = false;
             }
         }
     }

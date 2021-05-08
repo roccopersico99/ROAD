@@ -695,6 +695,33 @@ export default class Level2_1 extends Scene {
         //sprite.position.set(position.x, position.y);
     }
 
+    createNavmesh(): void {
+        // Add a layer to display the graph
+        let gLayer = this.addLayer("graph");
+        gLayer.setHidden(true);
+
+        let navmeshData = this.load.getObject("navmesh");
+
+         // Create the graph
+        this.graph = new PositionGraph();
+
+        // Add all nodes to our graph
+        for(let node of navmeshData.nodes){
+            this.graph.addPositionedNode(new Vec2(node[0], node[1]));
+            this.add.graphic(GraphicType.POINT, "graph", {position: new Vec2(node[0], node[1])})
+        }
+
+        // Add all edges to our graph
+        for(let edge of navmeshData.edges){
+            this.graph.addEdge(edge[0], edge[1]);
+            this.add.graphic(GraphicType.LINE, "graph", {start: this.graph.getNodePosition(edge[0]), end: this.graph.getNodePosition(edge[1])})
+        }
+
+        // Set this graph as a navigable entity
+        let navmesh = new Navmesh(this.graph);
+        this.navManager.addNavigableEntity(hw3_Names.NAVMESH, navmesh);
+    }
+
     // HOMEWORK 3 - TODO - DONE
     /**
      * You'll want to have a new weapon type available in your program - a laser gun.

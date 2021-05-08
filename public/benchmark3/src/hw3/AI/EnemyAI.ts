@@ -108,6 +108,7 @@ export default class EnemyAI extends StateMachineAI implements BattlerAI {
             
             if(this.health <= 0){
                 this.owner.animation.play("DEATH", false, "EnemyDied");
+                return;
                 // this.owner.isCollidable = false;
                 // this.owner.visible = false;
 
@@ -120,6 +121,7 @@ export default class EnemyAI extends StateMachineAI implements BattlerAI {
                 //     this.emitter.fireEvent("healthpack", {position: this.owner.position});
                 // }
             }
+            this.owner.animation.queue("WALK", true);
         }
     }
 

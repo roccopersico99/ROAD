@@ -55,7 +55,7 @@ export default class Level1_1 extends Scene {
 
     // Invisible Walls
     private topWall: Rect;
-    private bottomWall: Rect;
+    //private bottomWall: Rect;
 
     // A list of enemies
     private enemies: Array<AnimatedSprite>;
@@ -117,6 +117,8 @@ export default class Level1_1 extends Scene {
 
         // Load the scene info
         this.load.object("weaponData", "road_assets/data/weaponData.json");
+
+        this.load.object("navmesh", "road_assets/data/my-navmesh.json");
 
         // Load in the enemy info
         this.load.object("enemyData", "road_assets/data/enemy.json");
@@ -267,6 +269,7 @@ export default class Level1_1 extends Scene {
         // this.viewport.enableZoom();
         this.viewport.setZoomLevel(3);
 
+        this.createNavmesh();
 
         // Initialize all enemies
         this.initializeEnemies();
@@ -418,16 +421,21 @@ export default class Level1_1 extends Scene {
                     this.topWall.position.set(this.topWall.position.x, y);
                 }
                 y = this.viewportMover.position.y + 137;
-                if(this.bottomWall.position.y > y) {
-                    this.bottomWall.position.set(this.bottomWall.position.x, y);
-                }
-                if(this.bottomWall.position.y <= this.player.position.y) {
-                    this.player.position.y -= 5;
-                }
+                // if(this.bottomWall.position.y > y) {
+                //     this.bottomWall.position.set(this.bottomWall.position.x, y);
+                // }
+                // if(this.bottomWall.position.y <= this.player.position.y) {
+                //     this.player.position.y -= 5;
+                // }
                 
             }
             else if(this.viewportMover.position.y <= 128){
                 this.player.autoMove = false;
+            }
+
+            if(this.player.position.y > this.viewportMover.position.y + 155) {
+                this.player.position.y -= 50;
+                (<PlayerController>this.player._ai).damage(1);
             }
 
             while(this.receiver.hasNextEvent()){
@@ -467,7 +475,7 @@ export default class Level1_1 extends Scene {
                         //this.setRunning(true);
                         break;
                     case "PlayerDamaged":
-                        console.log("player damaged");
+                        //console.log("player damaged");
                         this.hpCount--;
                         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "player_damaged", loop: false, holdReference: false});
                         this.player.animation.playIfNotAlready("WALK", true);
@@ -475,6 +483,7 @@ export default class Level1_1 extends Scene {
                         break;
                     case "EnemyDamaged": 
                         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "enemy_damaged", loop: false, holdReference: false});
+
                         break;
                 }
             }
@@ -698,6 +707,33 @@ export default class Level1_1 extends Scene {
         //sprite.position.set(position.x, position.y);
     }
 
+    createNavmesh(): void {
+        // Add a layer to display the graph
+        let gLayer = this.addLayer("graph");
+        gLayer.setHidden(true);
+
+        let navmeshData = this.load.getObject("navmesh");
+
+         // Create the graph
+        this.graph = new PositionGraph();
+
+        // Add all nodes to our graph
+        for(let node of navmeshData.nodes){
+            this.graph.addPositionedNode(new Vec2(node[0], node[1]));
+            this.add.graphic(GraphicType.POINT, "graph", {position: new Vec2(node[0], node[1])})
+        }
+
+        // Add all edges to our graph
+        for(let edge of navmeshData.edges){
+            this.graph.addEdge(edge[0], edge[1]);
+            this.add.graphic(GraphicType.LINE, "graph", {start: this.graph.getNodePosition(edge[0]), end: this.graph.getNodePosition(edge[1])})
+        }
+
+        // Set this graph as a navigable entity
+        let navmesh = new Navmesh(this.graph);
+        this.navManager.addNavigableEntity(hw3_Names.NAVMESH, navmesh);
+    }
+
     // HOMEWORK 3 - TODO - DONE
     /**
      * You'll want to have a new weapon type available in your program - a laser gun.
@@ -745,9 +781,9 @@ export default class Level1_1 extends Scene {
         this.topWall = <Rect>this.add.graphic(GraphicType.RECT, "Main", {position: new Vec2(12*16, 2293), size: new Vec2(20*16, 1)});
         this.topWall.addPhysics();
         this.topWall.visible = false;
-        this.bottomWall = <Rect>this.add.graphic(GraphicType.RECT, "Main", {position: new Vec2(12*16, 2559), size: new Vec2(20*16, 1)});
-        this.bottomWall.addPhysics();
-        this.bottomWall.visible = false;
+        // this.bottomWall = <Rect>this.add.graphic(GraphicType.RECT, "Main", {position: new Vec2(12*16, 2559), size: new Vec2(20*16, 1)});
+        // this.bottomWall.addPhysics();
+        // this.bottomWall.visible = false;
     }
 
     initializeCrosshair(): void {
@@ -842,7 +878,7 @@ export default class Level1_1 extends Scene {
             // Create an enemy
             this.enemies[i] = this.add.animatedSprite(image, "primary");
             this.enemies[i].position.set(data.position[0], data.position[1]);
-            this.enemies[i].animation.play("IDLE");
+            this.enemies[i].animation.play("WALK", true);
 
             // Activate physics
             this.enemies[i].addPhysics(new AABB(Vec2.ZERO, new Vec2(5, 5)));

@@ -1,6 +1,6 @@
 {
     "name": "TopdownEnemy",
-    "spriteSheetImage": "truck3.png",
+    "spriteSheetImage": "truck4.png",
     "spriteWidth": 16,
     "spriteHeight": 16,
     "columns": 4,
@@ -13,7 +13,7 @@
         },
         {
             "name": "WALK",
-            "frames": [ {"index": 2, "duration": 8}, {"index": 3, "duration": 8} ]
+            "frames": [{"index": 1, "duration": 8}, {"index": 2, "duration": 8} ]
         },
         {
             "name": "DAMAGE",

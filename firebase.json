@@ -1,7 +1,7 @@
 {
   "hosting": {
     "site": "road-game-sbu",
-    "public": "public",
+    "public": "public/benchmark3/dist",
     "rewrites": [
       {
         "source": "/benchmark1",
@@ -9,11 +9,11 @@
       },
       {
         "source": "/benchmark2",
-        "destination": "/benchmark2/dist/index.html"
+        "destination": "/404.html"
       },
       {
         "source": "/benchmark3",
-        "destination": "/benchmark3/dist/index.html"
+        "destination": "/index.html"
       },
       {
         "source": "**",

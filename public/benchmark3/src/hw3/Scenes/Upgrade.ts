@@ -9,7 +9,6 @@ import Input from "../../Wolfie2D/Input/Input";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
 import { GraphicType } from "../../Wolfie2D/Nodes/Graphics/GraphicTypes";
-import Graphic from "../../Wolfie2D/Nodes/Graphic";
 
 export default class Upgrade extends Scene {
     // Layer for holding the upgrade screen image
@@ -40,10 +39,10 @@ export default class Upgrade extends Scene {
     private scrapGainBar: Sprite;
 
     // Arrays for stat bar rects
-    private healthRect: Array<Graphic>;
-    private damageRect: Array<Graphic>;
-    private speedRect: Array<Graphic>;
-    private scrapGainRect: Array<Graphic>;
+    private healthRect: Array<Rect>;
+    private damageRect: Array<Rect>;
+    private speedRect: Array<Rect>;
+    private scrapGainRect: Array<Rect>;
 
     // Arrays for scrap cost of upgrades
     private statCost: Array<Number>;
@@ -94,12 +93,16 @@ export default class Upgrade extends Scene {
         this.car.animation.play("WALK", true);
 
         // Initialize numbers
-        this.statCost = [100, 250, 500, 800];
+        this.statCost = [100, 200, 350, 500, 700];
         this.scrapCount = 1000;
         this.currentHealth = 1;
         this.currentDamage = 1;
         this.currentSpeed = 1;
         this.currentScrapGain = 1;
+        this.healthRect = [];
+        this.damageRect = [];
+        this.speedRect = [];
+        this.scrapGainRect = [];
 
         //Add Text
         const maxLine = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x-555, center.y-320), text: "Max"});
@@ -132,19 +135,19 @@ export default class Upgrade extends Scene {
         // Add stats bars
         this.healthBar = this.add.sprite("statBar", "stats");
         this.healthBar.position.set(center.x+240, center.y-260);
-        this.healthBar.scale = new Vec2(1.8, 1);
+        this.healthBar.scale = new Vec2(1.8, 1.8);
 
         this.damageBar = this.add.sprite("statBar", "stats");
         this.damageBar.position.set(center.x+240, center.y-190);
-        this.damageBar.scale = new Vec2(1.8, 1);
+        this.damageBar.scale = new Vec2(1.8, 1.8);
 
         this.speedBar = this.add.sprite("statBar", "stats");
         this.speedBar.position.set(center.x+240, center.y-120);
-        this.speedBar.scale = new Vec2(1.8, 1);
+        this.speedBar.scale = new Vec2(1.8, 1.8);
 
         this.scrapGainBar = this.add.sprite("statBar", "stats");
         this.scrapGainBar.position.set(center.x+240, center.y-50);
-        this.scrapGainBar.scale = new Vec2(1.8, 1);
+        this.scrapGainBar.scale = new Vec2(1.8, 1.8);
 
         // Add stats bar text
         const healthLine = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x+20, center.y-260), text: "HP"});
@@ -223,6 +226,51 @@ export default class Upgrade extends Scene {
         const scrapSprite4 = this.add.sprite("scrap", "UI");
         scrapSprite4.position.set(center.x + 535, center.y - 50);
         scrapSprite4.scale.set(3, 3);
+
+        // Add bars
+        let barPositionX;
+        let barSize;
+        for(let i = 0; i < 6; i++) {
+            barPositionX = center.x + 98 + (i * 58);
+            barSize = new Vec2(62, 42);
+
+            if(i == 1) {
+                barPositionX = center.x + 98 + (i * 55);
+            }
+
+            if(i == 0 || i == 5) {
+                barPositionX = center.x + 98 + (i * 50);
+                barSize = new Vec2(50, 42);
+
+                if(i == 5) {
+                    barPositionX = center.x + 98 + (i * 57)
+                }
+            }
+
+            const barPosition1 = new Vec2(barPositionX, center.y-260);
+            const barPosition2 = new Vec2(barPositionX, center.y-190);
+            const barPosition3 = new Vec2(barPositionX, center.y-120);
+            const barPosition4 = new Vec2(barPositionX, center.y-50);
+
+            this.healthRect[i] = <Rect>this.add.graphic(GraphicType.RECT, "UI", {position: barPosition1, size: barSize});
+            this.healthRect[i].color = Color.RED;
+
+            this.damageRect[i] = <Rect>this.add.graphic(GraphicType.RECT, "UI", {position: barPosition2, size: barSize});
+            this.damageRect[i].color = Color.MAGENTA;
+
+            this.speedRect[i] = <Rect>this.add.graphic(GraphicType.RECT, "UI", {position: barPosition3, size: barSize});
+            this.speedRect[i].color = Color.GREEN;
+
+            this.scrapGainRect[i] = <Rect>this.add.graphic(GraphicType.RECT, "UI", {position: barPosition4, size: barSize});
+            this.scrapGainRect[i].color = Color.WHITE;
+
+            if(i > 0) {
+                this.healthRect[i].visible = false;
+                this.damageRect[i].visible = false;
+                this.speedRect[i].visible = false;
+                this.scrapGainRect[i].visible = false;
+            }
+        }    
 
         this.receiver.subscribe("cont");
     }

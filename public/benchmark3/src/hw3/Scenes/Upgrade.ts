@@ -9,6 +9,8 @@ import Input from "../../Wolfie2D/Input/Input";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
 import { GraphicType } from "../../Wolfie2D/Nodes/Graphics/GraphicTypes";
+import { TweenableProperties } from "../../Wolfie2D/Nodes/GameNode";
+import { EaseFunctionType } from "../../Wolfie2D/Utils/EaseFunctions";
 
 export default class Upgrade extends Scene {
     // Layer for holding the upgrade screen image
@@ -25,6 +27,12 @@ export default class Upgrade extends Scene {
 
     // Player Scrap Count
     private scrapCount: number;
+
+    // Scrap Sprites
+    private scrapSprite1: Sprite;
+    private scrapSprite2: Sprite;
+    private scrapSprite3: Sprite;
+    private scrapSprite4: Sprite;
 
     // Stats Numbers
     private health: number;
@@ -58,6 +66,9 @@ export default class Upgrade extends Scene {
     private damageButton: Label;
     private speedButton: Label;
     private scrapGainButton: Label;
+
+    // Error
+    private insufficientLine: Label;
 
     loadScene(){
         this.load.image("cursor", "road_assets/sprites/cursor.png");
@@ -93,7 +104,7 @@ export default class Upgrade extends Scene {
         this.car.animation.play("WALK", true);
 
         // Initialize numbers
-        this.statCost = [100, 200, 350, 500, 700];
+        this.statCost = [100, 200, 350, 600, 999];
         this.scrapCount = 1000;
         this.currentHealth = 1;
         this.currentDamage = 1;
@@ -120,6 +131,11 @@ export default class Upgrade extends Scene {
         const scrapSprite = this.add.sprite("scrap", "UI");
         scrapSprite.position.set(center.x + 465, center.y - 375);
         scrapSprite.scale.set(3, 3);
+
+        const scrapsLine = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x+530, center.y-375), text: "" + this.scrapCount});
+        scrapsLine.textColor = Color.BLACK;
+        scrapsLine.fontSize = 40;
+        scrapsLine.font = "PixelSimple";
 
         // Add continue button, and give it an event to emit on press
         const cont = <Label>this.add.uiElement(UIElementType.BUTTON, "UI", {position: new Vec2(center.x+480, center.y+380), text: "Continue >"});
@@ -156,7 +172,7 @@ export default class Upgrade extends Scene {
         healthLine.font = "PixelSimple";
 
         const damageLine = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x+15, center.y-190), text: "DMG"});
-        damageLine.textColor = Color.MAGENTA;
+        damageLine.textColor = Color.CYAN;
         damageLine.fontSize = 40;
         damageLine.font = "PixelSimple";
 
@@ -181,51 +197,64 @@ export default class Upgrade extends Scene {
         this.healthButton.fontSize = 40;
         this.healthButton.font = "PixelSimple";
 
-        const scrapSprite1 = this.add.sprite("scrap", "UI");
-        scrapSprite1.position.set(center.x + 535, center.y - 260);
-        scrapSprite1.scale.set(3, 3);
+        this.scrapSprite1 = this.add.sprite("scrap", "UI");
+        this.scrapSprite1.position.set(center.x + 540, center.y - 260);
+        this.scrapSprite1.scale.set(3, 3);
 
         this.damageButton = <Label>this.add.uiElement(UIElementType.BUTTON, "UI", {position: new Vec2(center.x + 505, center.y - 190), text: this.statCost[this.currentDamage - 1] + "  "});
         this.damageButton.size.set(150, 50);
         this.damageButton.borderWidth = 0;
         this.damageButton.borderRadius = 0;
-        this.damageButton.backgroundColor = Color.MAGENTA;
+        this.damageButton.backgroundColor = Color.CYAN;
         this.damageButton.onClickEventId = "damage";
         this.damageButton.textColor = Color.BLACK;
         this.damageButton.fontSize = 40;
         this.damageButton.font = "PixelSimple";
 
-        const scrapSprite2 = this.add.sprite("scrap", "UI");
-        scrapSprite2.position.set(center.x + 535, center.y - 190);
-        scrapSprite2.scale.set(3, 3);
+        this.scrapSprite2 = this.add.sprite("scrap", "UI");
+        this.scrapSprite2.position.set(center.x + 540, center.y - 190);
+        this.scrapSprite2.scale.set(3, 3);
 
         this.speedButton = <Label>this.add.uiElement(UIElementType.BUTTON, "UI", {position: new Vec2(center.x + 505, center.y - 120), text: this.statCost[this.currentSpeed - 1] + "  "});
         this.speedButton.size.set(150, 50);
         this.speedButton.borderWidth = 0;
         this.speedButton.borderRadius = 0;
         this.speedButton.backgroundColor = Color.GREEN;
-        this.speedButton.onClickEventId = "damage";
+        this.speedButton.onClickEventId = "speed";
         this.speedButton.textColor = Color.BLACK;
         this.speedButton.fontSize = 40;
         this.speedButton.font = "PixelSimple";
 
-        const scrapSprite3 = this.add.sprite("scrap", "UI");
-        scrapSprite3.position.set(center.x + 535, center.y - 120);
-        scrapSprite3.scale.set(3, 3);
+        this.scrapSprite3 = this.add.sprite("scrap", "UI");
+        this.scrapSprite3.position.set(center.x + 540, center.y - 120);
+        this.scrapSprite3.scale.set(3, 3);
 
         this.scrapGainButton = <Label>this.add.uiElement(UIElementType.BUTTON, "UI", {position: new Vec2(center.x + 505, center.y - 50), text: this.statCost[this.currentScrapGain - 1] + "  "});
         this.scrapGainButton.size.set(150, 50);
         this.scrapGainButton.borderWidth = 0;
         this.scrapGainButton.borderRadius = 0;
         this.scrapGainButton.backgroundColor = Color.WHITE;
-        this.scrapGainButton.onClickEventId = "damage";
+        this.scrapGainButton.onClickEventId = "scrapGain";
         this.scrapGainButton.textColor = Color.BLACK;
         this.scrapGainButton.fontSize = 40;
         this.scrapGainButton.font = "PixelSimple";
 
-        const scrapSprite4 = this.add.sprite("scrap", "UI");
-        scrapSprite4.position.set(center.x + 535, center.y - 50);
-        scrapSprite4.scale.set(3, 3);
+        this.scrapSprite4 = this.add.sprite("scrap", "UI");
+        this.scrapSprite4.position.set(center.x + 540, center.y - 50);
+        this.scrapSprite4.scale.set(3, 3);
+
+        // Make scrap sprite not visible if maxed
+        if(this.currentHealth == 6)
+            this.scrapSprite1.visible = false;
+
+        if(this.currentDamage == 6)
+            this.scrapSprite2.visible = false;
+
+        if(this.currentSpeed == 6)
+            this.scrapSprite3.visible = false;
+
+        if(this.currentScrapGain == 6)
+            this.scrapSprite4.visible = false;
 
         // Add bars
         let barPositionX;
@@ -256,7 +285,7 @@ export default class Upgrade extends Scene {
             this.healthRect[i].color = Color.RED;
 
             this.damageRect[i] = <Rect>this.add.graphic(GraphicType.RECT, "UI", {position: barPosition2, size: barSize});
-            this.damageRect[i].color = Color.MAGENTA;
+            this.damageRect[i].color = Color.CYAN;
 
             this.speedRect[i] = <Rect>this.add.graphic(GraphicType.RECT, "UI", {position: barPosition3, size: barSize});
             this.speedRect[i].color = Color.GREEN;
@@ -270,9 +299,34 @@ export default class Upgrade extends Scene {
                 this.speedRect[i].visible = false;
                 this.scrapGainRect[i].visible = false;
             }
-        }    
+        }
+
+        //Insufficient Text
+        this.insufficientLine = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x, center.y-375), text: "INSUFFICIENT SCRAP"});
+        this.insufficientLine.textColor = Color.RED;
+        this.insufficientLine.fontSize = 40;
+        this.insufficientLine.font = "PixelSimple";
+        this.insufficientLine.alpha = 0;
+
+        this.insufficientLine.tweens.add("fade", {
+            startDelay: 0,
+            duration: 300,
+            effects: [
+                {
+                    property: TweenableProperties.alpha,
+                    start: 1,
+                    end: 0,
+                    ease: EaseFunctionType.OUT_SINE
+                }
+            ]
+        });
 
         this.receiver.subscribe("cont");
+        this.receiver.subscribe("health");
+        this.receiver.subscribe("damage");
+        this.receiver.subscribe("speed");
+        this.receiver.subscribe("scrapGain");
+        this.receiver.subscribe("insufficient");
     }
 
     updateScene(){
@@ -282,6 +336,26 @@ export default class Upgrade extends Scene {
             switch(event.type){
                 case "cont":
                     console.log("cont")
+                    break;
+                case "health":
+                    if(this.currentHealth < 5) {
+                        this.healthButton.text = this.statCost[this.currentHealth - 1] + "  ";
+                        this.healthRect[this.currentHealth].visible = true;
+                        this.currentHealth++;
+                    } else {
+                        this.healthButton.text = "MAXED";
+                        this.healthRect[this.currentHealth].visible = true;
+                        this.scrapSprite1.visible = false;
+                    }
+                    break;
+                case "damage":
+                    break;
+                case "speed":
+                    break;
+                case "scrapGain":
+                    break;
+                case "insufficient":
+                    this.insufficientLine.tweens.play("fade", false);
                     break;
             }
         }

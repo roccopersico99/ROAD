@@ -30,6 +30,7 @@ import MainMenu from "./MainMenu";
 import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 import Layer from "../../Wolfie2D/Scene/Layer";
+import Upgrade from "./Upgrade";
 
 export default class GameLevel extends Scene {
     // The player
@@ -274,7 +275,7 @@ export default class GameLevel extends Scene {
                         break;
                     case "levelEnd":
                         console.log(this.hpCount);
-                        this.sceneManager.changeToScene(MainMenu, {});
+                        this.sceneManager.changeToScene(Upgrade, {});
                         // if(this.nextLevel){
                         //     this.sceneManager.changeToScene(this.nextLevel, {maxHP: this.maxHP, hpCount: this.hpCount, scrapCount: this.scrapCount, lvl2Lock: false});
                         // }

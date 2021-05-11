@@ -11,6 +11,7 @@ import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
 import { GraphicType } from "../../Wolfie2D/Nodes/Graphics/GraphicTypes";
 import { TweenableProperties } from "../../Wolfie2D/Nodes/GameNode";
 import { EaseFunctionType } from "../../Wolfie2D/Utils/EaseFunctions";
+import Timer from "../../Wolfie2D/Timing/Timer";
 
 export default class Upgrade extends Scene {
     // Layer for holding the upgrade screen image
@@ -71,6 +72,9 @@ export default class Upgrade extends Scene {
     private insufficientLine: Label;
     scrapsLine: Label;
 
+    // Timer
+    private timer: Timer;
+
     loadScene(){
         this.load.image("cursor", "road_assets/sprites/cursor.png");
         this.load.image("upgradeScreen", "road_assets/sprites/UpgradeScreen.png");
@@ -80,6 +84,11 @@ export default class Upgrade extends Scene {
     }
 
     startScene(){
+        //this.timer = new Timer(1);
+
+        this.viewport.setZoomLevel(1);
+        this.viewport.setCenter(600, 400);
+
         const center = this.viewport.getCenter();
 
         this.addUILayer("primary").setDepth(103);
@@ -106,7 +115,7 @@ export default class Upgrade extends Scene {
 
         // Initialize numbers
         this.statCost = [100, 200, 350, 600, 999];
-        this.scrapCount = 2000;
+        this.scrapCount = 5000;
         this.currentHealth = 1;
         this.currentDamage = 1;
         this.currentSpeed = 1;
@@ -134,6 +143,16 @@ export default class Upgrade extends Scene {
         scrapSprite.scale.set(3, 3);
 
         this.scrapsLine = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x+530, center.y-375), text: "" + this.scrapCount});
+        // Adjust scrap count label, if necessary
+        if(this.scrapCount/10000 > 1){
+            this.scrapsLine.text =  "  " + this.scrapCount;
+        }
+        else if(this.scrapCount/1000 > 1){
+            this.scrapsLine.text =  " " + this.scrapCount;
+        }
+        else {
+            this.scrapsLine.text =  "" + this.scrapCount;
+        }
         this.scrapsLine.textColor = Color.BLACK;
         this.scrapsLine.fontSize = 40;
         this.scrapsLine.font = "PixelSimple";
@@ -318,16 +337,28 @@ export default class Upgrade extends Scene {
     }
 
     updateScene(){
-        this.cursor.position.set(Input.getGlobalMousePosition().x, Input.getGlobalMousePosition().y);
+        this.cursor.position.set(Input.getMousePosition().x, Input.getMousePosition().y);
+        // console.log("timer: " + this.timer)
+        // if(this.timer.isStopped()){
+        //     //this.insufficientLine.visible = false;
+        //     this.timer.reset();
+        // }
+
+        //this.insufficientLine.visible = true;
+
         while(this.receiver.hasNextEvent()){
             let event = this.receiver.getNextEvent();
             switch(event.type){
                 case "cont":
+                    this.insufficientLine.visible = false;
                     console.log("cont")
+                    //this.changeToScene(nextLevel, sceneOptions);
                     break;
                 case "health":
+                    this.insufficientLine.visible = false;
                     if(this.currentHealth < 5) {
                         if(this.scrapCount - this.statCost[this.currentHealth - 1] < 0) {
+                            this.emitter.fireEvent("insufficient");
                             console.log("insufficient");
                             break;
                         }
@@ -337,9 +368,14 @@ export default class Upgrade extends Scene {
                         this.healthRect[this.currentHealth].visible = true;
                         this.currentHealth++;
                     } else {
-                        if(this.scrapCount - this.statCost[this.currentHealth - 1] < 0) {
+                        if(this.scrapCount - this.statCost[this.currentHealth - 1] < 0 && this.healthButton.text != "MAXED") {
+                            this.emitter.fireEvent("insufficient");
                             console.log("insufficient");
                             break;
+                        }
+                        if(this.healthButton.text != "MAXED") {
+                        this.scrapCount -= this.statCost[this.currentHealth - 1];
+                        this.scrapsLine.text = this.scrapCount + "  ";
                         }
                         this.healthButton.text = "MAXED";
                         this.healthRect[this.currentHealth].visible = true;
@@ -347,8 +383,10 @@ export default class Upgrade extends Scene {
                     }
                     break;
                 case "damage":
+                    this.insufficientLine.visible = false;
                     if(this.currentDamage < 5) {
                         if(this.scrapCount - this.statCost[this.currentDamage - 1] < 0) {
+                            this.emitter.fireEvent("insufficient");
                             console.log("insufficient");
                             break;
                         }
@@ -358,9 +396,14 @@ export default class Upgrade extends Scene {
                         this.damageRect[this.currentDamage].visible = true;
                         this.currentDamage++;
                     } else {
-                        if(this.scrapCount - this.statCost[this.currentDamage - 1] < 0) {
+                        if(this.scrapCount - this.statCost[this.currentDamage - 1] < 0 && this.damageButton.text != "MAXED") {
+                            this.emitter.fireEvent("insufficient");
                             console.log("insufficient");
                             break;
+                        }
+                        if(this.damageButton.text != "MAXED"){
+                        this.scrapCount -= this.statCost[this.currentDamage - 1];
+                        this.scrapsLine.text = this.scrapCount + "  ";
                         }
                         this.damageButton.text = "MAXED";
                         this.damageRect[this.currentDamage].visible = true;
@@ -368,8 +411,10 @@ export default class Upgrade extends Scene {
                     }
                     break;
                 case "speed":
+                    this.insufficientLine.visible = false;
                     if(this.currentSpeed < 5) {
                         if(this.scrapCount - this.statCost[this.currentSpeed - 1] < 0) {
+                            this.emitter.fireEvent("insufficient");
                             console.log("insufficient");
                             break;
                         }
@@ -379,9 +424,14 @@ export default class Upgrade extends Scene {
                         this.speedRect[this.currentSpeed].visible = true;
                         this.currentSpeed++;
                     } else {
-                        if(this.scrapCount - this.statCost[this.currentSpeed - 1] < 0) {
+                        if(this.scrapCount - this.statCost[this.currentSpeed - 1] < 0 && this.speedButton.text != "MAXED") {
+                            this.emitter.fireEvent("insufficient");
                             console.log("insufficient");
                             break;
+                        }
+                        if(this.speedButton.text != "MAXED") {
+                        this.scrapCount -= this.statCost[this.currentSpeed - 1];
+                        this.scrapsLine.text = this.scrapCount + "  ";
                         }
                         this.speedButton.text = "MAXED";
                         this.speedRect[this.currentSpeed].visible = true;
@@ -389,8 +439,10 @@ export default class Upgrade extends Scene {
                     }
                     break;
                 case "scrapGain":
+                    this.insufficientLine.visible = false;
                     if(this.currentScrapGain < 5) {
                         if(this.scrapCount - this.statCost[this.currentScrapGain - 1] < 0) {
+                            this.emitter.fireEvent("insufficient");
                             console.log("insufficient");
                             break;
                         }
@@ -400,9 +452,14 @@ export default class Upgrade extends Scene {
                         this.scrapGainRect[this.currentScrapGain].visible = true;
                         this.currentScrapGain++;
                     } else {
-                        if(this.scrapCount - this.statCost[this.currentScrapGain - 1] < 0) {
+                        if(this.scrapCount - this.statCost[this.currentScrapGain - 1] < 0 && this.scrapGainButton.text != "MAXED") {
+                            this.emitter.fireEvent("insufficient");
                             console.log("insufficient");
                             break;
+                        }
+                        if(this.scrapGainButton.text != "MAXED") {
+                        this.scrapCount -= this.statCost[this.currentScrapGain - 1];
+                        this.scrapsLine.text = this.scrapCount + "  ";
                         }
                         this.scrapGainButton.text = "MAXED";
                         this.scrapGainRect[this.currentScrapGain].visible = true;
@@ -410,14 +467,27 @@ export default class Upgrade extends Scene {
                     }
                     break;
                 case "insufficient":
-                    this.insufficientLine.tweens.play("fade", false);
+                    this.insufficientLine.visible = true;
+                    //this.timer = new Timer(1000, () => {this.insufficientLine.visible = false;});
+                    //this.insufficientLine.tweens.play("fade", false);
                     break;
             }
+        }
+        // this.scrapsLine = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x+530, center.y-375), text: "" + this.scrapCount});
+        // Adjust scrap count label, if necessary
+        if(this.scrapCount/10000 > 1){
+            this.scrapsLine.text =  "  " + this.scrapCount;
+        }
+        else if(this.scrapCount/1000 > 1){
+            this.scrapsLine.text =  " " + this.scrapCount;
+        }
+        else {
+            this.scrapsLine.text =  "" + this.scrapCount;
         }
     }
 
     initializeCursor(): void {
         this.cursor = this.add.sprite("cursor", "primary");
-        this.cursor.position.set(Input.getGlobalMousePosition().x, Input.getGlobalMousePosition().y);
+        this.cursor.position.set(Input.getMousePosition().x, Input.getMousePosition().y);
     }
 }

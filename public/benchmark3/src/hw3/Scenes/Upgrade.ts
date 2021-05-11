@@ -53,7 +53,7 @@ export default class Upgrade extends Scene {
     private scrapGainRect: Array<Rect>;
 
     // Arrays for scrap cost of upgrades
-    private statCost: Array<Number>;
+    private statCost: Array<number>;
 
     // Current Stat - Used for index of arrays
     private currentHealth: number;
@@ -69,6 +69,7 @@ export default class Upgrade extends Scene {
 
     // Error
     private insufficientLine: Label;
+    scrapsLine: Label;
 
     loadScene(){
         this.load.image("cursor", "road_assets/sprites/cursor.png");
@@ -105,7 +106,7 @@ export default class Upgrade extends Scene {
 
         // Initialize numbers
         this.statCost = [100, 200, 350, 600, 999];
-        this.scrapCount = 1000;
+        this.scrapCount = 2000;
         this.currentHealth = 1;
         this.currentDamage = 1;
         this.currentSpeed = 1;
@@ -132,10 +133,10 @@ export default class Upgrade extends Scene {
         scrapSprite.position.set(center.x + 465, center.y - 375);
         scrapSprite.scale.set(3, 3);
 
-        const scrapsLine = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x+530, center.y-375), text: "" + this.scrapCount});
-        scrapsLine.textColor = Color.BLACK;
-        scrapsLine.fontSize = 40;
-        scrapsLine.font = "PixelSimple";
+        this.scrapsLine = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x+530, center.y-375), text: "" + this.scrapCount});
+        this.scrapsLine.textColor = Color.BLACK;
+        this.scrapsLine.fontSize = 40;
+        this.scrapsLine.font = "PixelSimple";
 
         // Add continue button, and give it an event to emit on press
         const cont = <Label>this.add.uiElement(UIElementType.BUTTON, "UI", {position: new Vec2(center.x+480, center.y+380), text: "Continue >"});
@@ -306,20 +307,7 @@ export default class Upgrade extends Scene {
         this.insufficientLine.textColor = Color.RED;
         this.insufficientLine.fontSize = 40;
         this.insufficientLine.font = "PixelSimple";
-        this.insufficientLine.alpha = 0;
-
-        this.insufficientLine.tweens.add("fade", {
-            startDelay: 0,
-            duration: 300,
-            effects: [
-                {
-                    property: TweenableProperties.alpha,
-                    start: 1,
-                    end: 0,
-                    ease: EaseFunctionType.OUT_SINE
-                }
-            ]
-        });
+        this.insufficientLine.visible = false;
 
         this.receiver.subscribe("cont");
         this.receiver.subscribe("health");
@@ -339,20 +327,87 @@ export default class Upgrade extends Scene {
                     break;
                 case "health":
                     if(this.currentHealth < 5) {
-                        this.healthButton.text = this.statCost[this.currentHealth - 1] + "  ";
+                        if(this.scrapCount - this.statCost[this.currentHealth - 1] < 0) {
+                            console.log("insufficient");
+                            break;
+                        }
+                        this.scrapCount -= this.statCost[this.currentHealth - 1];
+                        this.scrapsLine.text = this.scrapCount + "  ";
+                        this.healthButton.text = this.statCost[this.currentHealth] + "  ";
                         this.healthRect[this.currentHealth].visible = true;
                         this.currentHealth++;
                     } else {
+                        if(this.scrapCount - this.statCost[this.currentHealth - 1] < 0) {
+                            console.log("insufficient");
+                            break;
+                        }
                         this.healthButton.text = "MAXED";
                         this.healthRect[this.currentHealth].visible = true;
                         this.scrapSprite1.visible = false;
                     }
                     break;
                 case "damage":
+                    if(this.currentDamage < 5) {
+                        if(this.scrapCount - this.statCost[this.currentDamage - 1] < 0) {
+                            console.log("insufficient");
+                            break;
+                        }
+                        this.scrapCount -= this.statCost[this.currentDamage - 1];
+                        this.scrapsLine.text = this.scrapCount + "  ";
+                        this.damageButton.text = this.statCost[this.currentDamage] + "  ";
+                        this.damageRect[this.currentDamage].visible = true;
+                        this.currentDamage++;
+                    } else {
+                        if(this.scrapCount - this.statCost[this.currentDamage - 1] < 0) {
+                            console.log("insufficient");
+                            break;
+                        }
+                        this.damageButton.text = "MAXED";
+                        this.damageRect[this.currentDamage].visible = true;
+                        this.scrapSprite2.visible = false;
+                    }
                     break;
                 case "speed":
+                    if(this.currentSpeed < 5) {
+                        if(this.scrapCount - this.statCost[this.currentSpeed - 1] < 0) {
+                            console.log("insufficient");
+                            break;
+                        }
+                        this.scrapCount -= this.statCost[this.currentSpeed - 1];
+                        this.scrapsLine.text = this.scrapCount + "  ";
+                        this.speedButton.text = this.statCost[this.currentSpeed] + "  ";
+                        this.speedRect[this.currentSpeed].visible = true;
+                        this.currentSpeed++;
+                    } else {
+                        if(this.scrapCount - this.statCost[this.currentSpeed - 1] < 0) {
+                            console.log("insufficient");
+                            break;
+                        }
+                        this.speedButton.text = "MAXED";
+                        this.speedRect[this.currentSpeed].visible = true;
+                        this.scrapSprite3.visible = false;
+                    }
                     break;
                 case "scrapGain":
+                    if(this.currentScrapGain < 5) {
+                        if(this.scrapCount - this.statCost[this.currentScrapGain - 1] < 0) {
+                            console.log("insufficient");
+                            break;
+                        }
+                        this.scrapCount -= this.statCost[this.currentScrapGain - 1];
+                        this.scrapsLine.text = this.scrapCount + "  ";
+                        this.scrapGainButton.text = this.statCost[this.currentScrapGain] + "  ";
+                        this.scrapGainRect[this.currentScrapGain].visible = true;
+                        this.currentScrapGain++;
+                    } else {
+                        if(this.scrapCount - this.statCost[this.currentScrapGain - 1] < 0) {
+                            console.log("insufficient");
+                            break;
+                        }
+                        this.scrapGainButton.text = "MAXED";
+                        this.scrapGainRect[this.currentScrapGain].visible = true;
+                        this.scrapSprite4.visible = false;
+                    }
                     break;
                 case "insufficient":
                     this.insufficientLine.tweens.play("fade", false);

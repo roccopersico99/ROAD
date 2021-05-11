@@ -417,6 +417,7 @@ export default class MainMenu extends Scene {
                 this.sceneManager.changeToScene(Level1_1, {}, sceneOptions);
                 this.gear.visible = false;
                 this.car.visible = false;
+                this.logo.visible = false;
             }
 
             if(event.type === "level2-1"){

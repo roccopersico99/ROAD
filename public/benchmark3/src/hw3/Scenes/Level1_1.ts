@@ -1,123 +1,21 @@
-import PlayerController from "../AI/PlayerController";
 import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
-import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
-import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
-import Scene from "../../Wolfie2D/Scene/Scene";
-import { GraphicType } from "../../Wolfie2D/Nodes/Graphics/GraphicTypes";
 import OrthogonalTilemap from "../../Wolfie2D/Nodes/Tilemaps/OrthogonalTilemap";
-import PositionGraph from "../../Wolfie2D/DataTypes/Graphs/PositionGraph";
-import Navmesh from "../../Wolfie2D/Pathfinding/Navmesh";
-import {hw3_Names} from "../hw3_constants";
-import EnemyAI from "../AI/EnemyAI";
-import WeaponType from "../GameSystems/items/WeaponTypes/WeaponType";
-import RegistryManager from "../../Wolfie2D/Registry/RegistryManager";
-import Weapon from "../GameSystems/items/Weapon";
-import Healthpack from "../GameSystems/items/Healthpack";
-import InventoryManager from "../GameSystems/InventoryManager";
-import HealthManager from "../GameSystems/HealthManager";
-import WeaponManager from "../GameSystems/WeaponManager";
-import Item from "../GameSystems/items/Item";
-import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
-import BattleManager from "../GameSystems/BattleManager";
-import BattlerAI from "../AI/BattlerAI";
-import Label from "../../Wolfie2D/Nodes/UIElements/Label";
-import { UIElementType } from "../../Wolfie2D/Nodes/UIElements/UIElementTypes";
-import Color from "../../Wolfie2D/Utils/Color";
-import Input from "../../Wolfie2D/Input/Input";
-import GameOver from "./GameOver";
-import Scrap from "../GameSystems/items/Scrap";
-import MainMenu from "./MainMenu";
-import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
-import Layer from "../../Wolfie2D/Scene/Layer";
+import GameLevel from "./GameLevel";
+import Debug from "../../Wolfie2D/Debug/Debug";
 
-export default class Level1_1 extends Scene {
-    // The player
-    private player: AnimatedSprite;
-
-    // The crosshair
-    private crosshair: Sprite;
-
-    // The cursor
-    private cursor: Sprite;
-
-    // Health
-    protected maxHP: number;
-    protected hpCount: number;
-
-    // The scraps
-    protected scrapCount: number;
-    protected scrapCountLabel: Label;
-    private scrap: Sprite;
-
-    // The viewport mover
-    private viewportMover: Sprite;
-
-    // Invisible Walls
-    private topWall: Rect;
-    //private bottomWall: Rect;
-
-    // A list of enemies
-    private enemies: Array<AnimatedSprite>;
-    private enemiesAI: Array<EnemyAI>;
-
-    // The wall layer of the tilemap to use for bullet visualization
-    private walls: OrthogonalTilemap;
-
-    // The position graph for the navmesh
-    private graph: PositionGraph;
-
-    // A list of items in the scene
-    private items: Array<Item>;
-
-    // The battle manager for the scene
-    private battleManager: BattleManager;
-
-    // Player health
-    private healthDisplay: Label;
-
-    // Health Manager
-    private healthManager: HealthManager; 
-
-    protected levelEndArea: Rect;
-
-    private isPaused: boolean;
-
-    private crosshairLayer: Layer;
-
-    private cursorLayer: Layer;
-
-    private cheatsLayer: Layer;
-    private invincibleLabel: Label;
-    private instakillLabel: Label;
-
-    //Pause Menu Layers
-    private pauseLayer: Layer;
-    private controlLayer: Layer;
-
-    private splash: Sprite;
-
-    private invFlag: boolean;
-    
-    private instakill: boolean;
+export default class Level1_1 extends GameLevel {
 
     loadScene(){
         // Load the player and enemy spritesheets
-        // this.load.spritesheet("player", "road_assets/spritesheets/player.json");
         this.load.spritesheet("player", "road_assets/spritesheets/car.json");
         this.load.spritesheet("patrol", "road_assets/spritesheets/truck.json");
-        //this.load.spritesheet("tower", "road_assets/spritesheets/truck.json");
 
         // Load the tilemap
-        // HOMEWORK 3 - TODO - DONE
-        // Change this file to be your own tilemap
         this.load.tilemap("level", "road_assets/tilemaps/road-level1.json");
-        //this.load.tilemap("level", "road_assets/tilemaps/road-level2.json");
-        // this.load.tilemap("level", "road_assets/tilemaps/road-level3.json");
 
         // Load the scene info
         this.load.object("weaponData", "road_assets/data/weaponData.json");
-
         this.load.object("navmesh", "road_assets/data/my-navmesh.json");
 
         // Load in the enemy info
@@ -137,21 +35,19 @@ export default class Level1_1 extends Scene {
         this.load.image("crosshair", "road_assets/sprites/crosshair2.png");
         this.load.image("cursor", "road_assets/sprites/cursor.png");
 
+        // Load scrap metal sprite
+        this.load.image("scrap", "road_assets/sprites/scrap.png");
+
+        // Load viewport mover sprite
+        this.load.image("viewportMover", "road_assets/sprites/viewportMover.png");
+
         // Load heart container sprites
         this.load.image("fullHeart", "road_assets/sprites/full_heart.png");
         this.load.image("halfHeart", "road_assets/sprites/half_heart.png");
         this.load.image("emptyHeart", "road_assets/sprites/empty_heart.png");
 
-        // Load viewport mover sprite
-        this.load.image("viewportMover", "road_assets/sprites/viewportMover.png");
-
-        // Load scrap metal sprite
-        this.load.image("scrap", "road_assets/sprites/scrap.png");
-
         // Load music tracks
-        this.load.audio("level1music", "road_assets/music/level1.mp3");
-        this.load.audio("level2music", "road_assets/music/level2.mp3");
-        this.load.audio("level3music", "road_assets/music/level3.mp3");
+        this.load.audio("music", "road_assets/music/level1.mp3");
 
         // Load sound effects
         this.load.audio("game_over", "road_assets/sounds/PLAYER_DEAD.mp3");
@@ -163,13 +59,48 @@ export default class Level1_1 extends Scene {
         this.load.audio("explode3", "road_assets/sounds/explode3.mp3");
         this.load.audio("scrap_pickup", "road_assets/sounds/SCRAP.mp3");
         this.load.audio("shot_fired", "road_assets/sounds/shoot1.mp3");
-
+        
+        // Load pause image
         this.load.image("pauseImage", "road_assets/sprites/pauseimage.png");
     }
 
+    unloadScene(): void {
+        // Keep certain resources
+        this.resourceManager.keepAudio("game_over");
+        this.resourceManager.keepAudio("player_damaged");
+        this.resourceManager.keepAudio("enemy_damaged");
+        this.resourceManager.keepAudio("explosion");
+        this.resourceManager.keepAudio("explode1");
+        this.resourceManager.keepAudio("explode2");
+        this.resourceManager.keepAudio("explode3");
+        this.resourceManager.keepAudio("scrap_pickup");
+        this.resourceManager.keepAudio("shot_fired");
+        this.resourceManager.keepAudio("music");
+        this.resourceManager.keepImage("scrap");
+        this.resourceManager.keepImage("inventorySlot");
+        this.resourceManager.keepImage("inventorySlot2x");
+        this.resourceManager.keepImage("pistol");
+        this.resourceManager.keepImage("laser");
+        this.resourceManager.keepImage("smg");
+        this.resourceManager.keepImage("pauseImage");
+        this.resourceManager.keepImage("fullHeart");
+        this.resourceManager.keepImage("halfHeart");
+        this.resourceManager.keepImage("emptyHeart");
+        this.resourceManager.keepImage("viewportMover");
+        this.resourceManager.keepImage("crosshair");
+        this.resourceManager.keepImage("cursor");
+        this.resourceManager.keepSpritesheet("player");
+        this.resourceManager.keepSpritesheet("patrol");
+        this.resourceManager.keepObject("itemData");
+        this.resourceManager.keepObject("weaponData");
+        //this.resourceManager.keepObject("enemyData");
+        this.resourceManager.keepObject("navmesh");
+
+        // Scene has ended, so stop playing music
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "music"});
+    }
+
     initScene(init: Record<string, any>): void {
-        //this.scrapCount = init.scrap == null ? 999 : init.scrap;
-        //(<BattlerAI>this.player._ai).health = init.health == null ? 5 : init.health;
         if(init.scrap == undefined){
             this.scrapCount = 120;
         }
@@ -193,711 +124,29 @@ export default class Level1_1 extends Scene {
     }
 
     startScene(){
-        this.isPaused = false;
-        this.invFlag = false;
-        this.instakill = false;
-        
         // Add in the tilemap
         let tilemapLayers = this.add.tilemap("level");
-
-        // Get the wall layer
-        // HOMEWORK 3 - TODO - DONE
-        /*
-            Modify this line if needed.
-            
-            This line is just getting the wall layer of your tilemap to use for some calculations.
-            Make sure it is still doing so.
-
-            What the line is saying is to get the first level from the bottom (tilemapLayers[1]),
-            which in my case was the Walls layer.
-        */
-        this.walls = <OrthogonalTilemap>tilemapLayers[1].getItems()[0];
+        const walls = <OrthogonalTilemap>tilemapLayers[1].getItems()[0];
 
         // Set the viewport bounds to the tilemap
-        let tilemapSize: Vec2 = this.walls.size; 
+        let tilemapSize: Vec2 = walls.size; 
         this.viewport.setBounds(0, 0, tilemapSize.x, tilemapSize.y);
 
-        // create UI layer
-        this.addUILayer("UI").setDepth(11);
-        this.addUI();
+        // Set player spawn
+        this.playerSpawn = new Vec2(12*16, 156*16);
 
-        // create pause menu UI
-        this.pauseLayer = this.addUILayer("pause");
-        this.pauseLayer.setDepth(102);
-        this.controlLayer = this.addUILayer("control");
-        this.controlLayer.setDepth(103);
-        this.addPauseUI();
-        this.pauseLayer.setHidden(true);
-        this.controlLayer.setHidden(true);
+        // Do generic GameLevel setup
+        super.startScene();
 
-        this.crosshairLayer = this.addUILayer("crosshairLayer");
-        this.crosshairLayer.setDepth(104);
-
-        this.cursorLayer = this.addUILayer("cursorLayer");
-        this.cursorLayer.setDepth(104);
-        this.cursorLayer.setHidden(true);
-
-        this.addLayer("primary", 10);
-        this.addLayer("scraps", 9);
-
-        this.cheatsLayer = this.addUILayer("activeCheats");
-        this.cheatsLayer.setDepth(9);
-        this.addCheatsUI();
-        //this.addUILayer("crosshairLayer").setDepth(11);
-
-        // Create the battle manager
-        this.battleManager = new BattleManager();
-
-        this.initializeWeapons();
-
-        // Initialize the items array - this represents items that are in the game world
-        this.items = new Array();
-
-        // Create the player
-        this.initializePlayer();
-
-        // Create the crosshair
-        this.initializeCrosshair();
-
-        // Create the viewport mover
-        this.initViewportMover();
-
-        // Make the viewport follow the viewport mover
-        this.viewport.follow(this.viewportMover);
-
-        // Zoom in to a reasonable level
-        // this.viewport.enableZoom();
-        this.viewport.setZoomLevel(3);
-
-        this.createNavmesh();
-
-        // Initialize all enemies
-        this.initializeEnemies();
-
-        // Send the player and enemies to the battle manager
-        this.battleManager.setPlayer(<BattlerAI>this.player._ai);
-        this.battleManager.setEnemies(this.enemies.map(enemy => <BattlerAI>enemy._ai));
-
-        // Subscribe to relevant events
-        this.receiver.subscribe("scrap");
-        this.receiver.subscribe("levelEnd");
-        this.receiver.subscribe("EnemyDied");
-        this.receiver.subscribe("PlayerDied");
-        this.receiver.subscribe("PlayerDamaged");
-        this.receiver.subscribe("EnemyDamaged");
-        this.receiver.subscribe("GameOver");
-        this.receiver.subscribe("ScrapPickup");
-
-        // Pause Menu Events
-        this.receiver.subscribe("resume");
-        this.receiver.subscribe("control");
-        this.receiver.subscribe("exit");
-        this.receiver.subscribe("back");
-
-        // Spawn items into the world
-        this.spawnItems();
-
+        // Set levelEnd
         this.addLevelEnd(new Vec2(2, 0), new Vec2(8.5, 0.5));
 
-        this.initInvisibleWalls();
-
-        // //Add a UI for health
-        // this.addUILayer("health");
-
-        // this.healthDisplay = <Label>this.add.uiElement(UIElementType.LABEL, "health", {position: new Vec2(32, 16), text: "Health: " + (<BattlerAI>this.player._ai).health});
-        // this.healthDisplay.textColor = Color.GREEN;
-
-        this.healthManager = new HealthManager(this, (<BattlerAI>this.player._ai).health, "fullHeart", "emptyHeart", "halfHeart", new Vec2(12, 16));
-        
         // Scene has finished loading, so start playing menu music
-        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "level1music", loop: true, holdReference: true});
-    }
-
-    unloadScene(): void {
-        // Scene has ended, so stop playing menu music
-        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "level1music", loop: true, holdReference: true});
+        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "music", loop: true, holdReference: true});
     }
 
     updateScene(deltaT: number): void {
-        // Set crosshair to mouse position
-        this.crosshair.position.set(Input.getMousePosition().x, Input.getMousePosition().y);
-        this.cursor.position.set(Input.getMousePosition().x, Input.getMousePosition().y);
-
-        let exitPause = false;
-
-        while(this.isPaused && this.receiver.hasNextEvent()){
-            let event = this.receiver.getNextEvent();
-            switch(event.type){
-                case "resume":
-                    exitPause = true;
-                    break;
-                case "control":
-                    console.log("hello");
-                    this.controlLayer.setHidden(false);
-                    this.pauseLayer.setHidden(true);
-                    break;
-                case "exit":
-                    this.sceneManager.changeToScene(MainMenu, {});
-                    break;
-                case "back":
-                    this.pauseLayer.setHidden(false);
-                    this.controlLayer.setHidden(true);
-                    break;
-            }
-        }
-
-        if(Input.isJustPressed("pause") || exitPause === true) {
-            this.isPaused = !this.isPaused;
-
-            if(this.isPaused) {
-                this.player.freeze();
-                this.player.animation.pause();
-                this.player.setAIActive(false, {});
-                //console.log("freezing enemies...");
-                for(let i = 0; i < this.enemies.length; i++) {
-                    //console.log(i + ": " + this.enemies[i]);
-                    if(this.enemies[i]._ai !== undefined) {
-                        this.enemies[i].freeze();
-                        this.enemies[i].setAIActive(false, {});
-                        this.enemies[i].animation.pause();
-                    }
-                }
-                this.pauseLayer.setHidden(false);
-                this.viewport.setZoomLevel(1);
-                this.cursorLayer.setHidden(false);
-                this.crosshairLayer.setHidden(true);
-            } else {
-                this.player.unfreeze();
-                this.player.animation.resume();
-                this.player.setAIActive(true, {});
-                //console.log("unfreezing enemies...");
-                for(let i = 0; i < this.enemies.length; i++) {
-                    //console.log(i + ": " + this.enemies[i]._ai);
-                    if(this.enemies[i]._ai !== undefined) {
-                        this.enemies[i].unfreeze();
-                        this.enemies[i].setAIActive(true, {});
-                        this.enemies[i].animation.resume();
-                    }
-                }
-                this.viewport.setZoomLevel(3);
-                this.pauseLayer.setHidden(true);
-                this.cursorLayer.setHidden(true);
-                this.crosshairLayer.setHidden(false);
-                this.controlLayer.setHidden(true);
-            }
-        }
-
-        if(!this.isPaused) {
-            if(Input.isJustPressed("invincible")){
-                this.invFlag = !this.invFlag;
-                (<PlayerController>this.player._ai).setInvincible(this.invFlag);
-                console.log("Invincible: " + this.invFlag);
-                this.invincibleLabel.visible = this.invFlag;
-            }
-    
-            if(Input.isJustPressed("instakill")){
-                this.instakill = !this.instakill;
-                console.log("instakill: " + this.instakill);
-                for(let i = 0; i < this.enemies.length; i++) {
-                    //console.log(i + ": " + this.enemies[i]._ai);
-                    if(this.enemies[i]._ai !== undefined) {
-                        (<EnemyAI>this.enemies[i]._ai).setInstakill(this.instakill);
-                    }
-                }
-                this.instakillLabel.visible = this.instakill;
-            }
-    
-            if(Input.isJustPressed("money")){
-                console.log("money cheat used...");
-                (<PlayerController>this.player._ai).scrap += 1000;
-                //this.incPlayerScraps(1000);
-            }
-
-            // Move the viewport mover up a little bit
-            if(this.viewportMover.position.y > 128){
-                this.viewportMover.position.set(this.viewportMover.position.x, this.viewportMover.position.y-1);
-                let y = this.viewportMover.position.y - 129;
-                if(this.topWall.position.y > y) {
-                    this.topWall.position.set(this.topWall.position.x, y);
-                }
-                y = this.viewportMover.position.y + 137;
-                // if(this.bottomWall.position.y > y) {
-                //     this.bottomWall.position.set(this.bottomWall.position.x, y);
-                // }
-                // if(this.bottomWall.position.y <= this.player.position.y) {
-                //     this.player.position.y -= 5;
-                // }
-                
-            }
-            else if(this.viewportMover.position.y <= 128){
-                this.player.autoMove = false;
-            }
-
-            if(this.player.position.y > this.viewportMover.position.y + 155) {
-                this.player.position.y -= 50;
-                (<PlayerController>this.player._ai).damage(1);
-            }
-
-            while(this.receiver.hasNextEvent()){
-                let event = this.receiver.getNextEvent();
-
-                switch(event.type){
-                    case "scrap":
-                        this.createScrap(event.data.get("position"));
-                        break;
-                    case "ScrapPickup":
-                        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "scrap_pickup", loop: false, holdReference: true});
-                        break;
-                    case "levelEnd":
-                        console.log(this.hpCount);
-                        this.sceneManager.changeToScene(MainMenu, {maxHP: this.maxHP, hpCount: this.hpCount, scrapCount: this.scrapCount, lvl2Lock: false});
-                        break;
-                    case "EnemyDied":
-                        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "explode1", loop: false, holdReference: false});
-                        let node = this.sceneGraph.getNode(event.data.get("owner"));
-                        node.visible = false;
-                        node.weaponActive = false;
-                        node.setAIActive(false, {});
-                        node.disablePhysics();
-                        // Spawn a scrap
-                        this.emitter.fireEvent("scrap", {position: node.position});
-                        //node.position.set(9999,9999);
-                        node.destroy();
-                        break;
-                    case "PlayerDied":
-                        //Input.disableInput();
-                        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "game_over", loop: false, holdReference: false});
-                        this.player.visible = false;
-                        this.emitter.fireEvent("GameOver");
-                        break;
-                    case "GameOver":
-                        this.sceneManager.changeToScene(GameOver, {});
-                        //this.setRunning(true);
-                        break;
-                    case "PlayerDamaged":
-                        //console.log("player damaged");
-                        this.hpCount--;
-                        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "player_damaged", loop: false, holdReference: false});
-                        this.player.animation.playIfNotAlready("WALK", true);
-                        //this.player.setAIActive(true, {});
-                        break;
-                    case "EnemyDamaged": 
-                        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "enemy_damaged", loop: false, holdReference: false});
-
-                        break;
-                }
-            }
-
-            let health = this.hpCount;
-
-            this.scrapCount = (<PlayerController>this.player._ai).scrap;
-            
-            // Adjust scrap count label, if necessary
-            if(this.scrapCount/10000 > 1){
-                this.scrapCountLabel.text =  "  " + this.scrapCount;
-            }
-            else if(this.scrapCount/1000 > 1){
-                this.scrapCountLabel.text =  " " + this.scrapCount;
-            }
-            else {
-                this.scrapCountLabel.text =  "" + this.scrapCount;
-            }
-            this.scrapCountLabel.textColor = Color.BLACK;
-            this.scrapCountLabel.fontSize = 35;
-            this.scrapCountLabel.font = "PixelSimple"
-
-            // Decide what happens when the player dies
-            // if(health === 0){ 
-            //     this.player.animation.play("DEATH", false, "PlayerDied");
-            //     //this.sceneManager.changeToScene(GameOver);
-            //     // let that = this;
-            //     // setTimeout(function() {that.sceneManager.changeScene(MainMenu);}, 3000);
-            // }
-
-            // Update health gui
-            this.healthManager.updateCurrentHealth(health);
-
-            // Debug mode graph
-            if(Input.isKeyJustPressed("g")){
-                this.getLayer("graph").setHidden(!this.getLayer("graph").isHidden());
-            }
-        }
-        // else{
-        //     this.player.freeze();
-        //     this.player.animation.pause();
-        //     this.player.setAIActive(false, {});
-        //     //console.log("freezing enemies...");
-        //     for(let i = 0; i < this.enemies.length; i++) {
-        //         //console.log(i + ": " + this.enemies[i]);
-        //         if(this.enemies[i]._ai !== undefined) {
-        //             this.enemies[i].freeze();
-        //             this.enemies[i].setAIActive(false, {});
-        //             this.enemies[i].animation.pause();
-        //         }
-        //     }
-        //     this.pauseLayer.setHidden(false);
-        //     this.viewport.setZoomLevel(1);
-        //     this.cursorLayer.setHidden(false);
-        //     this.crosshairLayer.setHidden(true);
-        // }
-    }
-
-    addCheatsUI(): void {
-        this.invincibleLabel = <Label>this.add.uiElement(UIElementType.LABEL, "activeCheats", {position: new Vec2(369, 250), text: "INVINCIBILITY"});
-        this.invincibleLabel.visible = false;
-        this.invincibleLabel.textColor = Color.RED;
-        this.invincibleLabel.fontSize = 25;
-        this.invincibleLabel.font = "PixelSimple"
-        this.instakillLabel = <Label>this.add.uiElement(UIElementType.LABEL, "activeCheats", {position: new Vec2(371, 260), text: "INSTAKILL"});
-        this.instakillLabel.visible = false;
-        this.instakillLabel.textColor = Color.RED;
-        this.instakillLabel.fontSize = 30;
-        this.instakillLabel.font = "PixelSimple"
-    }
-
-    addUI(): void {
-        let scrapSprite = this.add.sprite("scrap", "UI");
-        scrapSprite.position.set(15.5, 250);
-        this.scrapCountLabel = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(34, 250), text: "" + this.scrapCount});
-    }
-
-    addPauseUI(): void {
-        this.splash = this.add.sprite("pauseImage", "pause");
-        let center = this.viewport.getCenter();
-        this.splash.position.set(center.x, center.y);
-
-        const resume = <Label>this.add.uiElement(UIElementType.BUTTON, "pause", {position: new Vec2(center.x, center.y - 100), text: "Resume"});
-        resume.size.set(300, 50);
-        resume.borderWidth = 2;
-        resume.borderColor = Color.RED;
-        resume.backgroundColor = Color.ORANGE;
-        resume.textColor = Color.BLACK;
-        resume.fontSize = 40;
-        resume.font = "PixelSimple";
-        resume.onClickEventId = "resume";
-
-        const controls = <Label>this.add.uiElement(UIElementType.BUTTON, "pause", {position: new Vec2(center.x, center.y), text: "Controls"});
-        controls.size.set(300, 50);
-        controls.borderWidth = 2;
-        controls.borderColor = Color.RED;
-        controls.backgroundColor = Color.ORANGE;
-        controls.textColor = Color.BLACK;
-        controls.fontSize = 40;
-        controls.font = "PixelSimple";
-        controls.onClickEventId = "control";
-
-        let controlBg = this.add.sprite("pauseImage", "control");
-        controlBg.position.set(center.x, center.y);
-
-        const controlHeader = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 350), text: "Controls"});
-        controlHeader.textColor = Color.BLACK;
-        controlHeader.fontSize = 100;
-        controlHeader.font = "PixelSimple";
-
-        const ctrlText1 = "WASD keys for movements";
-        const ctrlText2 = "SPACE key to use item";
-        const ctrlText3 = "Move Mouse to aim weapon";
-        const ctrlText4 = "Left Mouse Click to fire weapon";
-        const ctrlText5 = "Scroll Wheel for cycling through weapons";
-        const ctrlText6 = "ESC for pausing the game";
-        const ctrlText7 = "I for Invinciblity Cheat";
-        const ctrlText8 = "K for Instakill Cheat";
-        const ctrlText9 = "M for Free Scrap Cheat";
-
-        const cheatsHeader = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y + 175), text: "Cheats"});
-        cheatsHeader.textColor = Color.RED;
-        cheatsHeader.fontSize = 100;
-        cheatsHeader.font = "PixelSimple";
-        const lightRed = new Color(255, 0, 0, .8);
-
-        const ctrlLine1 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 275), text: ctrlText1});
-        const ctrlLine2 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 225), text: ctrlText2});
-        const ctrlLine3 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 175), text: ctrlText3});
-        const ctrlLine4 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 125), text: ctrlText4});
-        const ctrlLine5 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 75), text: ctrlText5});
-        const ctrlLine6 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y - 25), text: ctrlText6});
-        const ctrlLine7 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y + 250), text: ctrlText7});
-        const ctrlLine8 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y + 300), text: ctrlText8});
-        const ctrlLine9 = <Label>this.add.uiElement(UIElementType.LABEL, "control", {position: new Vec2(center.x, center.y + 350), text: ctrlText9});
-        ctrlLine1.textColor = Color.BLACK;
-        ctrlLine2.textColor = Color.BLACK;
-        ctrlLine3.textColor = Color.BLACK;
-        ctrlLine4.textColor = Color.BLACK;
-        ctrlLine5.textColor = Color.BLACK;
-        ctrlLine6.textColor = Color.BLACK;
-        ctrlLine7.textColor = lightRed;
-        ctrlLine8.textColor = lightRed;
-        ctrlLine9.textColor = lightRed;
-        ctrlLine1.font = "PixelSimple";
-        ctrlLine2.font = "PixelSimple";
-        ctrlLine3.font = "PixelSimple";
-        ctrlLine4.font = "PixelSimple";
-        ctrlLine5.font = "PixelSimple";
-        ctrlLine6.font = "PixelSimple";
-        ctrlLine7.font = "PixelSimple";
-        ctrlLine8.font = "PixelSimple";
-        ctrlLine9.font = "PixelSimple";
-        const ctrlBack = <Label>this.add.uiElement(UIElementType.BUTTON, "control", {position: new Vec2(40, center.y - 360), text: "<"});
-        ctrlBack.size.set(50, 50);
-        ctrlBack.borderWidth = 2;
-        ctrlBack.borderColor = Color.RED;
-        ctrlBack.backgroundColor = Color.ORANGE;
-        ctrlBack.textColor = Color.BLACK;
-        ctrlBack.onClickEventId = "back";
-        ctrlBack.fontSize = 40;
-        ctrlBack.font = "PixelSimple";
-
-        const exit = <Label>this.add.uiElement(UIElementType.BUTTON, "pause", {position: new Vec2(center.x, center.y + 100), text: "Exit"});
-        exit.size.set(300, 50);
-        exit.borderWidth = 2;
-        exit.borderColor = Color.RED;
-        exit.backgroundColor = Color.ORANGE;
-        exit.textColor = Color.BLACK;
-        exit.fontSize = 40;
-        exit.font = "PixelSimple";
-        exit.onClickEventId = "exit";
-
-    }
-
-    // HOMEWORK 3 - TODO - DONE
-    /**
-     * This function spawns in all of the items in "items.json"
-     * 
-     * You shouldn't have to put any new code here, however, you will have to modify items.json.
-     * 
-     * Make sure you are spawning in 5 pistols and 5 laser guns somewhere (accessible) in your world.
-     * 
-     * You'll notice that right now, some healthpacks are also spawning in. These also drop from guards.
-     * Feel free to spawn some healthpacks if you want, or you can just let the player suffer >:)
-     */
-    spawnItems(): void {
-        // Get the item data
-        let itemData = this.load.getObject("itemData");
-
-        for(let item of itemData.items){
-            if (item.type === "scrap") {
-                // Create a scrap
-                this.createScrap(new Vec2(item.position[0], item.position[1]));
-            } else {
-                let weapon = this.createWeapon(item.weaponType);
-                weapon.moveSprite(new Vec2(item.position[0], item.position[1]));
-                this.items.push(weapon);
-            }
-        }        
-    }
-
-    /**
-     * 
-     * Creates and returns a new weapon
-     * @param type The weaponType of the weapon, as a string
-     */
-    createWeapon(type: string): Weapon {
-        let weaponType = <WeaponType>RegistryManager.getRegistry("weaponTypes").get(type);
-
-        let sprite = this.add.sprite(weaponType.spriteKey, "primary");
-
-        return new Weapon(sprite, weaponType, this.battleManager);
-    }
-
-    createScrap(position: Vec2): void {
-        let sprite = this.add.sprite("scrap", "scraps");
-        let scrap = new Scrap(sprite);
-        scrap.moveSprite(position);
-        this.items.push(scrap);
-        //sprite.position.set(position.x, position.y);
-    }
-
-    createNavmesh(): void {
-        // Add a layer to display the graph
-        let gLayer = this.addLayer("graph");
-        gLayer.setHidden(true);
-
-        let navmeshData = this.load.getObject("navmesh");
-
-         // Create the graph
-        this.graph = new PositionGraph();
-
-        // Add all nodes to our graph
-        for(let node of navmeshData.nodes){
-            this.graph.addPositionedNode(new Vec2(node[0], node[1]));
-            this.add.graphic(GraphicType.POINT, "graph", {position: new Vec2(node[0], node[1])})
-        }
-
-        // Add all edges to our graph
-        for(let edge of navmeshData.edges){
-            this.graph.addEdge(edge[0], edge[1]);
-            this.add.graphic(GraphicType.LINE, "graph", {start: this.graph.getNodePosition(edge[0]), end: this.graph.getNodePosition(edge[1])})
-        }
-
-        // Set this graph as a navigable entity
-        let navmesh = new Navmesh(this.graph);
-        this.navManager.addNavigableEntity(hw3_Names.NAVMESH, navmesh);
-    }
-
-    // HOMEWORK 3 - TODO - DONE
-    /**
-     * You'll want to have a new weapon type available in your program - a laser gun.
-     * Carefully look through the code for how the other weapon types (knife and pistol)
-     * are created. They're based of the templates Slice and SemiAutoGun. You should use
-     * the SemiAutoGun template for your laser gun.
-     * 
-     * The laser gun should have a green beam, and should be considerably more powerful than
-     * a pistol. You can decide just how powerful it is.
-     * 
-     * Look in weaponData.json for some insight on what to do here.
-     * 
-     * Loads in all weapons from file
-     */
-    initializeWeapons(): void{
-        let weaponData = this.load.getObject("weaponData");
-
-        for(let i = 0; i < weaponData.numWeapons; i++){
-            let weapon = weaponData.weapons[i];
-            // use to change weapon damage using player stat
-            // weapon.damage = 10;
-            // console.log(weapon);
-            // console.log(weapon.displayName + ": " + weapon.damage);
-
-            // Get the constructor of the prototype
-            let constr = RegistryManager.getRegistry("weaponTemplates").get(weapon.weaponType);
-
-            // Create a weapon type
-            let weaponType = new constr();
-
-            // Initialize the weapon type
-            weaponType.initialize(weapon);
-
-            // Register the weapon type
-            RegistryManager.getRegistry("weaponTypes").registerItem(weapon.name, weaponType)
-        }
-    }
-
-    initViewportMover(): void {
-        this.viewportMover = this.add.sprite("viewportMover", "primary");
-        this.viewportMover.position.set(this.player.position.x, this.player.position.y);
-    }
-
-    initInvisibleWalls(): void {
-        this.topWall = <Rect>this.add.graphic(GraphicType.RECT, "Main", {position: new Vec2(12*16, 2293), size: new Vec2(20*16, 1)});
-        this.topWall.addPhysics();
-        this.topWall.visible = false;
-        // this.bottomWall = <Rect>this.add.graphic(GraphicType.RECT, "Main", {position: new Vec2(12*16, 2559), size: new Vec2(20*16, 1)});
-        // this.bottomWall.addPhysics();
-        // this.bottomWall.visible = false;
-    }
-
-    initializeCrosshair(): void {
-        this.crosshair = this.add.sprite("crosshair", "crosshairLayer");
-        this.crosshair.position.set(Input.getMousePosition().x, Input.getMousePosition().y);
-        this.cursor = this.add.sprite("cursor", "cursorLayer");
-        this.crosshair.position.set(Input.getMousePosition().x, Input.getMousePosition().y);
-    }
-
-    initializePlayer(): void {
-        // Create the inventory
-        let inventory = new WeaponManager(this, "inventorySlot", "inventorySlot2x", new Vec2(348, 20));
-        let startingWeapon = this.createWeapon("lasergun");
-        let prevWeapon = this.createWeapon("smg");
-        let nextWeapon = this.createWeapon("pistol");
-        inventory.addItem(startingWeapon);
-        inventory.addItem(nextWeapon);
-        inventory.addItem(prevWeapon);
-
-        // Create the player
-        this.player = this.add.animatedSprite("player", "primary");
-        this.player.position.set(12*16, 156*16);
-        this.player.addPhysics(new AABB(Vec2.ZERO, new Vec2(5, 5)));
-        this.player.addAI(PlayerController, 
-            {
-                speed: 150,
-                health: this.maxHP,
-                scrap: this.scrapCount,
-                inventory: inventory,
-                items: this.items,
-            });
-        this.player.setGroup("player");
-        //this.scrapCount = 100;
-        this.player.animation.play("WALK", true);
-    }
-
-    protected incPlayerScraps(amount: number): void {
-        this.scrapCount += amount;
-        this.scrapCountLabel.text = "" + this.scrapCount;
-    }
-
-    // HOMEWORK 3 - TODO - DONE
-    /**
-     * This function creates the navmesh for the game world.
-     * 
-     * It reads in information in the navmesh.json file.
-     * The format of the navmesh.json file is as follows
-     * 
-     * {
-     *  // An array of positions on the tilemap. You can see the position of your mouse in [row, col]
-     *  // while editing a map in Tiled, and can just multiply those values by the tile size, 16x16
-     *      "nodes": [[100, 200], [50, 400], ...]
-     * 
-     *  // An array of edges between nodes. The numbers here correspond to indices in the "nodes" array above.
-     *  // Note that edges are not directed here. An edge [0, 1] foes in both directions.
-     *      "edges": [[0, 1], [2, 4], ...]
-     * }
-     * 
-     * Your job here is to make a new graph to serve as the navmesh. Your graph should be designed
-     * for your tilemap, and no edges should go through walls.
-     */
-
-    protected addLevelEnd(startingTile: Vec2, size: Vec2): void {
-        this.levelEndArea = <Rect>this.add.graphic(GraphicType.RECT, "primary", {position: startingTile.add(size.scaled(0.5)).scale(32), size: size.scale(32)});
-        this.levelEndArea.addPhysics(undefined, undefined, false, true);
-        this.levelEndArea.setTrigger("player", "levelEnd", null);
-        this.levelEndArea.color = new Color(0, 0, 0, 0);
-    }
-
-    // HOMEWORK 3 - TODO - DONE
-    /**
-     * This function creates all enemies from the enemy.json file.
-     * You shouldn't have to modify any code here, but you should edit enemy.json to
-     * make sure more enemies are spawned into the world.
-     * 
-     * Patrolling enemies are given patrol routes corresponding to the navmesh. The numbers in their route correspond
-     * to indices in the navmesh.
-     */
-    initializeEnemies(){
-        // Get the enemy data
-        const enemyData = this.load.getObject("enemyData");
-
-        // Create an enemies array
-        this.enemies = new Array(enemyData.numEnemies);
-
-        // Initialize the enemies
-        for(let i = 0; i < enemyData.numEnemies; i++){
-            let data = enemyData.enemies[i];
-            //console.log(data.mode);
-
-            let image = data.mode;
-            // Create an enemy
-            this.enemies[i] = this.add.animatedSprite(image, "primary");
-            this.enemies[i].position.set(data.position[0], data.position[1]);
-            this.enemies[i].animation.play("WALK", true);
-
-            // Activate physics
-            this.enemies[i].addPhysics(new AABB(Vec2.ZERO, new Vec2(5, 5)));
-            this.enemies[i].setGroup("enemy");
-
-
-            if(data.guardPosition){
-                data.guardPosition = new Vec2(data.guardPosition[0], data.guardPosition[1]);
-            }
-
-            let enemyOptions = {
-                defaultMode: data.mode,  // This only matters if the're a guard
-                health: data.health,
-                player: this.player,
-                weapon: this.createWeapon("weak_pistol"),
-                viewport: this.viewportMover
-            }
-
-            this.enemies[i].addAI(EnemyAI, enemyOptions);
-        }
+        super.updateScene(deltaT);
+        Debug.log("playerpos", this.player.position.toString());
     }
 }

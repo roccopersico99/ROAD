@@ -404,13 +404,14 @@ export default class MainMenu extends Scene {
             if(event.type === "level1-1"){
                 let sceneOptions = {
                     physics: {
-                        groupNames: ["ground", "player", "enemy", "coin"],
+                        groupNames: ["ground", "player", "enemy", "projectile1", "projectile2"],
                         collisions:
                         [
-                            [0, 1, 1, 0],
-                            [1, 0, 1, 1],
-                            [1, 1, 0, 0],
-                            [0, 1, 0, 0]
+                            [0, 1, 1, 0, 0],
+                            [1, 0, 1, 0, 1],
+                            [1, 1, 0, 1, 0],
+                            [0, 0, 1, 0, 0],
+                            [0, 1, 0, 0, 0]
                         ]
                     }
                 }
@@ -423,13 +424,14 @@ export default class MainMenu extends Scene {
             if(event.type === "level2-1"){
                 let sceneOptions = {
                     physics: {
-                        groupNames: ["ground", "player", "enemy", "coin"],
+                        groupNames: ["ground", "player", "enemy", "projectile1", "projectile2"],
                         collisions:
                         [
-                            [0, 1, 1, 0],
-                            [1, 0, 0, 1],
-                            [1, 0, 0, 0],
-                            [0, 1, 0, 0]
+                            [0, 1, 1, 0, 0],
+                            [1, 0, 1, 0, 1],
+                            [1, 1, 0, 1, 0],
+                            [0, 0, 1, 0, 0],
+                            [0, 1, 0, 0, 0]
                         ]
                     }
                 }

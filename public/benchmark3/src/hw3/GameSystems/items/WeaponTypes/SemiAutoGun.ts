@@ -3,15 +3,22 @@ import Vec2 from "../../../../Wolfie2D/DataTypes/Vec2";
 import GameNode, { TweenableProperties } from "../../../../Wolfie2D/Nodes/GameNode";
 import { GraphicType } from "../../../../Wolfie2D/Nodes/Graphics/GraphicTypes";
 import Line from "../../../../Wolfie2D/Nodes/Graphics/Line";
+import Rect from "../../../../Wolfie2D/Nodes/Graphics/Rect";
 import OrthogonalTilemap from "../../../../Wolfie2D/Nodes/Tilemaps/OrthogonalTilemap";
 import Scene from "../../../../Wolfie2D/Scene/Scene";
 import Color from "../../../../Wolfie2D/Utils/Color";
 import { EaseFunctionType } from "../../../../Wolfie2D/Utils/EaseFunctions";
 import WeaponType from "./WeaponType";
+import Bullet from "../../../AI/Bullet";
+import Input from "../../../../Wolfie2D/Input/Input";
 
 export default class SemiAutoGun extends WeaponType {
 
+    scene: Scene;
+
     color: Color;
+
+    name: String;
 
     initialize(options: Record<string, any>): void {
         this.damage = options.damage;
@@ -20,50 +27,95 @@ export default class SemiAutoGun extends WeaponType {
         this.displayName = options.displayName;
         this.spriteKey = options.spriteKey;
         this.useVolume = options.useVolume;
+        this.scene = options.scene;
+        this.name = options.name;
+
+        // this.scene.load.spritesheet("projectile", "road_assets/spritesheets/projectile.json");
     }
 
     doAnimation(shooter: GameNode, direction: Vec2, line: Line): void {
         let start = shooter.position.clone();
         let end = shooter.position.clone().add(direction.scaled(900));
         let delta = end.clone().sub(start);
+        let target = Input.getMousePosition();
 
-        // Iterate through the tilemap region until we find a collision
-        let minX = Math.min(start.x, end.x);
-        let maxX = Math.max(start.x, end.x);
-        let minY = Math.min(start.y, end.y);
-        let maxY = Math.max(start.y, end.y);
-
-        // Get the wall tilemap
-        let walls = <OrthogonalTilemap>shooter.getScene().getLayer("Main").getItems()[0];
-
-        let minIndex = walls.getColRowAt(new Vec2(minX, minY));
-		let maxIndex = walls.getColRowAt(new Vec2(maxX, maxY));
-
-        let tileSize = walls.getTileSize();
-
-        for(let col = minIndex.x; col <= maxIndex.x; col++){
-            for(let row = minIndex.y; row <= maxIndex.y; row++){
-                if(walls.isTileCollidable(col, row)){
-                    // Get the position of this tile
-                    let tilePos = new Vec2(col * tileSize.x + tileSize.x/2, row * tileSize.y + tileSize.y/2);
-
-                    // Create a collider for this tile
-                    let collider = new AABB(tilePos, tileSize.scaled(1/2));
-
-                    let hit = collider.intersectSegment(start, delta, Vec2.ZERO);
-
-                    if(hit !== null && start.distanceSqTo(hit.pos) < start.distanceSqTo(end)){
-                        console.log("Found hit");
-                        end = hit.pos;
-                    }
-                }
-            }
+        let bullet;
+        switch(this.name){
+            case "weak_pistol":
+                bullet = this.scene.add.animatedSprite("projectile2", "primary");
+                bullet.position.set(start.x, start.y);
+                bullet.addPhysics(new AABB(Vec2.ZERO, new Vec2(4, 4)));
+                bullet.addAI(Bullet, 
+                    {
+                        direction: direction,
+                        speed: 200
+                    });
+                bullet.setGroup("projectile2");
+                bullet.animation.play("FIRING", true);
+                break;
+            default:
+                bullet = this.scene.add.animatedSprite("projectile", "primary");
+                bullet.position.set(start.x, start.y);
+                bullet.addPhysics(new AABB(Vec2.ZERO, new Vec2(4, 4)));
+                bullet.addAI(Bullet, 
+                    {
+                        direction: direction,
+                        speed: 200
+                    });
+                bullet.setGroup("projectile1");
+                bullet.animation.play("FIRING", true);
+                break;
         }
+        // bullet.position.set(start.x, start.y);
+        // bullet.addPhysics(new AABB(Vec2.ZERO, new Vec2(4, 4)));
+        // bullet.addAI(Bullet, 
+        //     {
+        //         direction: direction,
+        //         speed: 200
+        //     });
+        // bullet.setGroup("projectile");
+        // bullet.animation.play("FIRING", true);
 
-        line.start = start;
-        line.end = end;
+        //this.scene.add.graphic(GraphicType.PROJECTILE, "primary", {position: start, size: new Vec2(5, 10), color: Color.WHITE, direction: end});
 
-        line.tweens.play("fade");
+
+        // // Iterate through the tilemap region until we find a collision
+        // let minX = Math.min(start.x, end.x);
+        // let maxX = Math.max(start.x, end.x);
+        // let minY = Math.min(start.y, end.y);
+        // let maxY = Math.max(start.y, end.y);
+
+        // // Get the wall tilemap
+        // let walls = <OrthogonalTilemap>shooter.getScene().getLayer("Main").getItems()[0];
+
+        // let minIndex = walls.getColRowAt(new Vec2(minX, minY));
+		// let maxIndex = walls.getColRowAt(new Vec2(maxX, maxY));
+
+        // let tileSize = walls.getTileSize();
+
+        // for(let col = minIndex.x; col <= maxIndex.x; col++){
+        //     for(let row = minIndex.y; row <= maxIndex.y; row++){
+        //         if(walls.isTileCollidable(col, row)){
+        //             // Get the position of this tile
+        //             let tilePos = new Vec2(col * tileSize.x + tileSize.x/2, row * tileSize.y + tileSize.y/2);
+
+        //             // Create a collider for this tile
+        //             let collider = new AABB(tilePos, tileSize.scaled(1/2));
+
+        //             let hit = collider.intersectSegment(start, delta, Vec2.ZERO);
+
+        //             if(hit !== null && start.distanceSqTo(hit.pos) < start.distanceSqTo(end)){
+        //                 console.log("Found hit");
+        //                 end = hit.pos;
+        //             }
+        //         }
+        //     }
+        // }
+
+        // line.start = start;
+        // line.end = end;
+
+        // line.tweens.play("fade");
     }
 
     createRequiredAssets(scene: Scene): [Line] {

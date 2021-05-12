@@ -51,7 +51,7 @@ export default class PlayerController implements BattlerAI {
         this.direction = Vec2.ZERO;
         this.lookDirection = Vec2.ZERO;
         this.speed = options.speed;
-        this.scrap = options.scrap;
+        this.scrap = options.scrapCount;
         this.health = options.health;
 
         this.items = options.items;

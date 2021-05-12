@@ -1,0 +1,15 @@
+{
+    "name": "Projectile",
+    "spriteSheetImage": "projectile.png",
+    "spriteWidth": 4,
+    "spriteHeight": 8,
+    "columns": 1,
+    "rows": 1,
+    "durationType": "time",
+    "animations": [
+        { 
+            "name": "FIRING",
+            "frames": [ {"index": 0, "duration": 16} ]
+        }
+    ]
+}

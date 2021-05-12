@@ -28,8 +28,6 @@ import MainMenu from "./MainMenu";
 import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 import Layer from "../../Wolfie2D/Scene/Layer";
-// declare var require: any;
-// const Upgrade = require("./Upgrade");
 import Upgrade from "./Upgrade";
 
 export default class GameLevel extends Scene {
@@ -307,6 +305,19 @@ export default class GameLevel extends Scene {
                         this.sceneManager.changeToScene(GameOver, {});
                         //this.setRunning(true);
                         break;
+                    case "ProjectileHitPlayer":
+                        let node2 = this.sceneGraph.getNode(event.data.get("node"));
+                        let other = this.sceneGraph.getNode(event.data.get("other"));
+
+                        if(node2 === this.player){
+                            other.destroy();
+                            (<PlayerController>this.player._ai).damage(1);
+                        }
+                        else{
+                            node2.destroy();
+                            (<PlayerController>this.player._ai).damage(1);
+                        }
+                        break;
                     case "PlayerDamaged":
                         //console.log("player damaged");
                         this.hpCount--;
@@ -314,7 +325,20 @@ export default class GameLevel extends Scene {
                         this.player.animation.playIfNotAlready("WALK", true);
                         //this.player.setAIActive(true, {});
                         break;
-                    case "EnemyDamaged": 
+                    case "ProjectileHitEnemy":
+                        let node3 = this.sceneGraph.getNode(event.data.get("node"));
+                        let other2 = this.sceneGraph.getNode(event.data.get("other"));
+
+                        if(other2.group === 4){
+                            node3.destroy();
+                            (<EnemyAI>other2._ai).damage(1);
+                        }
+                        else{
+                            other2.destroy();
+                            (<EnemyAI>node3._ai).damage(1);
+                        }
+                        break;
+                    case "EnemyDamaged":
                         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "enemy_damaged", loop: false, holdReference: false});
                         break;
                 }
@@ -395,7 +419,9 @@ export default class GameLevel extends Scene {
         this.receiver.subscribe("levelEnd");
         this.receiver.subscribe("EnemyDied");
         this.receiver.subscribe("PlayerDied");
+        this.receiver.subscribe("ProjectileHitPlayer");
         this.receiver.subscribe("PlayerDamaged");
+        this.receiver.subscribe("ProjectileHitEnemy");
         this.receiver.subscribe("EnemyDamaged");
         this.receiver.subscribe("GameOver");
         this.receiver.subscribe("ScrapPickup");
@@ -699,6 +725,7 @@ export default class GameLevel extends Scene {
     initInvisibleWalls(): void {
         this.topWall = <Rect>this.add.graphic(GraphicType.RECT, "Main", {position: new Vec2(12*16, 2293), size: new Vec2(20*16, 1)});
         this.topWall.addPhysics();
+        this.topWall.setGroup("ground");
         this.topWall.visible = false;
         // this.bottomWall = <Rect>this.add.graphic(GraphicType.RECT, "Main", {position: new Vec2(12*16, 2559), size: new Vec2(20*16, 1)});
         // this.bottomWall.addPhysics();
@@ -733,12 +760,12 @@ export default class GameLevel extends Scene {
             {
                 speed: 150,
                 health: this.maxHP,
-                scrap: this.scrapCount,
+                scrapCount: this.scrapCount,
                 inventory: inventory,
                 items: this.items,
             });
         this.player.setGroup("player");
-        //this.scrapCount = 100;
+        this.player.setTrigger("projectile2", "ProjectileHitPlayer", null);
         this.player.animation.play("WALK", true);
     }
 
@@ -805,6 +832,7 @@ export default class GameLevel extends Scene {
             // Activate physics
             this.enemies[i].addPhysics(new AABB(Vec2.ZERO, new Vec2(5, 5)));
             this.enemies[i].setGroup("enemy");
+            this.enemies[i].setTrigger("projectile1", "ProjectileHitEnemy", null);
 
 
             if(data.guardPosition){

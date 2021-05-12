@@ -12,8 +12,6 @@ import EnemyAI from "../AI/EnemyAI";
 import WeaponType from "../GameSystems/items/WeaponTypes/WeaponType";
 import RegistryManager from "../../Wolfie2D/Registry/RegistryManager";
 import Weapon from "../GameSystems/items/Weapon";
-import Healthpack from "../GameSystems/items/Healthpack";
-import InventoryManager from "../GameSystems/InventoryManager";
 import HealthManager from "../GameSystems/HealthManager";
 import WeaponManager from "../GameSystems/WeaponManager";
 import Item from "../GameSystems/items/Item";
@@ -30,6 +28,8 @@ import MainMenu from "./MainMenu";
 import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 import Layer from "../../Wolfie2D/Scene/Layer";
+// declare var require: any;
+// const Upgrade = require("./Upgrade");
 import Upgrade from "./Upgrade";
 
 export default class GameLevel extends Scene {
@@ -102,6 +102,8 @@ export default class GameLevel extends Scene {
     protected invFlag: boolean;
     
     protected instakill: boolean;
+
+    protected nextLevel: new (...args: any) => GameLevel;
 
     loadScene() {}
 
@@ -275,7 +277,7 @@ export default class GameLevel extends Scene {
                         break;
                     case "levelEnd":
                         console.log(this.hpCount);
-                        this.sceneManager.changeToScene(Upgrade, {});
+                        this.sceneManager.changeToScene(Upgrade, {nextLevel: this.nextLevel, maxHP: this.maxHP, scrapCount: this.scrapCount});
                         // if(this.nextLevel){
                         //     this.sceneManager.changeToScene(this.nextLevel, {maxHP: this.maxHP, hpCount: this.hpCount, scrapCount: this.scrapCount, lvl2Lock: false});
                         // }
@@ -713,12 +715,12 @@ export default class GameLevel extends Scene {
     initializePlayer(): void {
         // Create the inventory
         let inventory = new WeaponManager(this, "inventorySlot", "inventorySlot2x", new Vec2(348, 20));
-        let startingWeapon = this.createWeapon("lasergun");
-        let prevWeapon = this.createWeapon("smg");
-        let nextWeapon = this.createWeapon("pistol");
+        let prevWeapon = this.createWeapon("lasergun");
+        let startingWeapon = this.createWeapon("pistol");
+        let nextWeapon = this.createWeapon("smg");
+        inventory.addItem(prevWeapon);
         inventory.addItem(startingWeapon);
         inventory.addItem(nextWeapon);
-        inventory.addItem(prevWeapon);
 
         // Create the player
         this.player = this.add.animatedSprite("player", "primary");

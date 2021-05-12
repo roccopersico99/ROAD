@@ -9,71 +9,72 @@ import Input from "../../Wolfie2D/Input/Input";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
 import { GraphicType } from "../../Wolfie2D/Nodes/Graphics/GraphicTypes";
-import { TweenableProperties } from "../../Wolfie2D/Nodes/GameNode";
-import { EaseFunctionType } from "../../Wolfie2D/Utils/EaseFunctions";
-import Timer from "../../Wolfie2D/Timing/Timer";
+import GameLevel from "./GameLevel";
 
 export default class Upgrade extends Scene {
     // Layer for holding the upgrade screen image
-    private upgradeLayer: Layer;
+    protected upgradeLayer: Layer;
 
     // The cursor
-    private cursor: Sprite;
+    protected cursor: Sprite;
 
     // The upgrade image
-    private upgrade: Sprite;
+    protected upgrade: Sprite;
 
     // The car sprite
-    private car: AnimatedSprite;
+    protected car: AnimatedSprite;
 
     // Player Scrap Count
-    private scrapCount: number;
+    protected scrapCount: number;
 
     // Scrap Sprites
-    private scrapSprite1: Sprite;
-    private scrapSprite2: Sprite;
-    private scrapSprite3: Sprite;
-    private scrapSprite4: Sprite;
+    protected scrapSprite1: Sprite;
+    protected scrapSprite2: Sprite;
+    protected scrapSprite3: Sprite;
+    protected scrapSprite4: Sprite;
 
     // Stats Numbers
-    private health: number;
-    private damage: number;
-    private speed: number;
-    private scrapGain: number;
+    protected health: number;
+    protected damage: number;
+    protected speed: number;
+    protected scrapGain: number;
 
     // Stat Bar
-    private healthBar: Sprite;
-    private damageBar: Sprite;
-    private speedBar: Sprite;
-    private scrapGainBar: Sprite;
+    protected healthBar: Sprite;
+    protected damageBar: Sprite;
+    protected speedBar: Sprite;
+    protected scrapGainBar: Sprite;
 
     // Arrays for stat bar rects
-    private healthRect: Array<Rect>;
-    private damageRect: Array<Rect>;
-    private speedRect: Array<Rect>;
-    private scrapGainRect: Array<Rect>;
+    protected healthRect: Array<Rect>;
+    protected damageRect: Array<Rect>;
+    protected speedRect: Array<Rect>;
+    protected scrapGainRect: Array<Rect>;
 
     // Arrays for scrap cost of upgrades
-    private statCost: Array<number>;
+    protected statCost: Array<number>;
 
     // Current Stat - Used for index of arrays
-    private currentHealth: number;
-    private currentDamage: number;
-    private currentSpeed: number;
-    private currentScrapGain: number;
+    protected currentHealth: number;
+    protected currentDamage: number;
+    protected currentSpeed: number;
+    protected currentScrapGain: number;
 
     // Upgrade buttons
-    private healthButton: Label;
-    private damageButton: Label;
-    private speedButton: Label;
-    private scrapGainButton: Label;
+    protected healthButton: Label;
+    protected damageButton: Label;
+    protected speedButton: Label;
+    protected scrapGainButton: Label;
 
     // Error
-    private insufficientLine: Label;
+    protected insufficientLine: Label;
     scrapsLine: Label;
 
-    // Timer
-    private timer: Timer;
+    // Next Level
+    protected nextLevel: new (...args: any) => GameLevel;
+    protected nextLevelOptions: Record<string, any>;
+    protected maxHP: number;
+    protected hpCount: number;
 
     loadScene(){
         this.load.image("cursor", "road_assets/sprites/cursor.png");
@@ -83,8 +84,13 @@ export default class Upgrade extends Scene {
         this.load.image("scrap", "road_assets/sprites/scrap.png");
     }
 
+    initScene(init: Record<string, any>): void {
+        this.nextLevel = init.nextLevel;
+        this.maxHP = init.maxHP;
+        this.scrapCount = init.scrapCount;
+    }
+
     startScene(){
-        //this.timer = new Timer(1);
 
         this.viewport.setZoomLevel(1);
         this.viewport.setCenter(600, 400);
@@ -115,7 +121,7 @@ export default class Upgrade extends Scene {
 
         // Initialize numbers
         this.statCost = [100, 200, 350, 600, 999];
-        this.scrapCount = 5000;
+        //this.scrapCount = 5000;
         this.currentHealth = 1;
         this.currentDamage = 1;
         this.currentSpeed = 1;
@@ -352,7 +358,27 @@ export default class Upgrade extends Scene {
                 case "cont":
                     this.insufficientLine.visible = false;
                     console.log("cont")
-                    //this.changeToScene(nextLevel, sceneOptions);
+                    this.sceneManager.changeToScene(this.nextLevel, {maxHP: this.maxHP, scrapCount: this.scrapCount});
+                    // switch(this.nextLevel) {
+                    //     case "1-2":
+                    //         this.sceneManager.changeToScene(Level1_2, {maxHP: this.maxHP, scrapCount: this.scrapCount});
+                    //         break;
+                    //     case "2-1":
+                    //         this.sceneManager.changeToScene(Level2_1, {maxHP: this.maxHP, scrapCount: this.scrapCount});
+                    //         break;
+                    //     case "2-2":
+                    //         this.sceneManager.changeToScene(Level2_2, {maxHP: this.maxHP, scrapCount: this.scrapCount});
+                    //         break;
+                    //     case "3-1":
+                    //         this.sceneManager.changeToScene(Level3_1, {maxHP: this.maxHP, scrapCount: this.scrapCount});
+                    //         break;
+                    //     case "3-2":
+                    //         this.sceneManager.changeToScene(Level3_2, {maxHP: this.maxHP, scrapCount: this.scrapCount});
+                    //         break;
+                    //     default: 
+                    //         this.sceneManager.changeToScene(MainMenu, {});
+                    //         break;    
+                    // }
                     break;
                 case "health":
                     this.insufficientLine.visible = false;

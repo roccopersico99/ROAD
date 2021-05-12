@@ -3,6 +3,7 @@ import OrthogonalTilemap from "../../Wolfie2D/Nodes/Tilemaps/OrthogonalTilemap";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 import GameLevel from "./GameLevel";
 import Debug from "../../Wolfie2D/Debug/Debug";
+import Level2_1 from "./Level2_1";
 
 export default class Level1_1 extends GameLevel {
 
@@ -134,6 +135,9 @@ export default class Level1_1 extends GameLevel {
 
         // Set player spawn
         this.playerSpawn = new Vec2(12*16, 156*16);
+
+        // Sets the next level
+        this.nextLevel = Level2_1;
 
         // Do generic GameLevel setup
         super.startScene();

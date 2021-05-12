@@ -3,19 +3,19 @@ import OrthogonalTilemap from "../../Wolfie2D/Nodes/Tilemaps/OrthogonalTilemap";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 import GameLevel from "./GameLevel";
 import Debug from "../../Wolfie2D/Debug/Debug";
-import Level2_2 from "./Level2_2";
+import Level3_2 from "./Level3_2";
 
-export default class Level2_1 extends GameLevel {
+export default class Level3_1 extends GameLevel {
 
     loadScene(){
         // Load the tilemap
-        this.load.tilemap("level", "road_assets/tilemaps/road-level2.json");
+        this.load.tilemap("level", "road_assets/tilemaps/road-level3.json");
 
         // Load in the enemy info
         this.load.object("enemyData", "road_assets/data/enemy.json");
 
         // Load music tracks
-        this.load.audio("music", "road_assets/music/level2_new.mp3");
+        this.load.audio("music", "road_assets/music/level3.mp3");
     }
 
     unloadScene(): void {
@@ -89,7 +89,7 @@ export default class Level2_1 extends GameLevel {
         this.playerSpawn = new Vec2(12*16, 156*16);
 
         // Set the next level
-        this.nextLevel = Level2_2;
+        this.nextLevel = Level3_2;
 
         // Do generic GameLevel setup
         super.startScene();

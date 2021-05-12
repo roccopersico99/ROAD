@@ -1,39 +1,9 @@
-import PlayerController from "../AI/PlayerController";
 import Vec2 from "../../Wolfie2D/DataTypes/Vec2";
-import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
-import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
-import Scene from "../../Wolfie2D/Scene/Scene";
-import { GraphicType } from "../../Wolfie2D/Nodes/Graphics/GraphicTypes";
 import OrthogonalTilemap from "../../Wolfie2D/Nodes/Tilemaps/OrthogonalTilemap";
-import PositionGraph from "../../Wolfie2D/DataTypes/Graphs/PositionGraph";
-import Navmesh from "../../Wolfie2D/Pathfinding/Navmesh";
-import {hw3_Names} from "../hw3_constants";
-import EnemyAI from "../AI/EnemyAI";
-import WeaponType from "../GameSystems/items/WeaponTypes/WeaponType";
-import RegistryManager from "../../Wolfie2D/Registry/RegistryManager";
-import Weapon from "../GameSystems/items/Weapon";
-import Healthpack from "../GameSystems/items/Healthpack";
-import InventoryManager from "../GameSystems/InventoryManager";
-import HealthManager from "../GameSystems/HealthManager";
-import WeaponManager from "../GameSystems/WeaponManager";
-import Item from "../GameSystems/items/Item";
-import AABB from "../../Wolfie2D/DataTypes/Shapes/AABB";
-import BattleManager from "../GameSystems/BattleManager";
-import BattlerAI from "../AI/BattlerAI";
-import Label from "../../Wolfie2D/Nodes/UIElements/Label";
-import { UIElementType } from "../../Wolfie2D/Nodes/UIElements/UIElementTypes";
-import Color from "../../Wolfie2D/Utils/Color";
-import Input from "../../Wolfie2D/Input/Input";
-import GameOver from "./GameOver";
-import Scrap from "../GameSystems/items/Scrap";
-import MainMenu from "./MainMenu";
-import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
-import Layer from "../../Wolfie2D/Scene/Layer";
 import GameLevel from "./GameLevel";
 import Debug from "../../Wolfie2D/Debug/Debug";
 import Level2_1 from "./Level2_1";
-import Level1_1 from "./Level1_1";
 
 export default class Level1_2 extends GameLevel {
 
@@ -111,6 +81,9 @@ export default class Level1_2 extends GameLevel {
 
         // Set player spawn
         this.playerSpawn = new Vec2(12*16, 156*16);
+
+        // Set the next level
+        this.nextLevel = Level2_1;
 
         // Do generic GameLevel setup
         super.startScene();

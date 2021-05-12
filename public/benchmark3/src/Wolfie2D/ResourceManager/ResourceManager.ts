@@ -347,7 +347,7 @@ export default class ResourceManager {
     /* ######################################## UNLOAD FUNCTION ########################################*/
     
     private keepResource(key: string, type: ResourceType): void {
-        console.log("Keep resource...");
+        console.log("Keep resource::key=" + key + "::type=" + type);
         for(let i = 0; i < this.resourcesToUnload.length; i++){
             let resource = this.resourcesToUnload[i];
             if(resource.key === key && resource.resourceType === type){

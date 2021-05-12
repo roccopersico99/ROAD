@@ -105,7 +105,28 @@ export default class GameLevel extends Scene {
 
     loadScene() {}
 
-    initScene(init: Record<string, any>): void {}
+    initScene(init: Record<string, any>): void {
+        if(init.scrapCount == undefined){
+            this.scrapCount = 120;
+        }
+        else{
+            this.scrapCount = init.scrapCount;
+        }
+
+        if(init.maxHP == undefined){
+            this.maxHP = 6;
+        }
+        else{
+            this.maxHP = init.maxHP
+        }
+
+        if(init.hpCount == undefined){
+            this.hpCount = 6;
+        }
+        else{
+            this.hpCount = init.hpCount;
+        }
+    }
 
     startScene(){
         this.isPaused = false;

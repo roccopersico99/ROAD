@@ -10,6 +10,7 @@ import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
 import { GraphicType } from "../../Wolfie2D/Nodes/Graphics/GraphicTypes";
 import GameLevel from "./GameLevel";
+import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 
 export default class Upgrade extends Scene {
     // Layer for holding the upgrade screen image
@@ -82,6 +83,13 @@ export default class Upgrade extends Scene {
         this.load.spritesheet("car", "road_assets/spritesheets/car.json");
         this.load.image("statBar", "road_assets/sprites/statbar.png");
         this.load.image("scrap", "road_assets/sprites/scrap.png");
+        // Load music tracks
+        this.load.audio("music", "road_assets/music/outro.mp3");
+    }
+
+    unloadScene(){
+        // Scene has ended, so stop playing music
+        this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "music"});
     }
 
     initScene(init: Record<string, any>): void {
@@ -340,6 +348,9 @@ export default class Upgrade extends Scene {
         this.receiver.subscribe("speed");
         this.receiver.subscribe("scrapGain");
         this.receiver.subscribe("insufficient");
+
+        // Scene has finished loading, so start playing menu music
+        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "music", loop: true, holdReference: true});
     }
 
     updateScene(){
@@ -358,7 +369,20 @@ export default class Upgrade extends Scene {
                 case "cont":
                     this.insufficientLine.visible = false;
                     console.log("cont")
-                    this.sceneManager.changeToScene(this.nextLevel, {maxHP: this.maxHP, scrapCount: this.scrapCount});
+                    let sceneOptions = {
+                        physics: {
+                            groupNames: ["ground", "player", "enemy", "projectile1", "projectile2"],
+                            collisions:
+                            [
+                                [0, 1, 1, 0, 0],
+                                [1, 0, 1, 0, 1],
+                                [1, 1, 0, 1, 0],
+                                [0, 0, 1, 0, 0],
+                                [0, 1, 0, 0, 0]
+                            ]
+                        }
+                    }
+                    this.sceneManager.changeToScene(this.nextLevel, {maxHP: this.maxHP, scrapCount: this.scrapCount}, sceneOptions);
                     // switch(this.nextLevel) {
                     //     case "1-2":
                     //         this.sceneManager.changeToScene(Level1_2, {maxHP: this.maxHP, scrapCount: this.scrapCount});

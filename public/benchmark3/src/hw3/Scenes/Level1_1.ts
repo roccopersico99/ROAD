@@ -3,7 +3,7 @@ import OrthogonalTilemap from "../../Wolfie2D/Nodes/Tilemaps/OrthogonalTilemap";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 import GameLevel from "./GameLevel";
 import Debug from "../../Wolfie2D/Debug/Debug";
-import Level2_1 from "./Level2_1";
+import Level1_2 from "./Level1_2";
 
 export default class Level1_1 extends GameLevel {
 
@@ -11,6 +11,8 @@ export default class Level1_1 extends GameLevel {
         // Load the player and enemy spritesheets
         this.load.spritesheet("player", "road_assets/spritesheets/car.json");
         this.load.spritesheet("patrol", "road_assets/spritesheets/truck.json");
+        this.load.spritesheet("projectile", "road_assets/spritesheets/projectile.json");
+        this.load.spritesheet("projectile2", "road_assets/spritesheets/projectile2.json");
 
         // Load the tilemap
         this.load.tilemap("level", "road_assets/tilemaps/road-level1.json");
@@ -81,7 +83,7 @@ export default class Level1_1 extends GameLevel {
         this.resourceManager.keepImage("inventorySlot");
         this.resourceManager.keepImage("inventorySlot2x");
         this.resourceManager.keepImage("pistol");
-        this.resourceManager.keepImage("laser");
+        this.resourceManager.keepImage("lasergun");
         this.resourceManager.keepImage("smg");
         this.resourceManager.keepImage("pauseImage");
         this.resourceManager.keepImage("fullHeart");
@@ -92,37 +94,19 @@ export default class Level1_1 extends GameLevel {
         this.resourceManager.keepImage("cursor");
         this.resourceManager.keepSpritesheet("player");
         this.resourceManager.keepSpritesheet("patrol");
+        this.resourceManager.keepSpritesheet("projectile");
+        this.resourceManager.keepSpritesheet("projectile2");
         this.resourceManager.keepObject("itemData");
         this.resourceManager.keepObject("weaponData");
-        //this.resourceManager.keepObject("enemyData");
         this.resourceManager.keepObject("navmesh");
 
         // Scene has ended, so stop playing music
         this.emitter.fireEvent(GameEventType.STOP_SOUND, {key: "music"});
     }
 
-    initScene(init: Record<string, any>): void {
-        if(init.scrap == undefined){
-            this.scrapCount = 120;
-        }
-        else{
-            this.scrapCount = init.scrap;
-        }
-
-        if(init.maxHP == undefined){
-            this.maxHP = 6;
-        }
-        else{
-            this.maxHP = init.maxHP
-        }
-
-        if(init.hpCount == undefined){
-            this.hpCount = 6;
-        }
-        else{
-            this.hpCount = init.hpCount;
-        }
-    }
+    // initScene(init: Record<string, any>): void {
+    //     super.initScene(init);
+    // }
 
     startScene(){
         // Add in the tilemap
@@ -137,7 +121,7 @@ export default class Level1_1 extends GameLevel {
         this.playerSpawn = new Vec2(12*16, 156*16);
 
         // Sets the next level
-        this.nextLevel = Level2_1;
+        this.nextLevel = Level1_2;
 
         // Do generic GameLevel setup
         super.startScene();

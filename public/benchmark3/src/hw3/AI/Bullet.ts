@@ -18,9 +18,14 @@ export default class Bullet implements BattlerAI {
     owner: AnimatedSprite;
     
     direction: Vec2;
+
     speed: number;
 
     health: number;
+
+    totalDistance: number;
+
+    destroyed: boolean;
 
     damage: (damage: number) => void;
     
@@ -30,7 +35,12 @@ export default class Bullet implements BattlerAI {
         this.speed = options.speed;
 
         this.owner.rotation = Vec2.UP.angleToCCW(this.direction);
+
+        this.totalDistance = 0;
+
+        this.destroyed = false;
     }
+    
     destroy(): void {
         delete this.owner;
     }
@@ -42,7 +52,14 @@ export default class Bullet implements BattlerAI {
     //this.load.spritesheet("projectile", "road_assets/spritesheets/projectile.json");
 
     update(deltaT: number): void {
-        this.owner.move(this.direction.normalized().scale(this.speed * deltaT));
+        if(!this.destroyed) {
+            this.owner.move(this.direction.normalized().scale(this.speed * deltaT));
+            this.totalDistance += this.speed * deltaT;
+            if(this.totalDistance > 550) {
+                this.destroyed = true;
+                this.owner.destroy();
+            } 
+        }
     }
 
 }

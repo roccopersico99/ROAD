@@ -96,6 +96,11 @@ export default class Upgrade extends Scene {
         this.nextLevel = init.nextLevel;
         this.maxHP = init.maxHP;
         this.scrapCount = init.scrapCount;
+
+        this.currentHealth = init.healthStat;
+        this.currentDamage = init.damageStat;
+        this.currentSpeed = init.speedStat;
+        this.currentScrapGain = init.scrapGainStat;
     }
 
     startScene(){
@@ -129,11 +134,11 @@ export default class Upgrade extends Scene {
 
         // Initialize numbers
         this.statCost = [100, 200, 350, 600, 999];
-        //this.scrapCount = 5000;
-        this.currentHealth = 1;
-        this.currentDamage = 1;
-        this.currentSpeed = 1;
-        this.currentScrapGain = 1;
+        // this.scrapCount = 5000;
+        // this.currentHealth = 1;
+        // this.currentDamage = 1;
+        // this.currentSpeed = 1;
+        // this.currentScrapGain = 1;
         this.healthRect = [];
         this.damageRect = [];
         this.speedRect = [];
@@ -342,6 +347,20 @@ export default class Upgrade extends Scene {
         this.insufficientLine.font = "PixelSimple";
         this.insufficientLine.visible = false;
 
+        // Fill in stat bars
+        for(let i = 1; i <= this.currentHealth; i++){
+            this.healthRect[i].visible = true;
+        }
+        for(let i = 1; i <= this.currentDamage; i++){
+            this.damageRect[i].visible = true;
+        }
+        for(let i = 1; i <= this.currentSpeed; i++){
+            this.speedRect[i].visible = true;
+        }
+        for(let i = 1; i <= this.currentScrapGain; i++){
+            this.scrapGainRect[i].visible = true;
+        }
+
         this.receiver.subscribe("cont");
         this.receiver.subscribe("health");
         this.receiver.subscribe("damage");
@@ -382,7 +401,7 @@ export default class Upgrade extends Scene {
                             ]
                         }
                     }
-                    this.sceneManager.changeToScene(this.nextLevel, {maxHP: this.maxHP, scrapCount: this.scrapCount}, sceneOptions);
+                    this.sceneManager.changeToScene(this.nextLevel, {maxHP: this.maxHP, scrapCount: this.scrapCount, healthStat: this.currentHealth, damageStat: this.currentDamage, speedStat: this.currentSpeed, scrapGainStat: this.currentScrapGain}, sceneOptions);
                     // switch(this.nextLevel) {
                     //     case "1-2":
                     //         this.sceneManager.changeToScene(Level1_2, {maxHP: this.maxHP, scrapCount: this.scrapCount});

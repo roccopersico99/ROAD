@@ -103,28 +103,76 @@ export default class GameLevel extends Scene {
 
     protected nextLevel: new (...args: any) => GameLevel;
 
+    // Upgradable Stats
+    protected healthStat: number;
+    protected damageStat: number;
+    protected speedStat: number;
+    protected scrapGainStat: number;
+
     loadScene() {}
 
     initScene(init: Record<string, any>): void {
         if(init.scrapCount == undefined){
+            console.log("using default scrapCount");
             this.scrapCount = 120;
         }
         else{
+            console.log("using init scrapCount");
             this.scrapCount = init.scrapCount;
         }
 
         if(init.maxHP == undefined){
+            console.log("using default maxHP");
             this.maxHP = 6;
         }
         else{
+            console.log("using init maxHP");
             this.maxHP = init.maxHP
         }
 
         if(init.hpCount == undefined){
+            console.log("using default hpCount");
             this.hpCount = 6;
         }
         else{
+            console.log("using init hpCount");
             this.hpCount = init.hpCount;
+        }
+
+        if(init.healthStat == undefined){
+            console.log("using default healthStat");
+            this.healthStat = 1;
+        }
+        else {
+            console.log("using init healthStat");
+            this.healthStat = init.healthStat
+        }
+
+        if(init.damageStat == undefined){
+            console.log("using default damageStat");
+            this.damageStat = 1;
+        }
+        else{
+            console.log("using init damageStat");
+            this.damageStat = init.damageStat;
+        }
+
+        if(init.speedStat == undefined){
+            console.log("using default speedStat");
+            this.speedStat = 1;
+        }
+        else{
+            console.log("using init speedStat");
+            this.speedStat = init.speedStat;
+        }
+
+        if(init.scrapGainStat == undefined){
+            console.log("using default scrapGainStat");
+            this.scrapGainStat = 1;
+        }
+        else{
+            console.log("using init scrapGainStat");
+            this.scrapGainStat = init.scrapGainStat;
         }
     }
 
@@ -296,7 +344,7 @@ export default class GameLevel extends Scene {
                         break;
                     case "levelEnd":
                         console.log(this.hpCount);
-                        this.sceneManager.changeToScene(Upgrade, {nextLevel: this.nextLevel, maxHP: this.maxHP, scrapCount: this.scrapCount});
+                        this.sceneManager.changeToScene(Upgrade, {nextLevel: this.nextLevel, maxHP: this.maxHP, scrapCount: this.scrapCount, healthStat: this.healthStat, damageStat: this.damageStat, speedStat: this.speedStat, scrapGainStat: this.scrapGainStat});
                         // if(this.nextLevel){
                         //     this.sceneManager.changeToScene(this.nextLevel, {maxHP: this.maxHP, hpCount: this.hpCount, scrapCount: this.scrapCount, lvl2Lock: false});
                         // }

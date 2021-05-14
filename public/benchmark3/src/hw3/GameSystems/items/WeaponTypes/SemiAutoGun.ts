@@ -11,8 +11,13 @@ import { EaseFunctionType } from "../../../../Wolfie2D/Utils/EaseFunctions";
 import WeaponType from "./WeaponType";
 import Bullet from "../../../AI/Bullet";
 import Input from "../../../../Wolfie2D/Input/Input";
+import Emitter from "../../../../Wolfie2D/Events/Emitter";
+import GameEvent from "../../../../Wolfie2D/Events/GameEvent";
+import { GameEventType } from "../../../../Wolfie2D/Events/GameEventType";
 
 export default class SemiAutoGun extends WeaponType {
+
+    emitter: Emitter;
 
     scene: Scene;
 
@@ -29,6 +34,7 @@ export default class SemiAutoGun extends WeaponType {
         this.useVolume = options.useVolume;
         this.scene = options.scene;
         this.name = options.name;
+        this.emitter = new Emitter();
     }
 
     doAnimation(shooter: GameNode, direction: Vec2, line: Line): void {
@@ -64,6 +70,7 @@ export default class SemiAutoGun extends WeaponType {
                     });
                 bullet.setGroup("projectile1");
                 bullet.animation.play("FIRING", true);
+                this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "shot_fired", loop: false, holdReference: false});
                 break;
             default:
                 bullet = this.scene.add.animatedSprite("projectile", "primary");
@@ -77,6 +84,7 @@ export default class SemiAutoGun extends WeaponType {
                     });
                 bullet.setGroup("projectile1");
                 bullet.animation.play("FIRING", true);
+                this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "shot_fired", loop: false, holdReference: false});
                 break;
         }
         // bullet.position.set(start.x, start.y);

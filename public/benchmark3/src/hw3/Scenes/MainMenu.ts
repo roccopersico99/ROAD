@@ -256,7 +256,7 @@ export default class MainMenu extends Scene {
         const text6 = "enacts his revenge, he continues to wander the lonely ROAD.";
 
         const text7 = "About Us: The developers are Jerry Ding, Ryan Chung, and Rocco Persico."
-        const text8 = "They are students CSE380, a 2D game programming course at Stony Brook"
+        const text8 = "They are students in CSE380, a 2D game programming course at Stony Brook"
         const text9 = "University. This game was made using the Wolife2D game engine, which"
         const text10 = "was developed by Richard McKenna and Joe Weaver."
 
@@ -455,7 +455,7 @@ export default class MainMenu extends Scene {
                         ]
                     }
                 }
-                this.sceneManager.changeToScene(Level1_1, {}, sceneOptions);
+                this.sceneManager.changeToScene(Level1_1, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1}, sceneOptions);
                 this.gear.visible = false;
                 this.car.visible = false;
                 this.logo.visible = false;
@@ -475,7 +475,7 @@ export default class MainMenu extends Scene {
                         ]
                     }
                 }
-                this.sceneManager.changeToScene(Level1_2, {}, sceneOptions);
+                this.sceneManager.changeToScene(Level1_2, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1}, sceneOptions);
                 this.gear.visible = false;
                 this.car.visible = false;
                 this.logo.visible = false;
@@ -495,7 +495,7 @@ export default class MainMenu extends Scene {
                         ]
                     }
                 }
-                this.sceneManager.changeToScene(Level2_1, {scrap: this.scrapCount, maxHP: this.maxHP, hpCount: this.hpCount}, sceneOptions);
+                this.sceneManager.changeToScene(Level2_1, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1}, sceneOptions);
                 this.gear.visible = false;
                 this.car.visible = false;
                 this.logo.visible = false;
@@ -515,7 +515,7 @@ export default class MainMenu extends Scene {
                         ]
                     }
                 }
-                this.sceneManager.changeToScene(Level2_2, {scrap: this.scrapCount, maxHP: this.maxHP, hpCount: this.hpCount}, sceneOptions);
+                this.sceneManager.changeToScene(Level2_2, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1}, sceneOptions);
                 this.gear.visible = false;
                 this.car.visible = false;
                 this.logo.visible = false;
@@ -535,7 +535,7 @@ export default class MainMenu extends Scene {
                         ]
                     }
                 }
-                this.sceneManager.changeToScene(Level3_1, {scrap: this.scrapCount, maxHP: this.maxHP, hpCount: this.hpCount}, sceneOptions);
+                this.sceneManager.changeToScene(Level3_1, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1}, sceneOptions);
                 this.gear.visible = false;
                 this.car.visible = false;
                 this.logo.visible = false;
@@ -555,7 +555,7 @@ export default class MainMenu extends Scene {
                         ]
                     }
                 }
-                this.sceneManager.changeToScene(Level3_2, {scrap: this.scrapCount, maxHP: this.maxHP, hpCount: this.hpCount}, sceneOptions);
+                this.sceneManager.changeToScene(Level3_2, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1}, sceneOptions);
                 this.gear.visible = false;
                 this.car.visible = false;
                 this.logo.visible = false;

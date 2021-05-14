@@ -573,10 +573,10 @@ export default class Upgrade extends Scene {
         }
         // this.scrapsLine = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x+530, center.y-375), text: "" + this.scrapCount});
         // Adjust scrap count label, if necessary
-        if(this.scrapCount/10000 > 1){
+        if(this.scrapCount/10000 >= 1){
             this.scrapsLine.text =  "  " + this.scrapCount;
         }
-        else if(this.scrapCount/1000 > 1){
+        else if(this.scrapCount/1000 >= 1){
             this.scrapsLine.text =  " " + this.scrapCount;
         }
         else {

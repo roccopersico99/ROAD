@@ -115,7 +115,7 @@ export default class GameLevel extends Scene {
     initScene(init: Record<string, any>): void {
         if(init.scrapCount == undefined){
             console.log("using default scrapCount");
-            this.scrapCount = 120;
+            this.scrapCount = 0;
         }
         else{
             console.log("using init scrapCount");
@@ -133,7 +133,7 @@ export default class GameLevel extends Scene {
 
         if(init.hpCount == undefined){
             console.log("using default hpCount");
-            this.hpCount = 6;
+            this.hpCount = this.maxHP;
         }
         else{
             console.log("using init hpCount");
@@ -207,7 +207,9 @@ export default class GameLevel extends Scene {
         this.battleManager.setEnemies(this.enemies.map(enemy => <BattlerAI>enemy._ai));
 
         // Creates the health manager
-        this.healthManager = new HealthManager(this, (<BattlerAI>this.player._ai).health, "fullHeart", "emptyHeart", "halfHeart", new Vec2(12, 16));
+        this.healthManager = new HealthManager(this, this.healthStat+3, "fullHeart", "emptyHeart", "halfHeart", new Vec2(12, 16));
+        this.hpCount = this.healthStat+3;
+        this.maxHP = this.healthStat+3;
 
         // Scene has finished loading, so start playing menu music
         //this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "level1music", loop: true, holdReference: true});
@@ -345,7 +347,13 @@ export default class GameLevel extends Scene {
                         break;
                     case "levelEnd":
                         console.log(this.hpCount);
-                        this.sceneManager.changeToScene(Upgrade, {nextLevel: this.nextLevel, maxHP: this.maxHP, scrapCount: this.scrapCount, healthStat: this.healthStat, damageStat: this.damageStat, speedStat: this.speedStat, scrapGainStat: this.scrapGainStat});
+                        this.moveToNextScene();
+                        // if(this.nextLevel == LastLevel){
+                        //     this.sceneManager.changeToScene(LastLevel, {});
+                        // }
+                        // else {
+                        //     this.moveToNextScene();
+                        // }
                         // if(this.nextLevel){
                         //     this.sceneManager.changeToScene(this.nextLevel, {maxHP: this.maxHP, hpCount: this.hpCount, scrapCount: this.scrapCount, lvl2Lock: false});
                         // }
@@ -423,10 +431,10 @@ export default class GameLevel extends Scene {
             this.scrapCount = (<PlayerController>this.player._ai).scrap;
             
             // Adjust scrap count label, if necessary
-            if(this.scrapCount/10000 > 1){
+            if(this.scrapCount/10000 >= 1){
                 this.scrapCountLabel.text =  "  " + this.scrapCount;
             }
-            else if(this.scrapCount/1000 > 1){
+            else if(this.scrapCount/1000 >= 1){
                 this.scrapCountLabel.text =  " " + this.scrapCount;
             }
             else {
@@ -677,6 +685,11 @@ export default class GameLevel extends Scene {
         enemy.setTrigger("player", "PlayerDamaged", "EnemyDied");
     }
 
+    moveToNextScene(): void {
+        console.log("moving to upgrade screen...")
+        this.sceneManager.changeToScene(Upgrade, {nextLevel: this.nextLevel, maxHP: this.maxHP, scrapCount: this.scrapCount, healthStat: this.healthStat, damageStat: this.damageStat, speedStat: this.speedStat, scrapGainStat: this.scrapGainStat});
+    }
+
     // HOMEWORK 3 - TODO - DONE
     /**
      * This function spawns in all of the items in "items.json"
@@ -832,11 +845,13 @@ export default class GameLevel extends Scene {
         this.player.addPhysics(new AABB(Vec2.ZERO, new Vec2(5, 5)));
         this.player.addAI(PlayerController, 
             {
-                speed: 150,
-                health: this.maxHP,
+                speed: Math.floor(150+((this.speedStat-1)*8)),
+                health: this.healthStat+3,
                 scrapCount: this.scrapCount,
                 inventory: inventory,
                 items: this.items,
+                scrapGainStat: this.scrapGainStat
+
             });
         this.player.setGroup("player");
         this.player.setTrigger("projectile2", "ProjectileHitPlayer", null);

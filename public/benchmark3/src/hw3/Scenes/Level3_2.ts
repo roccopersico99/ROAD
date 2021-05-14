@@ -130,10 +130,16 @@ export default class Level3_2 extends GameLevel {
 
         // Scene has finished loading, so start playing menu music
         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "music", loop: true, holdReference: true});
+        
     }
 
     updateScene(deltaT: number): void {
         super.updateScene(deltaT);
         Debug.log("playerpos", this.player.position.toString());
+    }
+
+    moveToNextScene(): void {
+        console.log("moving to main menu...")
+        this.sceneManager.changeToScene(MainMenu, {});
     }
 }

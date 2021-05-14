@@ -48,7 +48,7 @@ export default class SemiAutoGun extends WeaponType {
             case "weak_pistol":
                 bullet = this.scene.add.animatedSprite("projectile2", "primary");
                 bullet.position.set(start.x, start.y);
-                bullet.addPhysics(new AABB(Vec2.ZERO, new Vec2(4, 4)));
+                bullet.addPhysics(new AABB(Vec2.ZERO, new Vec2(3, 3)));
                 bullet.addAI(Bullet, 
                     {
                         direction: direction,
@@ -61,7 +61,7 @@ export default class SemiAutoGun extends WeaponType {
             case "lasergun":
                 bullet = this.scene.add.animatedSprite("laser_projectile", "primary");
                 bullet.position.set(start.x, start.y);
-                bullet.addPhysics(new AABB(Vec2.ZERO, new Vec2(4, 4)));
+                bullet.addPhysics(new AABB(Vec2.ZERO, new Vec2(3, 3)));
                 bullet.addAI(Bullet, 
                     {
                         direction: direction,
@@ -75,12 +75,12 @@ export default class SemiAutoGun extends WeaponType {
             default:
                 bullet = this.scene.add.animatedSprite("projectile", "primary");
                 bullet.position.set(start.x, start.y);
-                bullet.addPhysics(new AABB(Vec2.ZERO, new Vec2(4, 4)));
+                bullet.addPhysics(new AABB(Vec2.ZERO, new Vec2(3, 3)));
                 bullet.addAI(Bullet, 
                     {
                         direction: direction,
-                        speed: 200,
-                        attack: 0.75
+                        speed: 300,
+                        attack: 1
                     });
                 bullet.setGroup("projectile1");
                 bullet.animation.play("FIRING", true);

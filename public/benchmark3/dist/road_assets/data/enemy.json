@@ -1,5 +1,5 @@
 {
-    "numEnemies": 6,
+    "numEnemies": 10,
     "enemies": [
         {
             "position": [232, 1912],
@@ -12,27 +12,43 @@
             "health": 6
         },
         {
-            "position": [296, 264],
+            "position": [104, 2360],
             "mode": "patrol",
-            "route": [74, 75],
             "health": 6
         },
         {
-            "position": [104, 824],
+            "position": [232, 1416],
             "mode": "patrol",
-            "route": [76, 77],
             "health": 6
         },
         {
-            "position": [216, 120],
+            "position": [296, 364],
             "mode": "patrol",
-            "route": [78, 79],
             "health": 6
         },
         {
-            "position": [152, 40],
+            "position": [104, 624],
             "mode": "patrol",
-            "route": [80, 81],
+            "health": 6
+        },
+        {
+            "position": [168, 836],
+            "mode": "patrol",
+            "health": 6
+        },
+        {
+            "position": [296, 1116],
+            "mode": "patrol",
+            "health": 6
+        },
+        {
+            "position": [216, 220],
+            "mode": "patrol",
+            "health": 6
+        },
+        {
+            "position": [152, 100],
+            "mode": "patrol",
             "health": 6
         }
     ]

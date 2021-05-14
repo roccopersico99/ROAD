@@ -97,6 +97,7 @@ export default class Level1_1 extends GameLevel {
         this.resourceManager.keepSpritesheet("patrol");
         this.resourceManager.keepSpritesheet("projectile");
         this.resourceManager.keepSpritesheet("projectile2");
+        this.resourceManager.keepSpritesheet("laser_projectile");
         this.resourceManager.keepObject("itemData");
         this.resourceManager.keepObject("weaponData");
         this.resourceManager.keepObject("navmesh");

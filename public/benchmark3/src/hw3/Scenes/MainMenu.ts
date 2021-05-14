@@ -13,6 +13,10 @@ import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 import Level2_1 from "./Level2_1";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import { EaseFunctionType } from "../../Wolfie2D/Utils/EaseFunctions";
+import Level1_2 from "./Level1_2";
+import Level2_2 from "./Level2_2";
+import Level3_1 from "./Level3_1";
+import Level3_2 from "./Level3_2";
 
 export default class MainMenu extends Scene {
     // Layers, for multiple main menu screens
@@ -317,11 +321,11 @@ export default class MainMenu extends Scene {
         
 
         // *** LEVEL SELECT SCREEN ***
-        const lvlSelectText = <Label>this.add.uiElement(UIElementType.LABEL, "levelSelect", {position: new Vec2(center.x, center.y + 100), text: "More levels coming soon..."});
-        lvlSelectText.font = "PixelSimple";
+        // const lvlSelectText = <Label>this.add.uiElement(UIElementType.LABEL, "levelSelect", {position: new Vec2(center.x, center.y + 100), text: "More levels coming soon..."});
+        // lvlSelectText.font = "PixelSimple";
 
         // Level 1-1
-        const lvlSelect11 = <Label>this.add.uiElement(UIElementType.BUTTON, "levelSelect", {position: new Vec2(center.x - 250, center.y - 150), text: "Level 1-1"});
+        const lvlSelect11 = <Label>this.add.uiElement(UIElementType.BUTTON, "levelSelect", {position: new Vec2(center.x - 250, center.y - 125), text: "Level 1-1"});
         lvlSelect11.size.set(300, 50);
         lvlSelect11.borderWidth = 2;
         lvlSelect11.borderColor = Color.RED;
@@ -331,28 +335,60 @@ export default class MainMenu extends Scene {
         lvlSelect11.fontSize = 40;
         lvlSelect11.font = "PixelSimple";
 
+        // Level 1-2
+        const lvlSelect12 = <Label>this.add.uiElement(UIElementType.BUTTON, "levelSelect", {position: new Vec2(center.x + 200, center.y - 125), text: "Level 1-2"});
+        lvlSelect12.size.set(300, 50);
+        lvlSelect12.borderWidth = 2;
+        lvlSelect12.borderColor = Color.RED;
+        lvlSelect12.backgroundColor = Color.ORANGE;
+        lvlSelect12.textColor = Color.BLACK;
+        lvlSelect12.onClickEventId = "level1-2";
+        lvlSelect12.fontSize = 40;
+        lvlSelect12.font = "PixelSimple";
+
         // Level 2-1
-        let lvlSelect21;
-        if(this.lvl2Lock){
-            lvlSelect21 = <Label>this.add.uiElement(UIElementType.BUTTON, "levelSelect", {position: new Vec2(center.x - 250, center.y - 50), text: "Locked"});
-        }
-        else{
-            lvlSelect21 = <Label>this.add.uiElement(UIElementType.BUTTON, "levelSelect", {position: new Vec2(center.x - 250, center.y - 50), text: "Level 2-1"});
-            lvlSelect21.onClickEventId = "level2-1";
-        }
+        let lvlSelect21 = <Label>this.add.uiElement(UIElementType.BUTTON, "levelSelect", {position: new Vec2(center.x - 250, center.y), text: "Level 2-1"});
         lvlSelect21.size.set(300, 50);
         lvlSelect21.borderWidth = 2;
         lvlSelect21.borderColor = Color.RED;
         lvlSelect21.backgroundColor = Color.ORANGE;
         lvlSelect21.textColor = Color.BLACK;
-        // lvlSelect21.onClickEventId = "level2-1";
+        lvlSelect21.onClickEventId = "level2-1";
         lvlSelect21.fontSize = 40;
         lvlSelect21.font = "PixelSimple";
-        //lvlSelect21.visible = false;
-        // if(this.lvl2Lock === false){
-        //     lvlSelect21.visible = true;
-        // }
 
+        // Level 2-2
+        const lvlSelect22 = <Label>this.add.uiElement(UIElementType.BUTTON, "levelSelect", {position: new Vec2(center.x + 200, center.y), text: "Level 2-2"});
+        lvlSelect22.size.set(300, 50);
+        lvlSelect22.borderWidth = 2;
+        lvlSelect22.borderColor = Color.RED;
+        lvlSelect22.backgroundColor = Color.ORANGE;
+        lvlSelect22.textColor = Color.BLACK;
+        lvlSelect22.onClickEventId = "level2-2";
+        lvlSelect22.fontSize = 40;
+        lvlSelect22.font = "PixelSimple";
+
+        // Level 3-1
+        let lvlSelect31 = <Label>this.add.uiElement(UIElementType.BUTTON, "levelSelect", {position: new Vec2(center.x - 250, center.y + 125), text: "Level 3-1"});
+        lvlSelect31.size.set(300, 50);
+        lvlSelect31.borderWidth = 2;
+        lvlSelect31.borderColor = Color.RED;
+        lvlSelect31.backgroundColor = Color.ORANGE;
+        lvlSelect31.textColor = Color.BLACK;
+        lvlSelect31.onClickEventId = "level3-1";
+        lvlSelect31.fontSize = 40;
+        lvlSelect31.font = "PixelSimple";
+
+        // Level 3-2
+        const lvlSelect32 = <Label>this.add.uiElement(UIElementType.BUTTON, "levelSelect", {position: new Vec2(center.x + 200, center.y + 125), text: "Level 3-2"});
+        lvlSelect32.size.set(300, 50);
+        lvlSelect32.borderWidth = 2;
+        lvlSelect32.borderColor = Color.RED;
+        lvlSelect32.backgroundColor = Color.ORANGE;
+        lvlSelect32.textColor = Color.BLACK;
+        lvlSelect32.onClickEventId = "level3-2";
+        lvlSelect32.fontSize = 40;
+        lvlSelect32.font = "PixelSimple";
 
         // Level Select back button
         const lvlSelectBack = <Label>this.add.uiElement(UIElementType.BUTTON, "levelSelect", {position: new Vec2(40, center.y - 360), text: "<"});
@@ -380,7 +416,11 @@ export default class MainMenu extends Scene {
 
         // Subscribe to the button events
         this.receiver.subscribe("level1-1");
+        this.receiver.subscribe("level1-2");
         this.receiver.subscribe("level2-1");
+        this.receiver.subscribe("level2-2");
+        this.receiver.subscribe("level3-1");
+        this.receiver.subscribe("level3-2");
         this.receiver.subscribe("about");
         this.receiver.subscribe("menu");
         this.receiver.subscribe("control");
@@ -421,6 +461,26 @@ export default class MainMenu extends Scene {
                 this.logo.visible = false;
             }
 
+            if(event.type === "level1-2"){
+                let sceneOptions = {
+                    physics: {
+                        groupNames: ["ground", "player", "enemy", "projectile1", "projectile2"],
+                        collisions:
+                        [
+                            [0, 1, 1, 0, 0],
+                            [1, 0, 1, 0, 1],
+                            [1, 1, 0, 1, 0],
+                            [0, 0, 1, 0, 0],
+                            [0, 1, 0, 0, 0]
+                        ]
+                    }
+                }
+                this.sceneManager.changeToScene(Level1_2, {}, sceneOptions);
+                this.gear.visible = false;
+                this.car.visible = false;
+                this.logo.visible = false;
+            }
+
             if(event.type === "level2-1"){
                 let sceneOptions = {
                     physics: {
@@ -436,6 +496,66 @@ export default class MainMenu extends Scene {
                     }
                 }
                 this.sceneManager.changeToScene(Level2_1, {scrap: this.scrapCount, maxHP: this.maxHP, hpCount: this.hpCount}, sceneOptions);
+                this.gear.visible = false;
+                this.car.visible = false;
+                this.logo.visible = false;
+            }
+
+            if(event.type === "level2-2"){
+                let sceneOptions = {
+                    physics: {
+                        groupNames: ["ground", "player", "enemy", "projectile1", "projectile2"],
+                        collisions:
+                        [
+                            [0, 1, 1, 0, 0],
+                            [1, 0, 1, 0, 1],
+                            [1, 1, 0, 1, 0],
+                            [0, 0, 1, 0, 0],
+                            [0, 1, 0, 0, 0]
+                        ]
+                    }
+                }
+                this.sceneManager.changeToScene(Level2_2, {scrap: this.scrapCount, maxHP: this.maxHP, hpCount: this.hpCount}, sceneOptions);
+                this.gear.visible = false;
+                this.car.visible = false;
+                this.logo.visible = false;
+            }
+
+            if(event.type === "level3-1"){
+                let sceneOptions = {
+                    physics: {
+                        groupNames: ["ground", "player", "enemy", "projectile1", "projectile2"],
+                        collisions:
+                        [
+                            [0, 1, 1, 0, 0],
+                            [1, 0, 1, 0, 1],
+                            [1, 1, 0, 1, 0],
+                            [0, 0, 1, 0, 0],
+                            [0, 1, 0, 0, 0]
+                        ]
+                    }
+                }
+                this.sceneManager.changeToScene(Level3_1, {scrap: this.scrapCount, maxHP: this.maxHP, hpCount: this.hpCount}, sceneOptions);
+                this.gear.visible = false;
+                this.car.visible = false;
+                this.logo.visible = false;
+            }
+
+            if(event.type === "level3-2"){
+                let sceneOptions = {
+                    physics: {
+                        groupNames: ["ground", "player", "enemy", "projectile1", "projectile2"],
+                        collisions:
+                        [
+                            [0, 1, 1, 0, 0],
+                            [1, 0, 1, 0, 1],
+                            [1, 1, 0, 1, 0],
+                            [0, 0, 1, 0, 0],
+                            [0, 1, 0, 0, 0]
+                        ]
+                    }
+                }
+                this.sceneManager.changeToScene(Level3_2, {scrap: this.scrapCount, maxHP: this.maxHP, hpCount: this.hpCount}, sceneOptions);
                 this.gear.visible = false;
                 this.car.visible = false;
                 this.logo.visible = false;

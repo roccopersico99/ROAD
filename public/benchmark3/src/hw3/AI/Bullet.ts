@@ -25,6 +25,8 @@ export default class Bullet implements BattlerAI {
 
     totalDistance: number;
 
+    attack: number;
+
     destroyed: boolean;
 
     damage: (damage: number) => void;
@@ -33,6 +35,7 @@ export default class Bullet implements BattlerAI {
         this.owner = owner;
         this.direction = options.direction;
         this.speed = options.speed;
+        this.attack = options.attack;
 
         this.owner.rotation = Vec2.UP.angleToCCW(this.direction);
 

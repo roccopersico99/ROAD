@@ -29,8 +29,6 @@ export default class SemiAutoGun extends WeaponType {
         this.useVolume = options.useVolume;
         this.scene = options.scene;
         this.name = options.name;
-
-        // this.scene.load.spritesheet("projectile", "road_assets/spritesheets/projectile.json");
     }
 
     doAnimation(shooter: GameNode, direction: Vec2, line: Line): void {
@@ -48,9 +46,23 @@ export default class SemiAutoGun extends WeaponType {
                 bullet.addAI(Bullet, 
                     {
                         direction: direction,
-                        speed: 200
+                        speed: 200,
+                        attack: 1
                     });
                 bullet.setGroup("projectile2");
+                bullet.animation.play("FIRING", true);
+                break;
+            case "lasergun":
+                bullet = this.scene.add.animatedSprite("laser_projectile", "primary");
+                bullet.position.set(start.x, start.y);
+                bullet.addPhysics(new AABB(Vec2.ZERO, new Vec2(4, 4)));
+                bullet.addAI(Bullet, 
+                    {
+                        direction: direction,
+                        speed: 400,
+                        attack: 3
+                    });
+                bullet.setGroup("projectile1");
                 bullet.animation.play("FIRING", true);
                 break;
             default:
@@ -60,7 +72,8 @@ export default class SemiAutoGun extends WeaponType {
                 bullet.addAI(Bullet, 
                     {
                         direction: direction,
-                        speed: 200
+                        speed: 200,
+                        attack: 0.75
                     });
                 bullet.setGroup("projectile1");
                 bullet.animation.play("FIRING", true);

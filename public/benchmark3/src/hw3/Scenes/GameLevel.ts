@@ -29,6 +29,7 @@ import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 import Layer from "../../Wolfie2D/Scene/Layer";
 import Upgrade from "./Upgrade";
+import Bullet from "../AI/Bullet";
 
 export default class GameLevel extends Scene {
     // The player
@@ -331,12 +332,14 @@ export default class GameLevel extends Scene {
                         let other = this.sceneGraph.getNode(event.data.get("other"));
 
                         if(node2 === this.player){
+                            let atk = (<Bullet>other._ai).attack;
                             other.destroy();
-                            (<PlayerController>this.player._ai).damage(1);
+                            (<PlayerController>this.player._ai).damage(atk);
                         }
                         else{
+                            let atk = (<Bullet>node2._ai).attack;
                             node2.destroy();
-                            (<PlayerController>this.player._ai).damage(1);
+                            (<PlayerController>this.player._ai).damage(atk);
                         }
                         break;
                     case "PlayerDamaged":
@@ -351,12 +354,14 @@ export default class GameLevel extends Scene {
                         let other2 = this.sceneGraph.getNode(event.data.get("other"));
 
                         if(other2.group === 4){
+                            let atk = (<Bullet>node3._ai).attack;
                             node3.destroy();
-                            (<EnemyAI>other2._ai).damage(1);
+                            (<EnemyAI>other2._ai).damage(atk);
                         }
                         else{
+                            let atk = (<Bullet>other2._ai).attack;
                             other2.destroy();
-                            (<EnemyAI>node3._ai).damage(1);
+                            (<EnemyAI>node3._ai).damage(atk);
                         }
                         break;
                     case "EnemyDamaged":

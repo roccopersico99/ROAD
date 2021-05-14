@@ -13,6 +13,7 @@ export default class Level1_1 extends GameLevel {
         this.load.spritesheet("patrol", "road_assets/spritesheets/truck.json");
         this.load.spritesheet("projectile", "road_assets/spritesheets/projectile.json");
         this.load.spritesheet("projectile2", "road_assets/spritesheets/projectile2.json");
+        this.load.spritesheet("laser_projectile", "road_assets/spritesheets/laser_projectile.json");
 
         // Load the tilemap
         this.load.tilemap("level", "road_assets/tilemaps/road-level1.json");

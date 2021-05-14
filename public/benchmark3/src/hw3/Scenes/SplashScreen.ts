@@ -8,6 +8,8 @@ import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import Input from "../../Wolfie2D/Input/Input";
 import MainMenu from "./MainMenu";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
+import { TweenableProperties } from "../../Wolfie2D/Nodes/GameNode";
+import { EaseFunctionType } from "../../Wolfie2D/Utils/EaseFunctions";
 
 export default class SplashScreen extends Scene {
     // Splash Layer for holding the splash image
@@ -19,9 +21,14 @@ export default class SplashScreen extends Scene {
     // The Splash image
     private splash: Sprite;
 
+    // Click to start sprite
+    private clickToStart: Sprite;
+
     loadScene(){
+        // Load sprites
         this.load.image("cursor", "road_assets/sprites/cursor.png");
         this.load.image("splashImage", "road_assets/sprites/splashImage.png");
+        this.load.image("clickToStart", "road_assets/sprites/clickToStart.png")
 
         // Load music
         this.load.audio("intro", "road_assets/music/mainmenu_intro.wav");
@@ -42,16 +49,44 @@ export default class SplashScreen extends Scene {
         this.splash = this.add.sprite("splashImage", "splash");
         this.splash.position.set(center.x, center.y);
 
+        // Add "click anywhere to start..." text
+        this.clickToStart = this.add.sprite("clickToStart", "primary")
+        this.clickToStart.position.set(center.x, center.y+270);
+        this.clickToStart.scale.set(3,3);
+
+        this.clickToStart.tweens.add("fade", {
+            startDelay: 0,
+            duration: 1500,
+            effects: [
+                {
+                    property: TweenableProperties.alpha,
+                    start: 1,
+                    end: .25,
+                    ease: EaseFunctionType.OUT_SINE
+                }
+            ],
+            reverseOnComplete: true
+        });
+
+        this.clickToStart.tweens.play("fade", true);
+
+        // Add a invisible button that covers the whole screen
+        const click = <Label>this.add.uiElement(UIElementType.BUTTON, "splash", {position: new Vec2(center.x, center.y), text: ""});
+        click.size.set(1200, 800);
+        click.onClickEventId = "start"
+        click.backgroundColor = Color.TRANSPARENT;
+
         // Add start button, and give it an event to emit on press
-        const start = <Label>this.add.uiElement(UIElementType.BUTTON, "splash", {position: new Vec2(center.x+10, center.y + 260), text: "Start Game"});
-        start.size.set(300, 50);
-        start.borderWidth = 2;
-        start.borderColor = Color.RED;
-        start.backgroundColor = Color.ORANGE;
-        start.onClickEventId = "start";
-        start.textColor = Color.BLACK;
-        start.fontSize = 40;
-        start.font = "PixelSimple";
+        // const start = <Label>this.add.uiElement(UIElementType.BUTTON, "splash", {position: new Vec2(center.x+10, center.y + 260), text: "Start Game"});
+        // start.size.set(300, 50);
+        // start.borderWidth = 2;
+        // start.borderColor = Color.RED;
+        // start.backgroundColor = Color.ORANGE;
+        // start.onClickEventId = "start";
+        // start.textColor = Color.BLACK;
+        // start.fontSize = 40;
+        // start.font = "PixelSimple";
+        // start.visible = false;
 
         // Subscribe to the button events
         this.receiver.subscribe("start");

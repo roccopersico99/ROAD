@@ -348,17 +348,37 @@ export default class Upgrade extends Scene {
         this.insufficientLine.visible = false;
 
         // Fill in stat bars
-        for(let i = 1; i <= this.currentHealth; i++){
+        for(let i = 0; i < this.currentHealth; i++){
             this.healthRect[i].visible = true;
         }
-        for(let i = 1; i <= this.currentDamage; i++){
+        for(let i = 0; i < this.currentDamage; i++){
             this.damageRect[i].visible = true;
         }
-        for(let i = 1; i <= this.currentSpeed; i++){
+        for(let i = 0; i < this.currentSpeed; i++){
             this.speedRect[i].visible = true;
         }
-        for(let i = 1; i <= this.currentScrapGain; i++){
+        for(let i = 0; i < this.currentScrapGain; i++){
             this.scrapGainRect[i].visible = true;
+        }
+        // console.log("this.currentHealth: " + this.currentHealth);
+        // console.log("this.currentDamage: " + this.currentDamage);
+        // console.log("this.currentSpeed: " + this.currentSpeed);
+        // console.log("this.currentScrapGain: " + this.currentScrapGain);
+        if(this.currentHealth == 6){
+            this.healthButton.text = "MAXED";
+            this.scrapSprite1.visible = false;
+        }
+        if(this.currentDamage == 6){
+            this.damageButton.text = "MAXED";
+            this.scrapSprite2.visible = false;
+        }
+        if(this.currentSpeed == 6){
+            this.speedButton.text = "MAXED";
+            this.scrapSprite3.visible = false;
+        }
+        if(this.currentScrapGain == 6){
+            this.scrapGainButton.text = "MAXED";
+            this.scrapSprite4.visible = false;
         }
 
         this.receiver.subscribe("cont");
@@ -381,6 +401,11 @@ export default class Upgrade extends Scene {
         // }
 
         //this.insufficientLine.visible = true;
+
+        if(Input.isJustPressed("money")){
+            console.log("money cheat used...");
+            this.scrapCount += 1000;
+        }
 
         while(this.receiver.hasNextEvent()){
             let event = this.receiver.getNextEvent();
@@ -443,12 +468,13 @@ export default class Upgrade extends Scene {
                             break;
                         }
                         if(this.healthButton.text != "MAXED") {
-                        this.scrapCount -= this.statCost[this.currentHealth - 1];
-                        this.scrapsLine.text = this.scrapCount + "  ";
+                            this.scrapCount -= this.statCost[this.currentHealth - 1];
+                            this.scrapsLine.text = this.scrapCount + "  ";
+                            this.healthButton.text = "MAXED";
+                            this.healthRect[this.currentHealth].visible = true;
+                            this.scrapSprite1.visible = false;
+                            this.currentHealth++;
                         }
-                        this.healthButton.text = "MAXED";
-                        this.healthRect[this.currentHealth].visible = true;
-                        this.scrapSprite1.visible = false;
                     }
                     break;
                 case "damage":
@@ -471,12 +497,13 @@ export default class Upgrade extends Scene {
                             break;
                         }
                         if(this.damageButton.text != "MAXED"){
-                        this.scrapCount -= this.statCost[this.currentDamage - 1];
-                        this.scrapsLine.text = this.scrapCount + "  ";
+                            this.scrapCount -= this.statCost[this.currentDamage - 1];
+                            this.scrapsLine.text = this.scrapCount + "  ";
+                            this.damageButton.text = "MAXED";
+                            this.damageRect[this.currentDamage].visible = true;
+                            this.scrapSprite2.visible = false;
+                            this.currentDamage++;
                         }
-                        this.damageButton.text = "MAXED";
-                        this.damageRect[this.currentDamage].visible = true;
-                        this.scrapSprite2.visible = false;
                     }
                     break;
                 case "speed":
@@ -499,12 +526,13 @@ export default class Upgrade extends Scene {
                             break;
                         }
                         if(this.speedButton.text != "MAXED") {
-                        this.scrapCount -= this.statCost[this.currentSpeed - 1];
-                        this.scrapsLine.text = this.scrapCount + "  ";
+                            this.scrapCount -= this.statCost[this.currentSpeed - 1];
+                            this.scrapsLine.text = this.scrapCount + "  ";
+                            this.speedButton.text = "MAXED";
+                            this.speedRect[this.currentSpeed].visible = true;
+                            this.scrapSprite3.visible = false;
+                            this.currentSpeed++;
                         }
-                        this.speedButton.text = "MAXED";
-                        this.speedRect[this.currentSpeed].visible = true;
-                        this.scrapSprite3.visible = false;
                     }
                     break;
                 case "scrapGain":
@@ -527,12 +555,13 @@ export default class Upgrade extends Scene {
                             break;
                         }
                         if(this.scrapGainButton.text != "MAXED") {
-                        this.scrapCount -= this.statCost[this.currentScrapGain - 1];
-                        this.scrapsLine.text = this.scrapCount + "  ";
+                            this.scrapCount -= this.statCost[this.currentScrapGain - 1];
+                            this.scrapsLine.text = this.scrapCount + "  ";
+                            this.scrapGainButton.text = "MAXED";
+                            this.scrapGainRect[this.currentScrapGain].visible = true;
+                            this.scrapSprite4.visible = false;
+                            this.currentScrapGain++;
                         }
-                        this.scrapGainButton.text = "MAXED";
-                        this.scrapGainRect[this.currentScrapGain].visible = true;
-                        this.scrapSprite4.visible = false;
                     }
                     break;
                 case "insufficient":

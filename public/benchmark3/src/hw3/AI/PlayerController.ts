@@ -40,6 +40,9 @@ export default class PlayerController implements BattlerAI {
     private lookDirection: Vec2;
     private takingDmg: boolean;
 
+    // Stats
+    private scrapGainStat: number;
+
     invincible: boolean;
 
     destroy(): void {
@@ -53,6 +56,8 @@ export default class PlayerController implements BattlerAI {
         this.speed = options.speed;
         this.scrap = options.scrapCount;
         this.health = options.health;
+        
+        this.scrapGainStat = options.scrapGainStat;
 
         this.items = options.items;
         this.inventory = options.inventory;
@@ -153,17 +158,6 @@ export default class PlayerController implements BattlerAI {
                 this.inventory.changeWeapon(0);
             }
         }
-        
-        if(Input.isJustPressed("pickup")){
-            // Check if there is an item to pick up
-            for(let item of this.items){
-                if(this.owner.collisionShape.overlaps(item.sprite.boundary)){
-                    // We overlap it, try to pick it up
-                    this.scrap += 10;
-                    break;
-                }
-            }
-        }
 
         // If player drives over scrap, add it to count
         for(let item of this.items){
@@ -172,25 +166,11 @@ export default class PlayerController implements BattlerAI {
                 // We overlap it, try to pick it up
                 console.log("picked up scrap");
                 this.emitter.fireEvent("ScrapPickup", {position: item.sprite.position.clone()});
-                //item.sprite.destroy();
                 item.sprite.position.set(9999,9999);
-                this.scrap += Math.floor((Math.random()*1)+2);
+                this.scrap += Math.floor((((this.scrapGainStat-1)*0.2)+1)*30);
+                //this.scrap += Math.floor((((this.scrapGainStat-1)*0.2)+1)*((Math.random()*26)+10));
             }
         }
-
-        // JERRY - Items shouldn't be removed this way
-        // if(Input.isJustPressed("drop")){
-        //     // Check if we can drop our current item
-        //     let item = this.inventory.removeItem();
-            
-        //     if(item){
-        //         // Move the item from the ui to the gameworld
-        //         item.moveSprite(this.owner.position, "primary");
-
-        //         // Add the item to the list of items
-        //         this.items.push(item);
-        //     }
-        // }
     }
 
     setInvincible(flag: boolean) {

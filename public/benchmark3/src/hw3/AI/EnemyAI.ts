@@ -14,6 +14,7 @@ import { hw3_Events } from "../hw3_constants";
 import BattlerAI from "./BattlerAI";
 import Alert from "./EnemyStates/Alert";
 import Attack from "./EnemyStates/Attack";
+import Ball from "./EnemyStates/Ball";
 import Guard from "./EnemyStates/Guard";
 import Patrol from "./EnemyStates/Patrol";
 import Tower from "./EnemyStates/Tower";
@@ -48,6 +49,9 @@ export default class EnemyAI extends StateMachineAI implements BattlerAI {
                 break;
             case "tower":
                 this.addState(EnemyStates.DEFAULT, new Tower(this, owner, options.guardPosition));
+                break;
+            case "ball":
+                this.addState(EnemyStates.DEFAULT, new Ball(this, owner));
                 break;
         }
 

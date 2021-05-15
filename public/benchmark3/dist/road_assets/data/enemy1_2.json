@@ -4,35 +4,37 @@
         {
             "position": [232, 1912],
             "mode": "patrol",
+            "weapon": "weak_pistol",
             "health": 6
         },
         {
             "position": [168, 2008],
             "mode": "patrol",
+            "weapon": "weak_pistol",
             "health": 6
         },
         {
             "position": [296, 264],
             "mode": "patrol",
-            "route": [74, 75],
+            "weapon": "weak_pistol",
             "health": 6
         },
         {
             "position": [104, 824],
             "mode": "patrol",
-            "route": [76, 77],
+            "weapon": "weak_pistol",
             "health": 6
         },
         {
             "position": [216, 120],
             "mode": "patrol",
-            "route": [78, 79],
+            "weapon": "weak_pistol",
             "health": 6
         },
         {
             "position": [152, 40],
             "mode": "patrol",
-            "route": [80, 81],
+            "weapon": "weak_pistol",
             "health": 6
         }
     ]

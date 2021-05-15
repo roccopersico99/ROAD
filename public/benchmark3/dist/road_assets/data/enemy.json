@@ -4,51 +4,61 @@
         {
             "position": [232, 1912],
             "mode": "patrol",
+            "weapon": "weak_pistol",
             "health": 6
         },
         {
             "position": [168, 2008],
             "mode": "patrol",
+            "weapon": "weak_pistol",
             "health": 6
         },
         {
-            "position": [104, 2360],
+            "position": [104, 2160],
             "mode": "patrol",
+            "weapon": "weak_pistol",
             "health": 6
         },
         {
             "position": [232, 1416],
             "mode": "patrol",
+            "weapon": "weak_pistol",
             "health": 6
         },
         {
             "position": [296, 364],
             "mode": "patrol",
+            "weapon": "weak_pistol",
             "health": 6
         },
         {
             "position": [104, 624],
             "mode": "patrol",
+            "weapon": "weak_pistol",
             "health": 6
         },
         {
             "position": [168, 836],
             "mode": "patrol",
+            "weapon": "weak_pistol",
             "health": 6
         },
         {
             "position": [296, 1116],
             "mode": "patrol",
+            "weapon": "weak_pistol",
             "health": 6
         },
         {
             "position": [216, 220],
             "mode": "patrol",
+            "weapon": "weak_pistol",
             "health": 6
         },
         {
             "position": [152, 100],
             "mode": "patrol",
+            "weapon": "weak_pistol",
             "health": 6
         }
     ]

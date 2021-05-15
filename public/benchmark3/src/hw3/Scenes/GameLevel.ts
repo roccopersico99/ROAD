@@ -30,6 +30,7 @@ import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 import Layer from "../../Wolfie2D/Scene/Layer";
 import Upgrade from "./Upgrade";
 import Bullet from "../AI/Bullet";
+import Circle from "../../Wolfie2D/DataTypes/Shapes/Circle";
 
 export default class GameLevel extends Scene {
     // The player
@@ -331,7 +332,7 @@ export default class GameLevel extends Scene {
             }
 
             if(this.player.position.y > this.viewportMover.position.y + 155) {
-                this.player.position.y = this.viewportMover.position.y + 100;
+                this.player.position.y = this.player.position.y = this.viewportMover.position.y + 100;
                 (<PlayerController>this.player._ai).damage(1);
             }
 
@@ -398,9 +399,21 @@ export default class GameLevel extends Scene {
                             (<PlayerController>this.player._ai).damage(atk);
                         }
                         break;
+                    case "BallHitPlayer":
+                        let node4 = this.sceneGraph.getNode(event.data.get("node"));
+                        let other3 = this.sceneGraph.getNode(event.data.get("other"));
+
+                        if(node4 === this.player){
+                            other3.destroy();
+                            (<PlayerController>this.player._ai).damage(2);
+                        }
+                        else{
+                            node4.destroy();
+                            (<PlayerController>this.player._ai).damage(2);
+                        }
+                        break;
                     case "PlayerDamaged":
                         //console.log("player damaged");
-                        this.hpCount--;
                         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "player_damaged", loop: false, holdReference: false});
                         this.player.animation.playIfNotAlready("WALK", true);
                         //this.player.setAIActive(true, {});
@@ -425,7 +438,7 @@ export default class GameLevel extends Scene {
                         break;
                 }
             }
-
+            this.hpCount = (<PlayerController>this.player._ai).health;
             let health = this.hpCount;
 
             this.scrapCount = (<PlayerController>this.player._ai).scrap;
@@ -507,6 +520,7 @@ export default class GameLevel extends Scene {
         this.receiver.subscribe("EnemyDamaged");
         this.receiver.subscribe("GameOver");
         this.receiver.subscribe("ScrapPickup");
+        this.receiver.subscribe("BallHitPlayer");
 
         // Pause Menu Events
         this.receiver.subscribe("resume");
@@ -914,12 +928,20 @@ export default class GameLevel extends Scene {
 
             let image = data.mode;
             // Create an enemy
-            this.enemies[i] = this.add.animatedSprite(image, "primary");
+            this.enemies[i] = this.add.animatedSprite(data.mode, "primary");
             this.enemies[i].position.set(data.position[0], data.position[1]);
             this.enemies[i].animation.play("WALK", true);
 
             // Activate physics
-            this.enemies[i].addPhysics(new AABB(Vec2.ZERO, new Vec2(5, 5)));
+            switch(data.mode){
+                case "ball":
+                    this.enemies[i].addPhysics(new Circle(Vec2.ZERO, 15));
+                    this.enemies[i].setTrigger("player", "BallHitPlayer", null);
+                    break;
+                default:
+                    this.enemies[i].addPhysics(new AABB(Vec2.ZERO, new Vec2(5, 5)));
+                    break;
+            }
             this.enemies[i].setGroup("enemy");
             this.enemies[i].setTrigger("projectile1", "ProjectileHitEnemy", null);
 
@@ -932,7 +954,7 @@ export default class GameLevel extends Scene {
                 defaultMode: data.mode,  // This only matters if the're a guard
                 health: data.health,
                 player: this.player,
-                weapon: this.createWeapon("weak_pistol"),
+                weapon: this.createWeapon(data.weapon),
                 viewport: this.viewportMover
             }
 

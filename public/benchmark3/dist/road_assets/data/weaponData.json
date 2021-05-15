@@ -9,7 +9,9 @@
             "damage": 2,
             "cooldown": 500,
             "useVolume": 320,
-            "color": "#B4F9DD"
+            "color": "#B4F9DD",
+            "projectile": "projectile",
+            "speed": 300
         },
         {
             "weaponType": "semiAutoGun",
@@ -19,7 +21,10 @@
             "damage": 1,
             "cooldown": 1000,
             "useVolume": 10,
-            "color": "#000000"
+            "color": "#000000",
+            "projectile": "projectile2",
+            "speed": 250
+            
         },
         {
             "weaponType": "semiAutoGun",
@@ -29,7 +34,9 @@
             "damage": 3,
             "cooldown": 1500,
             "useVolume": 100,
-            "color": "#58D854"
+            "color": "#58D854",
+            "projectile": "laser_projectile",
+            "speed": 400
         },
         {
             "weaponType": "semiAutoGun",
@@ -37,9 +44,11 @@
             "displayName": "SMG",
             "spriteKey": "smg",
             "damage": 0.75,
-            "cooldown": 200,
+            "cooldown": 175,
             "useVolume": 150,
-            "color": "#FDBFBF"
+            "color": "#FDBFBF",
+            "projectile": "projectile",
+            "speed": 300
         }
     ]
 }

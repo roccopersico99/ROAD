@@ -111,6 +111,8 @@ export default class GameLevel extends Scene {
     protected speedStat: number;
     protected scrapGainStat: number;
 
+    protected weaponArray: Array<string>;
+
     loadScene() {}
 
     initScene(init: Record<string, any>): void {
@@ -425,12 +427,12 @@ export default class GameLevel extends Scene {
                         if(other2.group === 4){
                             let atk = (<Bullet>node3._ai).attack;
                             node3.destroy();
-                            (<EnemyAI>other2._ai).damage(atk+Math.floor(((this.damageStat-1)*(atk/5))));
+                            (<EnemyAI>other2._ai).damage((atk+((this.damageStat-1)*(atk/5))));
                         }
                         else{
                             let atk = (<Bullet>other2._ai).attack;
                             other2.destroy();
-                            (<EnemyAI>node3._ai).damage(atk+Math.floor(((this.damageStat-1)*(atk/5))));
+                            (<EnemyAI>node3._ai).damage((atk+((this.damageStat-1)*(atk/5))));
                         }
                         break;
                     case "EnemyDamaged":
@@ -795,6 +797,7 @@ export default class GameLevel extends Scene {
      */
     initializeWeapons(): void{
         let weaponData = this.load.getObject("weaponData");
+        
 
         for(let i = 0; i < weaponData.numWeapons; i++){
             let weapon = weaponData.weapons[i];
@@ -848,8 +851,10 @@ export default class GameLevel extends Scene {
         let startingWeapon = this.createWeapon("pistol");
         let nextWeapon = this.createWeapon("smg");
         inventory.addItem(prevWeapon);
-        inventory.addItem(startingWeapon);
         inventory.addItem(nextWeapon);
+        inventory.addItem(startingWeapon);
+        inventory.changeWeapon(0);
+        inventory.changeWeapon(0);
 
         // Create the player
         this.player = this.add.animatedSprite("player", "primary");

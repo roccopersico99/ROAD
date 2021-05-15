@@ -25,6 +25,10 @@ export default class SemiAutoGun extends WeaponType {
 
     name: String;
 
+    projectile: string;
+
+    speed: number;
+
     initialize(options: Record<string, any>): void {
         this.damage = options.damage;
         this.cooldown = options.cooldown;
@@ -34,6 +38,9 @@ export default class SemiAutoGun extends WeaponType {
         this.useVolume = options.useVolume;
         this.scene = options.scene;
         this.name = options.name;
+        this.projectile = options.projectile;
+        this.speed = options.speed;
+
         this.emitter = new Emitter();
     }
 
@@ -44,49 +51,67 @@ export default class SemiAutoGun extends WeaponType {
         let target = Input.getMousePosition();
 
         let bullet;
-        switch(this.name){
-            case "weak_pistol":
-                bullet = this.scene.add.animatedSprite("projectile2", "primary");
-                bullet.position.set(start.x, start.y);
-                bullet.addPhysics(new AABB(Vec2.ZERO, new Vec2(3, 3)));
-                bullet.addAI(Bullet, 
-                    {
-                        direction: direction,
-                        speed: 200,
-                        attack: 1
-                    });
-                bullet.setGroup("projectile2");
-                bullet.animation.play("FIRING", true);
-                break;
-            case "lasergun":
-                bullet = this.scene.add.animatedSprite("laser_projectile", "primary");
-                bullet.position.set(start.x, start.y);
-                bullet.addPhysics(new AABB(Vec2.ZERO, new Vec2(3, 3)));
-                bullet.addAI(Bullet, 
-                    {
-                        direction: direction,
-                        speed: 400,
-                        attack: 3
-                    });
-                bullet.setGroup("projectile1");
-                bullet.animation.play("FIRING", true);
-                this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "shot_fired", loop: false, holdReference: false});
-                break;
-            default:
-                bullet = this.scene.add.animatedSprite("projectile", "primary");
-                bullet.position.set(start.x, start.y);
-                bullet.addPhysics(new AABB(Vec2.ZERO, new Vec2(3, 3)));
-                bullet.addAI(Bullet, 
-                    {
-                        direction: direction,
-                        speed: 300,
-                        attack: 1
-                    });
-                bullet.setGroup("projectile1");
-                bullet.animation.play("FIRING", true);
-                this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "shot_fired", loop: false, holdReference: false});
-                break;
+
+        bullet = this.scene.add.animatedSprite(this.projectile, "primary");
+        bullet.position.set(start.x, start.y);
+        bullet.addPhysics(new AABB(Vec2.ZERO, new Vec2(3, 3)));
+        bullet.addAI(Bullet, 
+            {
+                direction: direction,
+                speed: this.speed,
+                attack: this.damage
+            });
+        if(this.name == "weak_pistol"){
+            bullet.setGroup("projectile2");
         }
+        else {
+            bullet.setGroup("projectile1");
+        }
+        bullet.animation.play("FIRING", true);
+
+        // switch(this.name){
+        //     case "weak_pistol":
+        //         bullet = this.scene.add.animatedSprite(this.projectile, "primary");
+        //         bullet.position.set(start.x, start.y);
+        //         bullet.addPhysics(new AABB(Vec2.ZERO, new Vec2(3, 3)));
+        //         bullet.addAI(Bullet, 
+        //             {
+        //                 direction: direction,
+        //                 speed: 200,
+        //                 attack: 1
+        //             });
+        //         bullet.setGroup("projectile2");
+        //         bullet.animation.play("FIRING", true);
+        //         break;
+        //     case "lasergun":
+        //         bullet = this.scene.add.animatedSprite("laser_projectile", "primary");
+        //         bullet.position.set(start.x, start.y);
+        //         bullet.addPhysics(new AABB(Vec2.ZERO, new Vec2(3, 3)));
+        //         bullet.addAI(Bullet, 
+        //             {
+        //                 direction: direction,
+        //                 speed: 400,
+        //                 attack: 3
+        //             });
+        //         bullet.setGroup("projectile1");
+        //         bullet.animation.play("FIRING", true);
+        //         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "shot_fired", loop: false, holdReference: false});
+        //         break;
+        //     default:
+        //         bullet = this.scene.add.animatedSprite("projectile", "primary");
+        //         bullet.position.set(start.x, start.y);
+        //         bullet.addPhysics(new AABB(Vec2.ZERO, new Vec2(3, 3)));
+        //         bullet.addAI(Bullet, 
+        //             {
+        //                 direction: direction,
+        //                 speed: 300,
+        //                 attack: 1
+        //             });
+        //         bullet.setGroup("projectile1");
+        //         bullet.animation.play("FIRING", true);
+        //         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "shot_fired", loop: false, holdReference: false});
+        //         break;
+        // }
         // bullet.position.set(start.x, start.y);
         // bullet.addPhysics(new AABB(Vec2.ZERO, new Vec2(4, 4)));
         // bullet.addAI(Bullet, 

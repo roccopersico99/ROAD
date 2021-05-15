@@ -83,6 +83,8 @@ export default class Upgrade extends Scene {
         this.load.spritesheet("car", "road_assets/spritesheets/car.json");
         this.load.image("statBar", "road_assets/sprites/statbar.png");
         this.load.image("scrap", "road_assets/sprites/scrap.png");
+        this.load.image("inventorySlot", "road_assets/sprites/inventory.png");
+
         // Load music tracks
         this.load.audio("music", "road_assets/music/outro.mp3");
     }

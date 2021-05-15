@@ -10,7 +10,7 @@ export default class Level3_1 extends GameLevel {
     loadScene(){
         //Load the player and enemy spritesheets
         this.load.spritesheet("player", "road_assets/spritesheets/car.json");
-        this.load.spritesheet("patrol", "road_assets/spritesheets/truck.json");
+        this.load.spritesheet("patrol", "road_assets/spritesheets/camo_truck.json");
         this.load.spritesheet("projectile", "road_assets/spritesheets/projectile.json");
         this.load.spritesheet("projectile2", "road_assets/spritesheets/projectile2.json");
         this.load.spritesheet("laser_projectile", "road_assets/spritesheets/laser_projectile.json");

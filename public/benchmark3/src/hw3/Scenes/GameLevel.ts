@@ -425,12 +425,12 @@ export default class GameLevel extends Scene {
                         if(other2.group === 4){
                             let atk = (<Bullet>node3._ai).attack;
                             node3.destroy();
-                            (<EnemyAI>other2._ai).damage(atk);
+                            (<EnemyAI>other2._ai).damage(atk+Math.floor(((this.damageStat-1)*(atk/5))));
                         }
                         else{
                             let atk = (<Bullet>other2._ai).attack;
                             other2.destroy();
-                            (<EnemyAI>node3._ai).damage(atk);
+                            (<EnemyAI>node3._ai).damage(atk+Math.floor(((this.damageStat-1)*(atk/5))));
                         }
                         break;
                     case "EnemyDamaged":
@@ -798,10 +798,11 @@ export default class GameLevel extends Scene {
 
         for(let i = 0; i < weaponData.numWeapons; i++){
             let weapon = weaponData.weapons[i];
-            weapon["scene"] = this;
-            // use to change weapon damage using player stat
-            // weapon.damage = 10;
-            // console.log(weapon);
+            weapon.scene = this;
+            
+            // console.log("before: " + weapon.damage);
+            // weapon.damage += Math.floor(((this.damageStat-1)*(weapon.damage/5)));
+            // console.log("after: " + weapon.damage);
             // console.log(weapon.displayName + ": " + weapon.damage);
 
             // Get the constructor of the prototype

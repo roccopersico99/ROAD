@@ -455,7 +455,7 @@ export default class MainMenu extends Scene {
                         ]
                     }
                 }
-                this.sceneManager.changeToScene(Level1_1, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1}, sceneOptions);
+                this.sceneManager.changeToScene(Level1_1, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1, weaponArray: ["pistol"]}, sceneOptions);
                 this.gear.visible = false;
                 this.car.visible = false;
                 this.logo.visible = false;
@@ -475,7 +475,7 @@ export default class MainMenu extends Scene {
                         ]
                     }
                 }
-                this.sceneManager.changeToScene(Level1_2, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1}, sceneOptions);
+                this.sceneManager.changeToScene(Level1_2, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1, weaponArray: ["pistol"]}, sceneOptions);
                 this.gear.visible = false;
                 this.car.visible = false;
                 this.logo.visible = false;
@@ -495,7 +495,7 @@ export default class MainMenu extends Scene {
                         ]
                     }
                 }
-                this.sceneManager.changeToScene(Level2_1, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1}, sceneOptions);
+                this.sceneManager.changeToScene(Level2_1, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1, weaponArray: ["pistol"]}, sceneOptions);
                 this.gear.visible = false;
                 this.car.visible = false;
                 this.logo.visible = false;
@@ -515,7 +515,7 @@ export default class MainMenu extends Scene {
                         ]
                     }
                 }
-                this.sceneManager.changeToScene(Level2_2, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1}, sceneOptions);
+                this.sceneManager.changeToScene(Level2_2, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1, weaponArray: ["pistol"]}, sceneOptions);
                 this.gear.visible = false;
                 this.car.visible = false;
                 this.logo.visible = false;
@@ -535,7 +535,7 @@ export default class MainMenu extends Scene {
                         ]
                     }
                 }
-                this.sceneManager.changeToScene(Level3_1, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1}, sceneOptions);
+                this.sceneManager.changeToScene(Level3_1, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1, weaponArray: ["pistol"]}, sceneOptions);
                 this.gear.visible = false;
                 this.car.visible = false;
                 this.logo.visible = false;
@@ -555,7 +555,7 @@ export default class MainMenu extends Scene {
                         ]
                     }
                 }
-                this.sceneManager.changeToScene(Level3_2, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1}, sceneOptions);
+                this.sceneManager.changeToScene(Level3_2, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1, weaponArray: ["pistol"]}, sceneOptions);
                 this.gear.visible = false;
                 this.car.visible = false;
                 this.logo.visible = false;

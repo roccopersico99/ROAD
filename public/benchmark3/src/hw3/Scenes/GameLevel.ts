@@ -406,13 +406,19 @@ export default class GameLevel extends Scene {
                         let other3 = this.sceneGraph.getNode(event.data.get("other"));
 
                         if(node4 === this.player){
-                            other3.destroy();
+                            other3.disablePhysics();
+                            (<AnimatedSprite>other3).animation.play("CRUMBLE", false, "BallCrumble");
                             (<PlayerController>this.player._ai).damage(2);
                         }
                         else{
-                            node4.destroy();
+                            other3.disablePhysics();
+                            (<AnimatedSprite>other3).animation.play("CRUMBLE", false, "BallCrumble");
                             (<PlayerController>this.player._ai).damage(2);
                         }
+                        break;
+                    case "BallCrumble":
+                        let ball = this.sceneGraph.getNode(event.data.get("owner"));
+                        ball.destroy();
                         break;
                     case "PlayerDamaged":
                         //console.log("player damaged");
@@ -435,6 +441,17 @@ export default class GameLevel extends Scene {
                             (<EnemyAI>node3._ai).damage((atk+((this.damageStat-1)*(atk/5))));
                         }
                         break;
+                    case "ProjectileHitBall":
+                            let node5 = this.sceneGraph.getNode(event.data.get("node"));
+                            let other4 = this.sceneGraph.getNode(event.data.get("other"));
+    
+                            if(other4.group === 4){
+                                node5.destroy();
+                            }
+                            else{
+                                other4.destroy();
+                            }
+                            break;
                     case "EnemyDamaged":
                         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "enemy_damaged", loop: false, holdReference: false});
                         break;
@@ -523,6 +540,8 @@ export default class GameLevel extends Scene {
         this.receiver.subscribe("GameOver");
         this.receiver.subscribe("ScrapPickup");
         this.receiver.subscribe("BallHitPlayer");
+        this.receiver.subscribe("BallCrumble");
+        this.receiver.subscribe("ProjectileHitBall");
 
         // Pause Menu Events
         this.receiver.subscribe("resume");
@@ -943,13 +962,15 @@ export default class GameLevel extends Scene {
                 case "ball":
                     this.enemies[i].addPhysics(new Circle(Vec2.ZERO, 15));
                     this.enemies[i].setTrigger("player", "BallHitPlayer", null);
+                    this.enemies[i].setTrigger("projectile1", "ProjectileHitBall", null);
                     break;
                 default:
                     this.enemies[i].addPhysics(new AABB(Vec2.ZERO, new Vec2(5, 5)));
+                    this.enemies[i].setTrigger("projectile1", "ProjectileHitEnemy", null);
                     break;
             }
             this.enemies[i].setGroup("enemy");
-            this.enemies[i].setTrigger("projectile1", "ProjectileHitEnemy", null);
+            // this.enemies[i].setTrigger("projectile1", "ProjectileHitEnemy", null);
 
 
             if(data.guardPosition){

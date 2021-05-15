@@ -41,9 +41,9 @@ export default class Ball extends EnemyState {
         if(this.owner.position.y > this.parent.viewport.position.y + 150){
             this.owner.destroy();
         }
-        if(this.owner.position.y >= this.parent.viewport.position.y - 130){
+        if(this.owner.position.y >= this.parent.viewport.position.y - 150){
             if(this.owner.position.y > 30){
-                this.owner.position.add(Vec2.DOWN.scaled(16 * deltaT));
+                this.owner.position.add(Vec2.DOWN.scaled(32 * deltaT));
             }
         }
     }

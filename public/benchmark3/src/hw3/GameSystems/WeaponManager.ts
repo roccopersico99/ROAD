@@ -42,13 +42,18 @@ export default class WeaponManager {
 
         // Position the inventory slots
         for(let i = 0; i < size; i++){
-            this.inventorySlots[i].position.set(position.x + i*(this.slotSize.x + this.padding), position.y);
+            if(i < 3){
+                this.inventorySlots[i].position.set(position.x + i*(this.slotSize.x + this.padding), position.y);
+            }
+            else {
+                this.inventorySlots[i].position.set(position.x + (i-3)*(this.slotSize.x + this.padding), position.y+18);
+            }
         }
 
         // Add a rect for the selected slot
         this.selectedSlot = <Rect>scene.add.graphic(GraphicType.RECT, "slots", {position: this.position.clone(), size: this.slotSize.clone().inc(-2)});
         this.selectedSlot.color = Color.WHITE;
-        this.selectedSlot.color.a = 0.2;
+        this.selectedSlot.color.a = 0.4;
     }
 
     getItem(): Item {
@@ -79,7 +84,13 @@ export default class WeaponManager {
      */
     addItem(item: Item): void {
         this.items[this.itemCount] = item;
-        item.moveSprite(new Vec2(this.position.x + (this.itemCount)*(this.slotSize.x + this.padding), this.position.y), this.itemLayer);
+        let y = this.position.y
+        let offset = this.itemCount;
+        if(this.itemCount > 2){
+            y = this.position.y+18
+            offset = this.itemCount-3;
+        }
+        item.moveSprite(new Vec2(this.position.x + (offset)*(this.slotSize.x + this.padding), y), this.itemLayer);
         this.itemCount++;
     }
 

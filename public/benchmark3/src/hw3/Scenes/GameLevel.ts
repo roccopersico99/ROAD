@@ -114,6 +114,8 @@ export default class GameLevel extends Scene {
 
     protected weaponArray: Array<string>;
 
+    protected inventory: Array<Weapon>;
+
     loadScene() {}
 
     initScene(init: Record<string, any>): void {
@@ -179,6 +181,14 @@ export default class GameLevel extends Scene {
             console.log("using init scrapGainStat");
             this.scrapGainStat = init.scrapGainStat;
         }
+        if(init.weaponArray == undefined){
+            console.log("using default weaponArray");
+            this.weaponArray = ["pistol", "", ""];
+        }
+        else{
+            console.log("using init weaponArray");
+            this.weaponArray = init.weaponArray;
+        }
     }
 
     startScene(){
@@ -188,6 +198,8 @@ export default class GameLevel extends Scene {
 
         // Create the battle manager
         this.battleManager = new BattleManager();
+
+        //this.weaponArray = new Array();
 
         // Initialize the items array - this represents items that are in the game world
         this.items = new Array();
@@ -723,7 +735,7 @@ export default class GameLevel extends Scene {
 
     moveToNextScene(): void {
         console.log("moving to upgrade screen...")
-        this.sceneManager.changeToScene(Upgrade, {nextLevel: this.nextLevel, maxHP: this.maxHP, scrapCount: this.scrapCount, healthStat: this.healthStat, damageStat: this.damageStat, speedStat: this.speedStat, scrapGainStat: this.scrapGainStat});
+        this.sceneManager.changeToScene(Upgrade, {nextLevel: this.nextLevel, maxHP: this.maxHP, scrapCount: this.scrapCount, healthStat: this.healthStat, damageStat: this.damageStat, speedStat: this.speedStat, scrapGainStat: this.scrapGainStat, weaponArray: this.weaponArray});
     }
 
     // HOMEWORK 3 - TODO - DONE
@@ -866,13 +878,11 @@ export default class GameLevel extends Scene {
 
     initializePlayer(): void {
         // Create the inventory
-        let inventory = new WeaponManager(this, 3, "inventorySlot", new Vec2(352, 15), 0);
-        let laserWeapon = this.createWeapon("lasergun");
-        let pistolWeapon = this.createWeapon("pistol");
-        let smgWeapon = this.createWeapon("smg");
-        inventory.addItem(laserWeapon);
-        inventory.addItem(pistolWeapon);
-        inventory.addItem(smgWeapon);
+        let inventory = new WeaponManager(this, 6, "inventorySlot", new Vec2(352, 15), 0);
+        
+        for(let i = 0; i < this.weaponArray.length; i++){
+            inventory.addItem(this.createWeapon(this.weaponArray[i]));
+        }
 
         // Create the player
         this.player = this.add.animatedSprite("player", "primary");

@@ -32,11 +32,11 @@
             "displayName": "LaserGun",
             "spriteKey": "lasergun",
             "damage": 3,
-            "cooldown": 1500,
+            "cooldown": 1000,
             "useVolume": 100,
             "color": "#58D854",
             "projectile": "laser_projectile",
-            "speed": 400
+            "speed": 600
         },
         {
             "weaponType": "semiAutoGun",

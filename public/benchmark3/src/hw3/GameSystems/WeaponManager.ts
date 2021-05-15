@@ -13,18 +13,19 @@ export default class WeaponManager {
     private inventorySlots: Array<Sprite>;
     private slotSize: Vec2;
     private padding: number;
+    private currentSlot: number;
     private slotLayer: string;
     private itemLayer: string;
-    private slots: number;
-    private currentSlot: number;
+    private selectedSlot: Rect;
+    private itemCount: number;
 
-    constructor(scene: Scene, inventorySlot: string, inventorySlot2x: string, position: Vec2){
-        this.slots = 3;
-        this.items = new Array(this.slots);
-        this.inventorySlots = new Array(this.slots);
-        this.padding = 5.3;
+    constructor(scene: Scene, size: number, inventorySlot: string, position: Vec2, padding: number){
+        this.items = new Array(size);
+        this.itemCount = 0;
+        this.inventorySlots = new Array(size);
+        this.padding = padding;
         this.position = position;
-        this.currentSlot = 1;
+        this.currentSlot = 0;
 
         // Add layers
         this.slotLayer = "slots";
@@ -33,76 +34,84 @@ export default class WeaponManager {
         scene.addUILayer(this.itemLayer).setDepth(101);
 
         // Create the inventory slots
-        this.inventorySlots[0] = scene.add.sprite(inventorySlot, this.slotLayer);
-        this.inventorySlots[1] = scene.add.sprite(inventorySlot2x, this.slotLayer);
-        this.inventorySlots[2] = scene.add.sprite(inventorySlot, this.slotLayer);
+        for(let i = 0; i < size; i++){
+            this.inventorySlots[i] = scene.add.sprite(inventorySlot, this.slotLayer);
+        }
 
         this.slotSize = this.inventorySlots[0].size.clone();
 
-        this.inventorySlots[0].position.set(position.x + 0*(this.slotSize.x + this.padding), position.y);
-        this.inventorySlots[1].position.set(position.x + 1*(this.slotSize.x + this.padding), position.y);
-        this.inventorySlots[2].position.set(position.x + 2*(this.slotSize.x + this.padding), position.y);
+        // Position the inventory slots
+        for(let i = 0; i < size; i++){
+            this.inventorySlots[i].position.set(position.x + i*(this.slotSize.x + this.padding), position.y);
+        }
+
+        // Add a rect for the selected slot
+        this.selectedSlot = <Rect>scene.add.graphic(GraphicType.RECT, "slots", {position: this.position.clone(), size: this.slotSize.clone().inc(-2)});
+        this.selectedSlot.color = Color.WHITE;
+        this.selectedSlot.color.a = 0.2;
     }
 
     getItem(): Item {
         return this.items[this.currentSlot];
     }
 
-    getCurrSlot(): number {
+    /**
+     * Changes the currently selected slot
+     */
+    changeSlot(slot: number): void {
+        this.currentSlot = slot;
+        this.selectedSlot.position.copy(this.inventorySlots[slot].position);
+    }
+
+    setSlot(slot: number): void {
+        this.currentSlot = slot;
+    }
+
+    /**
+     * Gets the currently selected slot
+     */
+    getSlot(): number {
         return this.currentSlot;
     }
 
     /**
      * Adds an item to the currently selected slot
      */
-    addItem(item: Item): boolean {
-        if(!this.items[0]){
-            this.currentSlot = 0;
-            this.items[0] = item;
-            item.moveSprite(new Vec2(this.position.x + 0*(this.slotSize.x + this.padding), this.position.y), this.itemLayer);
-            return true;
-        } else {
-            if(!this.items[2]) {
-                this.currentSlot = 2;
-                this.items[2] = item;
-                item.moveSprite(new Vec2(this.position.x + 2*(this.slotSize.x + this.padding), this.position.y), this.itemLayer);
-                return true;
-            } else {
-                if(!this.items[1]){
-                    this.currentSlot = 1;
-                    this.items[1] = item;
-                    item.moveSprite(new Vec2(this.position.x + 1*(this.slotSize.x + this.padding), this.position.y), this.itemLayer);
-                    return true;
-                }
-            }
-        }
-        
-        // Failed to add item, something was already in the slot
-        return false;
+    addItem(item: Item): void {
+        this.items[this.itemCount] = item;
+        item.moveSprite(new Vec2(this.position.x + (this.itemCount)*(this.slotSize.x + this.padding), this.position.y), this.itemLayer);
+        this.itemCount++;
     }
 
-    changeWeapon(slot: number): void {
-        if(slot === 2){
-            let tempItem = this.items[1];
-            this.items[1] = this.items[slot];
-            this.items[slot] = this.items[0];
-            this.items[0] = tempItem;
-                
-            // Update the gui
-            tempItem.moveSprite(new Vec2(this.position.x , this.position.y), this.itemLayer);
-            this.items[1].moveSprite(new Vec2(this.position.x + (this.slotSize.x + this.padding), this.position.y), this.itemLayer);
-            this.items[slot].moveSprite(new Vec2(this.position.x + slot*(this.slotSize.x + this.padding), this.position.y), this.itemLayer);
+    changeWeapon(right: boolean): void {
+        if(right){
+            this.currentSlot++;
+            if(this.currentSlot == this.itemCount) {
+                this.currentSlot = 0;
+            }
+            this.changeSlot(this.currentSlot);
         }
-        else if(slot === 0){
-            let tempItem = this.items[1];
-            this.items[1] = this.items[slot];
-            this.items[slot] = this.items[2];
-            this.items[2] = tempItem;
-                
-            // Update the gui
-            tempItem.moveSprite(new Vec2(this.position.x + 2*(this.slotSize.x + this.padding), this.position.y), this.itemLayer);
-            this.items[1].moveSprite(new Vec2(this.position.x + (this.slotSize.x + this.padding), this.position.y), this.itemLayer);
-            this.items[slot].moveSprite(new Vec2(this.position.x + slot*(this.slotSize.x + this.padding), this.position.y), this.itemLayer);
+        else {
+            this.currentSlot--;
+            if(this.currentSlot == -1) {
+                this.currentSlot = this.itemCount-1;
+            }
+            this.changeSlot(this.currentSlot);
+        }
+    }
+
+    /**
+     * Removes and returns an item from the the currently selected slot, if possible
+     */
+    removeItem(): Item {
+        let item = this.items[this.currentSlot];
+
+        this.items[this.currentSlot] = null;
+
+        if(item){
+            return item;
+        } else {
+            return null;
         }
     }
 }

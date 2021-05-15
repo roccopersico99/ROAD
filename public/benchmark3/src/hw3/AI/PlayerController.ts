@@ -151,11 +151,11 @@ export default class PlayerController implements BattlerAI {
         if(Input.didJustScroll()){
              // User scrolled down
             if(Input.getScrollDirection() === 1){
-                this.inventory.changeWeapon(2);
+                this.inventory.changeWeapon(true);
             }
             // User scrolled up
             else {
-                this.inventory.changeWeapon(0);
+                this.inventory.changeWeapon(false);
             }
         }
 

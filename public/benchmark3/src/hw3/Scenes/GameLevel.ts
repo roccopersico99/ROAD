@@ -31,6 +31,7 @@ import Layer from "../../Wolfie2D/Scene/Layer";
 import Upgrade from "./Upgrade";
 import Bullet from "../AI/Bullet";
 import Circle from "../../Wolfie2D/DataTypes/Shapes/Circle";
+import InventoryManager from "../GameSystems/InventoryManager";
 
 export default class GameLevel extends Scene {
     // The player
@@ -846,15 +847,13 @@ export default class GameLevel extends Scene {
 
     initializePlayer(): void {
         // Create the inventory
-        let inventory = new WeaponManager(this, "inventorySlot", "inventorySlot2x", new Vec2(348, 20));
-        let prevWeapon = this.createWeapon("lasergun");
-        let startingWeapon = this.createWeapon("pistol");
-        let nextWeapon = this.createWeapon("smg");
-        inventory.addItem(prevWeapon);
-        inventory.addItem(nextWeapon);
-        inventory.addItem(startingWeapon);
-        inventory.changeWeapon(0);
-        inventory.changeWeapon(0);
+        let inventory = new WeaponManager(this, 3, "inventorySlot", new Vec2(352, 15), 0);
+        let laserWeapon = this.createWeapon("lasergun");
+        let pistolWeapon = this.createWeapon("pistol");
+        let smgWeapon = this.createWeapon("smg");
+        inventory.addItem(laserWeapon);
+        inventory.addItem(pistolWeapon);
+        inventory.addItem(smgWeapon);
 
         // Create the player
         this.player = this.add.animatedSprite("player", "primary");

@@ -11,6 +11,7 @@ export default class Level2_1 extends GameLevel {
         //Load the player and enemy spritesheets
         this.load.spritesheet("player", "road_assets/spritesheets/car.json");
         this.load.spritesheet("patrol", "road_assets/spritesheets/ice_truck.json");
+        this.load.spritesheet("ball", "road_assets/spritesheets/snowball.json");
         this.load.spritesheet("projectile", "road_assets/spritesheets/projectile.json");
         this.load.spritesheet("projectile2", "road_assets/spritesheets/projectile2.json");
         this.load.spritesheet("laser_projectile", "road_assets/spritesheets/laser_projectile.json");
@@ -23,7 +24,7 @@ export default class Level2_1 extends GameLevel {
         this.load.object("navmesh", "road_assets/data/my-navmesh.json");
 
         // Load in the enemy info
-        this.load.object("enemyData", "road_assets/data/enemy1_2.json");
+        this.load.object("enemyData", "road_assets/data/enemy2_1.json");
 
         // Load in item info
         this.load.object("itemData", "road_assets/data/items.json");

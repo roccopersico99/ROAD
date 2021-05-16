@@ -1,5 +1,5 @@
 {
-    "numEnemies": 42,
+    "numEnemies": 40,
     "enemies": [
         {
             "position": [136, 2200],
@@ -116,12 +116,6 @@
             "health": 3
         },
         {   
-            "position": [88, 1560],
-            "mode": "patrol",
-            "weapon": "weak_pistol",
-            "health": 6
-        },
-        {   
             "position": [120, 1528],
             "mode": "patrol",
             "weapon": "weak_pistol",
@@ -133,20 +127,14 @@
             "weapon": "weak_pistol",
             "health": 6
         },
-        {   
-            "position": [312, 1560],
-            "mode": "patrol",
-            "weapon": "weak_pistol",
-            "health": 6
-        },
         {
-            "position": [168, 1048],
+            "position": [136, 1048],
             "mode": "tower",
             "weapon": "weak_pistol",
             "health": 6
         },
         {
-            "position": [232, 1048],
+            "position": [264, 1048],
             "mode": "tower",
             "weapon": "weak_pistol",
             "health": 6

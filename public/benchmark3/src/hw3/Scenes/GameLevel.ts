@@ -881,8 +881,8 @@ export default class GameLevel extends Scene {
         let inventory = new WeaponManager(this, 6, "inventorySlot", new Vec2(352, 15), 0);
         
         for(let i = 0; i < this.weaponArray.length; i++){
-            // inventory.addItem(this.createWeapon(this.weaponArray[i]));
-            inventory.addItem(this.createWeapon("sniper"));
+            inventory.addItem(this.createWeapon(this.weaponArray[i]));
+            //inventory.addItem(this.createWeapon("sniper"));
         }
 
         // Create the player

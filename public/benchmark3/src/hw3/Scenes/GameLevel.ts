@@ -183,7 +183,7 @@ export default class GameLevel extends Scene {
         }
         if(init.weaponArray == undefined){
             console.log("using default weaponArray");
-            this.weaponArray = ["pistol", "", ""];
+            this.weaponArray = ["pistol"];
         }
         else{
             console.log("using init weaponArray");
@@ -445,12 +445,16 @@ export default class GameLevel extends Scene {
 
                         if(other2.group === 4){
                             let atk = (<Bullet>node3._ai).attack;
-                            node3.destroy();
+                            node3.visible = false;
+                            node3.disablePhysics();
+                            //node3.destroy();
                             (<EnemyAI>other2._ai).damage((atk+((this.damageStat-1)*(atk/5))));
                         }
                         else{
                             let atk = (<Bullet>other2._ai).attack;
-                            other2.destroy();
+                            other2.visible = false;
+                            other2.disablePhysics();
+                            //other2.destroy();
                             (<EnemyAI>node3._ai).damage((atk+((this.damageStat-1)*(atk/5))));
                         }
                         break;

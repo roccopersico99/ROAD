@@ -9,7 +9,7 @@ export default class Line extends Graphic {
         super();
         this.start = start;
         this.end = end;
-        this.thickness = 2;
+        this.thickness = 3;
 
         // Does this really have a meaning for lines?
         this.size.set(5, 5);

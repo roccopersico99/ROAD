@@ -11,6 +11,8 @@ export default class Level1_2 extends GameLevel {
         //Load the player and enemy spritesheets
         this.load.spritesheet("player", "road_assets/spritesheets/car.json");
         this.load.spritesheet("patrol", "road_assets/spritesheets/truck.json");
+        this.load.spritesheet("tower", "road_assets/spritesheets/turret.json");
+        this.load.spritesheet("barricade", "road_assets/spritesheets/barricade.json");
         this.load.spritesheet("projectile", "road_assets/spritesheets/projectile.json");
         this.load.spritesheet("projectile2", "road_assets/spritesheets/projectile2.json");
         this.load.spritesheet("laser_projectile", "road_assets/spritesheets/laser_projectile.json");
@@ -95,6 +97,8 @@ export default class Level1_2 extends GameLevel {
         this.resourceManager.keepImage("cursor");
         this.resourceManager.keepSpritesheet("player");
         this.resourceManager.keepSpritesheet("patrol");
+        this.resourceManager.keepSpritesheet("tower");
+        this.resourceManager.keepSpritesheet("barricade");
         this.resourceManager.keepSpritesheet("projectile");
         this.resourceManager.keepSpritesheet("projectile2");
         this.resourceManager.keepSpritesheet("laser_projectile");

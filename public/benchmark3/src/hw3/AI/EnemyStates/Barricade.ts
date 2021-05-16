@@ -11,7 +11,7 @@ export default class Barricade extends EnemyState {
     // A return object for exiting this state
     protected retObj: Record<string, any>;
 
-    constructor(parent: EnemyAI, owner: GameNode, patrolRoute: Array<Vec2>){
+    constructor(parent: EnemyAI, owner: GameNode){
         super(parent, owner);
 
     }
@@ -40,13 +40,6 @@ export default class Barricade extends EnemyState {
         }
         if(this.owner.position.y > this.parent.viewport.position.y + 150){
             this.owner.destroy();
-        }
-        if(this.owner.position.y >= this.parent.viewport.position.y - 125){
-            let dir = this.parent.player.position.clone().sub(this.owner.position).normalize();
-            dir.rotateCCW(Math.PI / 4 * Math.random() - Math.PI/8);
-            if(this.owner.weaponActive){
-                this.parent.weapon.use(this.owner, "enemy", dir);
-            }
         }
     }
 

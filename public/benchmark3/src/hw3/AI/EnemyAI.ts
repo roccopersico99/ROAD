@@ -15,6 +15,7 @@ import BattlerAI from "./BattlerAI";
 import Alert from "./EnemyStates/Alert";
 import Attack from "./EnemyStates/Attack";
 import Ball from "./EnemyStates/Ball";
+import Barricade from "./EnemyStates/Barricade";
 import Guard from "./EnemyStates/Guard";
 import Patrol from "./EnemyStates/Patrol";
 import Tower from "./EnemyStates/Tower";
@@ -48,7 +49,10 @@ export default class EnemyAI extends StateMachineAI implements BattlerAI {
                 this.addState(EnemyStates.DEFAULT, new Patrol(this, owner, options.patrolRoute));
                 break;
             case "tower":
-                this.addState(EnemyStates.DEFAULT, new Tower(this, owner, options.guardPosition));
+                this.addState(EnemyStates.DEFAULT, new Tower(this, owner));
+                break;
+            case "barricade":
+                this.addState(EnemyStates.DEFAULT, new Barricade(this, owner));
                 break;
             case "ball":
                 this.addState(EnemyStates.DEFAULT, new Ball(this, owner));

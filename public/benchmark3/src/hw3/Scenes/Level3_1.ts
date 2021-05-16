@@ -65,6 +65,9 @@ export default class Level3_1 extends GameLevel {
         this.load.audio("explode3", "road_assets/sounds/explode3.mp3");
         this.load.audio("scrap_pickup", "road_assets/sounds/SCRAP.mp3");
         this.load.audio("shot_fired", "road_assets/sounds/shoot1.mp3");
+        this.load.audio("laser_fired", "road_assets/sounds/laser_firing.mp3");
+        this.load.audio("shotgun_fired", "road_assets/sounds/shotgun_firing.mp3");
+        this.load.audio("sniper_fired", "road_assets/sounds/sniper_firing.mp3");
         
         // Load pause image
         this.load.image("pauseImage", "road_assets/sprites/pauseimage.png");
@@ -81,6 +84,9 @@ export default class Level3_1 extends GameLevel {
         this.resourceManager.keepAudio("explode3");
         this.resourceManager.keepAudio("scrap_pickup");
         this.resourceManager.keepAudio("shot_fired");
+        this.resourceManager.keepAudio("laser_fired");
+        this.resourceManager.keepAudio("shotgun_fired");
+        this.resourceManager.keepAudio("sniper_fired");
         this.resourceManager.keepAudio("music");
         this.resourceManager.keepImage("scrap");
         this.resourceManager.keepImage("inventorySlot");

@@ -101,6 +101,7 @@ export default class SemiAutoGun extends WeaponType {
                 
                 bullet3.setGroup("projectile1");
                 bullet3.animation.play("FIRING", true);
+                this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "shotgun_fired", loop: false, holdReference: false});
                 break;
             case "weak_shotgun":
                 dir2 = dir2.rotateCCW(0.18);
@@ -143,6 +144,7 @@ export default class SemiAutoGun extends WeaponType {
                 
                 bullet3.setGroup("projectile2");
                 bullet3.animation.play("FIRING", true);
+                this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "shotgun_fired", loop: false, holdReference: false});
                 break;
             case "auto_shotgun":
                 dir2 = dir2.rotateCCW(0.12);
@@ -211,6 +213,7 @@ export default class SemiAutoGun extends WeaponType {
                     });
                 bullet5.setGroup("projectile1");
                 bullet5.animation.play("FIRING", true);
+                this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "shotgun_fired", loop: false, holdReference: false});
                 break;
             case "sniper":
                 let minX = Math.min(start.x, end.x);
@@ -247,8 +250,22 @@ export default class SemiAutoGun extends WeaponType {
 
                 line.start = start;
                 line.end = end;
-
+                this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "sniper_fired", loop: false, holdReference: false});
                 line.tweens.play("fade");
+                break;
+            case "lasergun":
+                bullet = this.scene.add.animatedSprite(this.projectile, "primary");
+                bullet.position.set(start.x, start.y);
+                bullet.addPhysics(new AABB(Vec2.ZERO, new Vec2(2, 2)));
+                bullet.addAI(Bullet, 
+                    {
+                        direction: direction,
+                        speed: this.speed,
+                        attack: this.damage
+                    });
+                bullet.setGroup("projectile1");
+                bullet.animation.play("FIRING", true);
+                this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "laser_fired", loop: false, holdReference: false});
                 break;
             default:
                 bullet = this.scene.add.animatedSprite(this.projectile, "primary");
@@ -267,6 +284,7 @@ export default class SemiAutoGun extends WeaponType {
                     bullet.setGroup("projectile1");
                 }
                 bullet.animation.play("FIRING", true);
+                this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "shot_fired", loop: false, holdReference: false});
                 break;
         }
     }

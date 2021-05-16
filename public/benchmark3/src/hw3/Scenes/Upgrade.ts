@@ -428,7 +428,7 @@ export default class Upgrade extends Scene {
                             ]
                         }
                     }
-                    this.sceneManager.changeToScene(this.nextLevel, {maxHP: this.maxHP, scrapCount: this.scrapCount, healthStat: this.currentHealth, damageStat: this.currentDamage, speedStat: this.currentSpeed, scrapGainStat: this.currentScrapGain}, sceneOptions);
+                    this.sceneManager.changeToScene(this.nextLevel, {maxHP: this.maxHP, scrapCount: this.scrapCount, healthStat: this.currentHealth, damageStat: this.currentDamage, speedStat: this.currentSpeed, scrapGainStat: this.currentScrapGain, weaponArray: ["pistol"]}, sceneOptions);
                     // switch(this.nextLevel) {
                     //     case "1-2":
                     //         this.sceneManager.changeToScene(Level1_2, {maxHP: this.maxHP, scrapCount: this.scrapCount});

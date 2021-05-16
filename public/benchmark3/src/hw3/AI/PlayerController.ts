@@ -167,7 +167,7 @@ export default class PlayerController implements BattlerAI {
                 console.log("picked up scrap");
                 this.emitter.fireEvent("ScrapPickup", {position: item.sprite.position.clone()});
                 item.sprite.position.set(9999,9999);
-                this.scrap += Math.floor((((this.scrapGainStat-1)*0.2)+1)*50);
+                this.scrap += Math.floor((((this.scrapGainStat-1)*0.2)+1)*35);
                 //this.scrap += Math.floor((((this.scrapGainStat-1)*0.2)+1)*((Math.random()*26)+10));
             }
         }

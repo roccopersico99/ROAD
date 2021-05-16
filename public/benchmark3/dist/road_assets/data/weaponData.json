@@ -1,5 +1,5 @@
 {
-    "numWeapons": 4,
+    "numWeapons": 7,
     "weapons": [
         {
             "weaponType": "semiAutoGun",
@@ -19,7 +19,7 @@
             "displayName": "WeakPistol",
             "spriteKey": "pistol",
             "damage": 1,
-            "cooldown": 1000,
+            "cooldown": 1100,
             "useVolume": 10,
             "color": "#000000",
             "projectile": "projectile2",
@@ -47,6 +47,42 @@
             "cooldown": 175,
             "useVolume": 150,
             "color": "#FDBFBF",
+            "projectile": "projectile",
+            "speed": 300
+        },
+        {
+            "weaponType": "semiAutoGun",
+            "name": "pump_shotgun",
+            "displayName": "PumpShotgun",
+            "spriteKey": "pump_shotgun",
+            "damage": 1,
+            "cooldown": 700,
+            "useVolume": 150,
+            "color": "#FDBFBF",
+            "projectile": "projectile",
+            "speed": 300
+        },
+        {
+            "weaponType": "semiAutoGun",
+            "name": "auto_shotgun",
+            "displayName": "AutoShotgun",
+            "spriteKey": "auto_shotgun",
+            "damage": 0.9,
+            "cooldown": 400,
+            "useVolume": 150,
+            "color": "#FDBFBF",
+            "projectile": "projectile",
+            "speed": 500
+        },
+        {
+            "weaponType": "semiAutoGun",
+            "name": "sniper",
+            "displayName": "Sistol",
+            "spriteKey": "sniper",
+            "damage": 5,
+            "cooldown": 1500,
+            "useVolume": 320,
+            "color": "#CCCC00",
             "projectile": "projectile",
             "speed": 300
         }

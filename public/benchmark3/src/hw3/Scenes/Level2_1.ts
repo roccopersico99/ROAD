@@ -30,10 +30,12 @@ export default class Level2_1 extends GameLevel {
 
         // Load item sprites
         this.load.image("inventorySlot", "road_assets/sprites/inventory.png");
-        this.load.image("inventorySlot2x", "road_assets/sprites/inventory2x.png");
         this.load.image("pistol", "road_assets/sprites/pistol.png");
         this.load.image("lasergun", "road_assets/sprites/lasergun.png");
         this.load.image("smg", "road_assets/sprites/smg.png");
+        this.load.image("pump_shotgun", "road_assets/sprites/shotgun.png");
+        this.load.image("auto_shotgun", "road_assets/sprites/auto_shotgun.png");
+        this.load.image("sniper", "road_assets/sprites/sniper.png");
 
         // Load crosshair sprite
         this.load.image("crosshair", "road_assets/sprites/crosshair2.png");
@@ -82,10 +84,12 @@ export default class Level2_1 extends GameLevel {
         this.resourceManager.keepAudio("music");
         this.resourceManager.keepImage("scrap");
         this.resourceManager.keepImage("inventorySlot");
-        this.resourceManager.keepImage("inventorySlot2x");
         this.resourceManager.keepImage("pistol");
         this.resourceManager.keepImage("lasergun");
         this.resourceManager.keepImage("smg");
+        this.resourceManager.keepImage("pump_shotgun");
+        this.resourceManager.keepImage("auto_shotgun");
+        this.resourceManager.keepImage("sniper");
         this.resourceManager.keepImage("pauseImage");
         this.resourceManager.keepImage("fullHeart");
         this.resourceManager.keepImage("halfHeart");

@@ -43,7 +43,7 @@ export default class Patrol extends EnemyState {
         }
         if(this.owner.position.y >= this.parent.viewport.position.y - 130){
             if(this.owner.position.y > 30){
-                this.owner.position.add(Vec2.UP.scaled(16 * deltaT));
+                this.owner.position.add(Vec2.UP.scaled(22 * deltaT));
             }
             let dir = this.parent.player.position.clone().sub(this.owner.position).normalize();
             dir.rotateCCW(Math.PI / 4 * Math.random() - Math.PI/8);

@@ -1,65 +1,245 @@
 {
-    "numEnemies": 10,
+    "numEnemies": 40,
     "enemies": [
         {
-            "position": [232, 1912],
-            "mode": "patrol",
-            "weapon": "weak_pistol",
-            "health": 6
-        },
-        {
-            "position": [168, 2008],
-            "mode": "patrol",
-            "weapon": "weak_pistol",
-            "health": 6
-        },
-        {
-            "position": [72, 2160],
+            "position": [136, 2200],
             "mode": "tower",
             "weapon": "weak_pistol",
             "health": 6
         },
         {
-            "position": [216, 2200],
+            "position": [200, 2232],
             "mode": "barricade",
             "weapon": "weak_pistol",
-            "health": 6
+            "health": 3
         },
         {
-            "position": [234, 2200],
+            "position": [218, 2232],
             "mode": "barricade",
             "weapon": "weak_pistol",
-            "health": 6
+            "health": 3
         },
         {
-            "position": [252, 2200],
+            "position": [236, 2232],
             "mode": "barricade",
             "weapon": "weak_pistol",
-            "health": 6
+            "health": 3
         },
         {
-            "position": [296, 264],
+            "position": [254, 2232],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [272, 2232],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [290, 2232],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [308, 2232],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [326, 2232],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {   
+            "position": [296, 1928],
+            "mode": "patrol",
+            "weapon": "weak_pistol",
+            "health": 6
+        },
+        {   
+            "position": [168, 1896],
             "mode": "patrol",
             "weapon": "weak_pistol",
             "health": 6
         },
         {
-            "position": [104, 824],
+            "position": [136, 1368],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [154, 1368],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [172, 1368],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [190, 1368],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [208, 1368],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [226, 1368],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [244, 1368],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [262, 1368],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {   
+            "position": [120, 1528],
+            "mode": "patrol",
+            "weapon": "weak_pistol",
+            "health": 6
+        },
+        {   
+            "position": [280, 1528],
             "mode": "patrol",
             "weapon": "weak_pistol",
             "health": 6
         },
         {
-            "position": [216, 120],
+            "position": [136, 1048],
+            "mode": "tower",
+            "weapon": "weak_pistol",
+            "health": 6
+        },
+        {
+            "position": [264, 1048],
+            "mode": "tower",
+            "weapon": "weak_pistol",
+            "health": 6
+        },
+        {   
+            "position": [104, 648],
+            "mode": "patrol",
+            "weapon": "weak_pistol",
+            "health": 6
+        },
+        {   
+            "position": [296, 648],
             "mode": "patrol",
             "weapon": "weak_pistol",
             "health": 6
         },
         {
-            "position": [152, 40],
-            "mode": "patrol",
+            "position": [72, 40],
+            "mode": "barricade",
             "weapon": "weak_pistol",
-            "health": 6
+            "health": 3
+        },
+        {
+            "position": [90, 40],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [108, 40],
+            "mode": "tower",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [126, 40],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [144, 40],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [162, 40],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [180, 40],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [198, 40],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [216, 40],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [234, 40],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [252, 40],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [270, 40],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [288, 40],
+            "mode": "tower",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [306, 40],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
+        },
+        {
+            "position": [324, 40],
+            "mode": "barricade",
+            "weapon": "weak_pistol",
+            "health": 3
         }
     ]
 }

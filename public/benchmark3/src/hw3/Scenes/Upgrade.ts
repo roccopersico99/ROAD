@@ -11,6 +11,7 @@ import Rect from "../../Wolfie2D/Nodes/Graphics/Rect";
 import { GraphicType } from "../../Wolfie2D/Nodes/Graphics/GraphicTypes";
 import GameLevel from "./GameLevel";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
+import Button from "../../Wolfie2D/Nodes/UIElements/Button";
 
 export default class Upgrade extends Scene {
     // Layer for holding the upgrade screen image
@@ -77,6 +78,27 @@ export default class Upgrade extends Scene {
     protected maxHP: number;
     protected hpCount: number;
 
+    // Shop UI
+    protected smgCard: Sprite;
+    protected shotgunCard: Sprite;
+    protected laserCard: Sprite;
+    protected autoShotgunCard: Sprite;
+    protected sniperCard: Sprite;
+
+    protected smgDisplay: Sprite;
+    protected shotgunDisplay: Sprite;
+    protected laserDisplay: Sprite;
+    protected autoShotgunDisplay: Sprite;
+    protected sniperDisplay: Sprite;
+
+    protected smgButton: Button;
+    protected shotgunButton: Button;
+    protected lasergunButton: Button;
+    protected autoShotgunButton: Button;
+    protected sniperButton: Button;
+
+    protected weaponArray: Array<string>;
+
     loadScene(){
         this.load.image("cursor", "road_assets/sprites/cursor.png");
         this.load.image("upgradeScreen", "road_assets/sprites/UpgradeScreen.png");
@@ -84,6 +106,13 @@ export default class Upgrade extends Scene {
         this.load.image("statBar", "road_assets/sprites/statbar.png");
         this.load.image("scrap", "road_assets/sprites/scrap.png");
         this.load.image("inventorySlot", "road_assets/sprites/inventory.png");
+        this.load.image("weapon_card", "road_assets/sprites/blankWeaponCard.png");
+        this.load.image("purchased_card", "road_assets/sprites/purchased_weaponcard.png")
+        this.load.image("smg", "road_assets/sprites/smg.png");
+        this.load.image("pump_shotgun", "road_assets/sprites/shotgun.png");
+        this.load.image("sniper", "road_assets/sprites/sniper.png");
+        this.load.image("auto_shotgun", "road_assets/sprites/auto_shotgun.png");
+        this.load.image("lasergun", "road_assets/sprites/lasergun.png");
 
         // Load music tracks
         this.load.audio("music", "road_assets/music/outro.mp3");
@@ -103,6 +132,12 @@ export default class Upgrade extends Scene {
         this.currentDamage = init.damageStat;
         this.currentSpeed = init.speedStat;
         this.currentScrapGain = init.scrapGainStat;
+        if(init.weaponArray == undefined){
+            this.weaponArray = ["pistol"];
+        }
+        else {
+            this.weaponArray = init.weaponArray;
+        }
     }
 
     startScene(){
@@ -115,11 +150,14 @@ export default class Upgrade extends Scene {
         this.addUILayer("primary").setDepth(103);
 
         this.addUILayer("UI").setDepth(101);
+        this.addUILayer("purchased").setDepth(100);
 
         this.addUILayer("stats").setDepth(102);
 
         //initialize cursor
         this.initializeCursor();
+
+        this.initShopUI();
 
         // Create the upgrade layer
         this.upgradeLayer = this.addUILayer("upgrade");
@@ -389,6 +427,11 @@ export default class Upgrade extends Scene {
         this.receiver.subscribe("speed");
         this.receiver.subscribe("scrapGain");
         this.receiver.subscribe("insufficient");
+        this.receiver.subscribe("smg");
+        this.receiver.subscribe("shotgun");
+        this.receiver.subscribe("lasergun");
+        this.receiver.subscribe("autoShotgun");
+        this.receiver.subscribe("sniper");
 
         // Scene has finished loading, so start playing menu music
         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "music", loop: true, holdReference: true});
@@ -396,6 +439,7 @@ export default class Upgrade extends Scene {
 
     updateScene(){
         this.cursor.position.set(Input.getMousePosition().x, Input.getMousePosition().y);
+        let center = this.viewport.getCenter();
         // console.log("timer: " + this.timer)
         // if(this.timer.isStopped()){
         //     //this.insufficientLine.visible = false;
@@ -428,27 +472,7 @@ export default class Upgrade extends Scene {
                             ]
                         }
                     }
-                    this.sceneManager.changeToScene(this.nextLevel, {maxHP: this.maxHP, scrapCount: this.scrapCount, healthStat: this.currentHealth, damageStat: this.currentDamage, speedStat: this.currentSpeed, scrapGainStat: this.currentScrapGain, weaponArray: ["pistol"]}, sceneOptions);
-                    // switch(this.nextLevel) {
-                    //     case "1-2":
-                    //         this.sceneManager.changeToScene(Level1_2, {maxHP: this.maxHP, scrapCount: this.scrapCount});
-                    //         break;
-                    //     case "2-1":
-                    //         this.sceneManager.changeToScene(Level2_1, {maxHP: this.maxHP, scrapCount: this.scrapCount});
-                    //         break;
-                    //     case "2-2":
-                    //         this.sceneManager.changeToScene(Level2_2, {maxHP: this.maxHP, scrapCount: this.scrapCount});
-                    //         break;
-                    //     case "3-1":
-                    //         this.sceneManager.changeToScene(Level3_1, {maxHP: this.maxHP, scrapCount: this.scrapCount});
-                    //         break;
-                    //     case "3-2":
-                    //         this.sceneManager.changeToScene(Level3_2, {maxHP: this.maxHP, scrapCount: this.scrapCount});
-                    //         break;
-                    //     default: 
-                    //         this.sceneManager.changeToScene(MainMenu, {});
-                    //         break;    
-                    // }
+                    this.sceneManager.changeToScene(this.nextLevel, {maxHP: this.maxHP, scrapCount: this.scrapCount, healthStat: this.currentHealth, damageStat: this.currentDamage, speedStat: this.currentSpeed, scrapGainStat: this.currentScrapGain, weaponArray: this.weaponArray}, sceneOptions);
                     break;
                 case "health":
                     this.insufficientLine.visible = false;
@@ -571,8 +595,69 @@ export default class Upgrade extends Scene {
                     //this.timer = new Timer(1000, () => {this.insufficientLine.visible = false;});
                     //this.insufficientLine.tweens.play("fade", false);
                     break;
+                case "smg":
+                    this.insufficientLine.visible = false;
+                    this.smgCard.imageId = "purchased_card";
+                    this.smgButton.text = "PURCHASED"
+                    if(this.scrapCount < 100){
+                        this.emitter.fireEvent("insufficient")
+                    }
+                    else if(this.weaponArray.indexOf("smg") == -1){
+                        this.scrapCount -= 100;
+                        this.weaponArray.push("smg");
+                    }
+                    break;
+                case "shotgun":
+                    this.insufficientLine.visible = false;
+                    this.shotgunCard.imageId = "purchased_card";
+                    this.shotgunButton.text = "PURCHASED"
+                    if(this.scrapCount < 200){
+                        this.emitter.fireEvent("insufficient")
+                    }
+                    else if(this.weaponArray.indexOf("pump_shotgun") == -1){
+                        this.scrapCount -= 200;
+                        this.weaponArray.push("pump_shotgun");
+                    }
+                    break;
+                case "lasergun":
+                    this.insufficientLine.visible = false;
+                    this.laserCard.imageId = "purchased_card";
+                    this.lasergunButton.text = "PURCHASED"
+                    if(this.scrapCount < 300){
+                        this.emitter.fireEvent("insufficient")
+                    }
+                    else if(this.weaponArray.indexOf("lasergun") == -1){
+                        this.scrapCount -= 300;
+                        this.weaponArray.push("lasergun");
+                    }
+                    break;
+                case "autoShotgun":
+                    this.insufficientLine.visible = false;
+                    this.autoShotgunCard.imageId = "purchased_card";
+                    this.autoShotgunButton.text = "PURCHASED"
+                    if(this.scrapCount < 400){
+                        this.emitter.fireEvent("insufficient")
+                    }
+                    else if(this.weaponArray.indexOf("auto_shotgun") == -1 ){
+                        this.scrapCount -= 400;
+                        this.weaponArray.push("auto_shotgun");
+                    }
+                    break;
+                case "sniper":
+                    this.insufficientLine.visible = false;
+                    this.sniperCard.imageId = "purchased_card";
+                    this.sniperButton.text = "PURCHASED"
+                    if(this.scrapCount < 500){
+                        this.emitter.fireEvent("insufficient")
+                    }
+                    else if(this.weaponArray.indexOf("sniper") == -1){
+                        this.scrapCount -= 500;
+                        this.weaponArray.push("sniper");
+                    }
+                    break;
             }
         }
+        console.log("this.weaponArray: " + this.weaponArray)
         // this.scrapsLine = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x+530, center.y-375), text: "" + this.scrapCount});
         // Adjust scrap count label, if necessary
         if(this.scrapCount/10000 >= 1){
@@ -589,5 +674,156 @@ export default class Upgrade extends Scene {
     initializeCursor(): void {
         this.cursor = this.add.sprite("cursor", "primary");
         this.cursor.position.set(Input.getMousePosition().x, Input.getMousePosition().y);
+    }
+
+    initShopUI(): void {
+        let center = this.viewport.getCenter();
+
+        const weaponshopText1 = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x-480, center.y+80), text: "Weapon"});
+        weaponshopText1.textColor = Color.BLACK;
+        weaponshopText1.fontSize = 60;
+        weaponshopText1.font = "PixelSimple";
+
+        const weaponshopText2 = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x-480, center.y+140), text: "Shop"});
+        weaponshopText2.textColor = Color.BLACK;
+        weaponshopText2.fontSize = 70;
+        weaponshopText2.font = "PixelSimple";
+
+        this.smgCard = this.add.sprite("weapon_card", "UI");
+        this.smgCard.position.set(center.x-260, center.y+180);
+        this.smgCard.scale = new Vec2(1.5, 1.5);
+        this.smgDisplay = this.add.sprite("smg", "stats");
+        this.smgDisplay.position.set(center.x-260, center.y+180);
+        this.smgDisplay.scale = new Vec2(7,7);
+        const smgTitle = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x-260, center.y+100), text: "SMG"});
+        smgTitle.textColor = Color.BLACK;
+        smgTitle.fontSize = 40;
+        smgTitle.font = "PixelSimple";
+        this.smgButton = <Label>this.add.uiElement(UIElementType.BUTTON, "UI", {position: new Vec2(center.x-260, center.y+280), text: "100 Scrap"});
+        this.smgButton.size.set(150, 50);
+        this.smgButton.borderWidth = 3;
+        this.smgButton.borderRadius = 1;
+        this.smgButton.borderColor = Color.BLACK;
+        this.smgButton.backgroundColor = new Color(189, 162, 123);
+        this.smgButton.onClickEventId = "smg";
+        this.smgButton.textColor = Color.BLACK;
+        this.smgButton.fontSize = 28;
+        this.smgButton.font = "PixelSimple";
+        if(this.weaponArray.indexOf("smg") >= 0){
+            this.smgCard.imageId = "purchased_card";
+            this.smgButton.text = "PURCHASED"
+        }
+
+        this.shotgunCard = this.add.sprite("weapon_card", "UI");
+        this.shotgunCard.position.set(center.x-70, center.y+180);
+        this.shotgunCard.scale = new Vec2(1.5, 1.5);
+        this.shotgunDisplay = this.add.sprite("pump_shotgun", "stats");
+        this.shotgunDisplay.position.set(center.x-70, center.y+180);
+        this.shotgunDisplay.scale = new Vec2(7,7);
+        const shotgunTitle1 = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x-70, center.y+90), text: "Pump"});
+        shotgunTitle1.textColor = Color.BLACK;
+        shotgunTitle1.fontSize = 30;
+        shotgunTitle1.font = "PixelSimple";
+        const shotgunTitle2 = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x-70, center.y+120), text: "Shotgun"});
+        shotgunTitle2.textColor = Color.BLACK;
+        shotgunTitle2.fontSize = 30;
+        shotgunTitle2.font = "PixelSimple";
+        this.shotgunButton = <Label>this.add.uiElement(UIElementType.BUTTON, "UI", {position: new Vec2(center.x-70, center.y+280), text: "200 Scrap"});
+        this.shotgunButton.size.set(150, 50);
+        this.shotgunButton.borderWidth = 3;
+        this.shotgunButton.borderRadius = 1;
+        this.shotgunButton.borderColor = Color.BLACK;
+        this.shotgunButton.backgroundColor = new Color(189, 162, 123);
+        this.shotgunButton.onClickEventId = "shotgun";
+        this.shotgunButton.textColor = Color.BLACK;
+        this.shotgunButton.fontSize = 28;
+        this.shotgunButton.font = "PixelSimple";
+        if(this.weaponArray.indexOf("pump_shotgun") >= 0){
+            this.shotgunCard.imageId = "purchased_card";
+            this.shotgunButton.text = "PURCHASED"
+        }
+
+        this.laserCard = this.add.sprite("weapon_card", "UI");
+        this.laserCard.position.set(center.x+500, center.y+180);
+        this.laserCard.scale = new Vec2(1.5, 1.5);
+        this.laserDisplay = this.add.sprite("lasergun", "stats");
+        this.laserDisplay.position.set(center.x+500, center.y+180);
+        this.laserDisplay.scale = new Vec2(7,7);
+        const lasergunTitle = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x+500, center.y+100), text: "Lasergun"});
+        lasergunTitle.textColor = Color.BLACK;
+        lasergunTitle.fontSize = 28;
+        lasergunTitle.font = "PixelSimple";
+        this.lasergunButton = <Label>this.add.uiElement(UIElementType.BUTTON, "UI", {position: new Vec2(center.x+500, center.y+280), text: "500 Scrap"});
+        this.lasergunButton.size.set(150, 50);
+        this.lasergunButton.borderWidth = 3;
+        this.lasergunButton.borderRadius = 1;
+        this.lasergunButton.borderColor = Color.BLACK;
+        this.lasergunButton.backgroundColor = new Color(189, 162, 123);
+        this.lasergunButton.onClickEventId = "lasergun";
+        this.lasergunButton.textColor = Color.BLACK;
+        this.lasergunButton.fontSize = 28;
+        this.lasergunButton.font = "PixelSimple";
+        if(this.weaponArray.indexOf("lasergun") >= 0){
+            this.laserCard.imageId = "purchased_card";
+            this.lasergunButton.text = "PURCHASED"
+        }
+
+        this.autoShotgunCard = this.add.sprite("weapon_card", "UI");
+        this.autoShotgunCard.position.set(center.x+310, center.y+180);
+        this.autoShotgunCard.scale = new Vec2(1.5, 1.5);
+        this.autoShotgunDisplay = this.add.sprite("auto_shotgun", "stats");
+        this.autoShotgunDisplay.position.set(center.x+310, center.y+180);
+        this.autoShotgunDisplay.scale = new Vec2(7,7);
+        const autoShotgunTitle1 = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x+310, center.y+90), text: "Automatic"});
+        autoShotgunTitle1.textColor = Color.BLACK;
+        autoShotgunTitle1.fontSize = 27;
+        autoShotgunTitle1.font = "PixelSimple";
+        const autoShotgunTitle2 = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x+310, center.y+120), text: "Shotgun"});
+        autoShotgunTitle2.textColor = Color.BLACK;
+        autoShotgunTitle2.fontSize = 28;
+        autoShotgunTitle2.font = "PixelSimple";
+        this.autoShotgunButton = <Label>this.add.uiElement(UIElementType.BUTTON, "UI", {position: new Vec2(center.x+310, center.y+280), text: "400 Scrap"});
+        this.autoShotgunButton.size.set(150, 50);
+        this.autoShotgunButton.borderWidth = 3;
+        this.autoShotgunButton.borderRadius = 1;
+        this.autoShotgunButton.borderColor = Color.BLACK;
+        this.autoShotgunButton.backgroundColor = new Color(189, 162, 123);
+        this.autoShotgunButton.onClickEventId = "autoShotgun";
+        this.autoShotgunButton.textColor = Color.BLACK;
+        this.autoShotgunButton.fontSize = 28;
+        this.autoShotgunButton.font = "PixelSimple";
+        if(this.weaponArray.indexOf("auto_shotgun") >= 0){
+            this.autoShotgunCard.imageId = "purchased_card";
+            this.autoShotgunButton.text = "PURCHASED"
+        }
+
+        this.sniperCard = this.add.sprite("weapon_card", "UI");
+        this.sniperCard.position.set(center.x+120, center.y+180);
+        this.sniperCard.scale = new Vec2(1.5, 1.5);
+        this.sniperDisplay = this.add.sprite("sniper", "stats");
+        this.sniperDisplay.position.set(center.x+120, center.y+180);
+        this.sniperDisplay.scale = new Vec2(7,7);
+        const sniperTitle1 = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x+120, center.y+85), text: "Sniper"});
+        sniperTitle1.textColor = Color.BLACK;
+        sniperTitle1.fontSize = 33;
+        sniperTitle1.font = "PixelSimple";
+        const sniperTitle2 = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x+120, center.y+120), text: "Rifle"});
+        sniperTitle2.textColor = Color.BLACK;
+        sniperTitle2.fontSize = 35;
+        sniperTitle2.font = "PixelSimple";
+        this.sniperButton = <Label>this.add.uiElement(UIElementType.BUTTON, "UI", {position: new Vec2(center.x+120, center.y+280), text: "300 Scrap"});
+        this.sniperButton.size.set(150, 50);
+        this.sniperButton.borderWidth = 3;
+        this.sniperButton.borderRadius = 1;
+        this.sniperButton.borderColor = Color.BLACK;
+        this.sniperButton.backgroundColor = new Color(189, 162, 123);
+        this.sniperButton.onClickEventId = "sniper";
+        this.sniperButton.textColor = Color.BLACK;
+        this.sniperButton.fontSize = 28;
+        this.sniperButton.font = "PixelSimple";
+        if(this.weaponArray.indexOf("sniper") >= 0){
+            this.sniperCard.imageId = "purchased_card";
+            this.sniperButton.text = "PURCHASED"
+        }
     }
 }

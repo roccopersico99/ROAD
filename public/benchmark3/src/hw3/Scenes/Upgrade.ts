@@ -709,6 +709,10 @@ export default class Upgrade extends Scene {
         this.smgButton.textColor = Color.BLACK;
         this.smgButton.fontSize = 28;
         this.smgButton.font = "PixelSimple";
+        if(this.weaponArray.indexOf("smg") >= 0){
+            this.smgCard.imageId = "purchased_card";
+            this.smgButton.text = "PURCHASED"
+        }
 
         this.shotgunCard = this.add.sprite("weapon_card", "UI");
         this.shotgunCard.position.set(center.x-70, center.y+180);
@@ -734,18 +738,22 @@ export default class Upgrade extends Scene {
         this.shotgunButton.textColor = Color.BLACK;
         this.shotgunButton.fontSize = 28;
         this.shotgunButton.font = "PixelSimple";
+        if(this.weaponArray.indexOf("pump_shotgun") >= 0){
+            this.shotgunCard.imageId = "purchased_card";
+            this.shotgunButton.text = "PURCHASED"
+        }
 
         this.laserCard = this.add.sprite("weapon_card", "UI");
-        this.laserCard.position.set(center.x+120, center.y+180);
+        this.laserCard.position.set(center.x+500, center.y+180);
         this.laserCard.scale = new Vec2(1.5, 1.5);
         this.laserDisplay = this.add.sprite("lasergun", "stats");
-        this.laserDisplay.position.set(center.x+120, center.y+180);
+        this.laserDisplay.position.set(center.x+500, center.y+180);
         this.laserDisplay.scale = new Vec2(7,7);
-        const lasergunTitle = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x+120, center.y+100), text: "Lasergun"});
+        const lasergunTitle = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x+500, center.y+100), text: "Lasergun"});
         lasergunTitle.textColor = Color.BLACK;
         lasergunTitle.fontSize = 28;
         lasergunTitle.font = "PixelSimple";
-        this.lasergunButton = <Label>this.add.uiElement(UIElementType.BUTTON, "UI", {position: new Vec2(center.x+120, center.y+280), text: "300 Scrap"});
+        this.lasergunButton = <Label>this.add.uiElement(UIElementType.BUTTON, "UI", {position: new Vec2(center.x+500, center.y+280), text: "500 Scrap"});
         this.lasergunButton.size.set(150, 50);
         this.lasergunButton.borderWidth = 3;
         this.lasergunButton.borderRadius = 1;
@@ -755,6 +763,10 @@ export default class Upgrade extends Scene {
         this.lasergunButton.textColor = Color.BLACK;
         this.lasergunButton.fontSize = 28;
         this.lasergunButton.font = "PixelSimple";
+        if(this.weaponArray.indexOf("lasergun") >= 0){
+            this.laserCard.imageId = "purchased_card";
+            this.lasergunButton.text = "PURCHASED"
+        }
 
         this.autoShotgunCard = this.add.sprite("weapon_card", "UI");
         this.autoShotgunCard.position.set(center.x+310, center.y+180);
@@ -780,22 +792,26 @@ export default class Upgrade extends Scene {
         this.autoShotgunButton.textColor = Color.BLACK;
         this.autoShotgunButton.fontSize = 28;
         this.autoShotgunButton.font = "PixelSimple";
+        if(this.weaponArray.indexOf("auto_shotgun") >= 0){
+            this.autoShotgunCard.imageId = "purchased_card";
+            this.autoShotgunButton.text = "PURCHASED"
+        }
 
         this.sniperCard = this.add.sprite("weapon_card", "UI");
-        this.sniperCard.position.set(center.x+500, center.y+180);
+        this.sniperCard.position.set(center.x+120, center.y+180);
         this.sniperCard.scale = new Vec2(1.5, 1.5);
         this.sniperDisplay = this.add.sprite("sniper", "stats");
-        this.sniperDisplay.position.set(center.x+500, center.y+180);
+        this.sniperDisplay.position.set(center.x+120, center.y+180);
         this.sniperDisplay.scale = new Vec2(7,7);
-        const sniperTitle1 = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x+500, center.y+85), text: "Sniper"});
+        const sniperTitle1 = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x+120, center.y+85), text: "Sniper"});
         sniperTitle1.textColor = Color.BLACK;
         sniperTitle1.fontSize = 33;
         sniperTitle1.font = "PixelSimple";
-        const sniperTitle2 = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x+500, center.y+120), text: "Rifle"});
+        const sniperTitle2 = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x+120, center.y+120), text: "Rifle"});
         sniperTitle2.textColor = Color.BLACK;
         sniperTitle2.fontSize = 35;
         sniperTitle2.font = "PixelSimple";
-        this.sniperButton = <Label>this.add.uiElement(UIElementType.BUTTON, "UI", {position: new Vec2(center.x+500, center.y+280), text: "500 Scrap"});
+        this.sniperButton = <Label>this.add.uiElement(UIElementType.BUTTON, "UI", {position: new Vec2(center.x+120, center.y+280), text: "300 Scrap"});
         this.sniperButton.size.set(150, 50);
         this.sniperButton.borderWidth = 3;
         this.sniperButton.borderRadius = 1;
@@ -805,5 +821,9 @@ export default class Upgrade extends Scene {
         this.sniperButton.textColor = Color.BLACK;
         this.sniperButton.fontSize = 28;
         this.sniperButton.font = "PixelSimple";
+        if(this.weaponArray.indexOf("sniper") >= 0){
+            this.sniperCard.imageId = "purchased_card";
+            this.sniperButton.text = "PURCHASED"
+        }
     }
 }

@@ -652,13 +652,13 @@ export default class Upgrade extends Scene {
                     break;
                 case "lasergun":
                     this.insufficientLine.visible = false;
-                    if(this.scrapCount < 750){
+                    if(this.scrapCount < 999){
                         if(this.weaponArray.indexOf("lasergun") == -1){
                             this.emitter.fireEvent("insufficient");
                         }
                     }
                     else if(this.weaponArray.indexOf("lasergun") == -1){
-                        this.scrapCount -= 750;
+                        this.scrapCount -= 999;
                         this.weaponArray.push("lasergun");
                         this.laserCard.imageId = "purchased_card";
                         this.lasergunButton.text = "PURCHASED"
@@ -680,13 +680,13 @@ export default class Upgrade extends Scene {
                     break;
                 case "sniper":
                     this.insufficientLine.visible = false;
-                    if(this.scrapCount < 999 ){
+                    if(this.scrapCount < 750 ){
                         if(this.weaponArray.indexOf("sniper") == -1){
                             this.emitter.fireEvent("insufficient");
                         }
                     }
                     else if(this.weaponArray.indexOf("sniper") == -1){
-                        this.scrapCount -= 999;
+                        this.scrapCount -= 750;
                         this.weaponArray.push("sniper");
                         this.sniperCard.imageId = "purchased_card";
                         this.sniperButton.text = "PURCHASED"

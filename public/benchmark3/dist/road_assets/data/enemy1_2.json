@@ -167,7 +167,7 @@
             "position": [108, 40],
             "mode": "tower",
             "weapon": "weak_pistol",
-            "health": 3
+            "health": 6
         },
         {
             "position": [126, 40],
@@ -227,7 +227,7 @@
             "position": [288, 40],
             "mode": "tower",
             "weapon": "weak_pistol",
-            "health": 3
+            "health": 6
         },
         {
             "position": [306, 40],

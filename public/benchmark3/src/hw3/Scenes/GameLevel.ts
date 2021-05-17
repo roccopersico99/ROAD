@@ -954,7 +954,7 @@ export default class GameLevel extends Scene {
                 player: this.player,
                 weapon: this.createWeapon(data.weapon),
                 viewport: this.viewportMover,
-                weapon2: this.createWeapon("weak_shotgun")
+                weapon2: this.createWeapon("weak_autoshotgun")
             }
 
             this.enemies[i].addAI(EnemyAI, enemyOptions);

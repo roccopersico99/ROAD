@@ -215,6 +215,75 @@ export default class SemiAutoGun extends WeaponType {
                 bullet5.animation.play("FIRING", true);
                 this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "shotgun_fired", loop: false, holdReference: false});
                 break;
+            case "weak_autoshotgun":
+                dir2 = dir2.rotateCCW(0.12);
+                dir3 = dir3.rotateCCW(0.24);
+                dir4 = dir4.rotateCCW(-0.12);
+                dir5 = dir5.rotateCCW(-0.24);
+                bullet = this.scene.add.animatedSprite(this.projectile, "primary");
+                bullet.position.set(start.x, start.y);
+                bullet.addPhysics(new AABB(Vec2.ZERO, new Vec2(2, 2)));
+                bullet.addAI(Bullet, 
+                    {
+                        direction: direction,
+                        speed: this.speed,
+                        attack: this.damage
+                    });
+    
+                bullet.setGroup("projectile2");
+                bullet.animation.play("FIRING", true);
+
+                bullet2 = this.scene.add.animatedSprite(this.projectile, "primary");
+                bullet2.position.set(start.x, start.y);
+                bullet2.addPhysics(new AABB(Vec2.ZERO, new Vec2(2, 2)));
+                bullet2.addAI(Bullet, 
+                    {
+                        direction: dir2,
+                        speed: this.speed,
+                        attack: this.damage
+                    });
+
+                bullet2.setGroup("projectile2");
+                bullet2.animation.play("FIRING", true);
+
+                bullet3 = this.scene.add.animatedSprite(this.projectile, "primary");
+                bullet3.position.set(start.x, start.y);
+                bullet3.addPhysics(new AABB(Vec2.ZERO, new Vec2(2, 2)));
+                bullet3.addAI(Bullet, 
+                    {
+                        direction: dir3,
+                        speed: this.speed,
+                        attack: this.damage
+                    });
+                
+                bullet3.setGroup("projectile2");
+                bullet3.animation.play("FIRING", true);
+
+                bullet4 = this.scene.add.animatedSprite(this.projectile, "primary");
+                bullet4.position.set(start.x, start.y);
+                bullet4.addPhysics(new AABB(Vec2.ZERO, new Vec2(2, 2)));
+                bullet4.addAI(Bullet, 
+                    {
+                        direction: dir4,
+                        speed: this.speed,
+                        attack: this.damage
+                    });
+                bullet4.setGroup("projectile2");
+                bullet4.animation.play("FIRING", true);
+
+                bullet5 = this.scene.add.animatedSprite(this.projectile, "primary");
+                bullet5.position.set(start.x, start.y);
+                bullet5.addPhysics(new AABB(Vec2.ZERO, new Vec2(3, 3)));
+                bullet5.addAI(Bullet, 
+                    {
+                        direction: dir5,
+                        speed: this.speed,
+                        attack: this.damage
+                    });
+                bullet5.setGroup("projectile2");
+                bullet5.animation.play("FIRING", true);
+                this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "shotgun_fired", loop: false, holdReference: false});
+                break;
             case "sniper":
                 let minX = Math.min(start.x, end.x);
                 let maxX = Math.max(start.x, end.x);

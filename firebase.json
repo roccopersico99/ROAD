@@ -9,7 +9,7 @@
       },
       {
         "source": "/benchmark2",
-        "destination": "/404.html"
+        "destination": "/benchmark2/index.html"
       },
       {
         "source": "/benchmark3",

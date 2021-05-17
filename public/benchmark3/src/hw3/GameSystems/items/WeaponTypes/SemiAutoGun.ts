@@ -104,8 +104,8 @@ export default class SemiAutoGun extends WeaponType {
                 this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "shotgun_fired", loop: false, holdReference: false});
                 break;
             case "weak_shotgun":
-                dir2 = dir2.rotateCCW(0.18);
-                dir3 = dir3.rotateCCW(-0.18);
+                dir2 = dir2.rotateCCW(0.22);
+                dir3 = dir3.rotateCCW(-0.22);
                 bullet = this.scene.add.animatedSprite(this.projectile, "primary");
                 bullet.position.set(start.x, start.y);
                 bullet.addPhysics(new AABB(Vec2.ZERO, new Vec2(2, 2)));

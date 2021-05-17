@@ -24,7 +24,7 @@ export default class Upgrade extends Scene {
     // The upgrade image
     protected upgrade: Sprite;
 
-    protected tire: Sprite;
+    protected gear: Sprite;
 
     // The car sprite
     protected car: AnimatedSprite;
@@ -104,7 +104,7 @@ export default class Upgrade extends Scene {
 
     loadScene(){
         this.load.image("cursor", "road_assets/sprites/cursor.png");
-        this.load.image("tire", "road_assets/sprites/tire.png");
+        this.load.image("gear", "road_assets/sprites/gear.png");
         this.load.image("upgradeScreen", "road_assets/sprites/UpgradeScreen.png");
         this.load.spritesheet("car", "road_assets/spritesheets/car.json");
         this.load.image("statBar", "road_assets/sprites/statbar.png");
@@ -172,7 +172,7 @@ export default class Upgrade extends Scene {
         this.upgrade.position.set(center.x, center.y);
 
         this.car = this.add.animatedSprite("car", "UI");
-        this.car.position.set(center.x-280, center.y-180);
+        this.car.position.set(center.x-250, center.y-180);
         this.car.scale = new Vec2(18, 18);
         this.car.animation.play("WALK", true);
         // this.car.rotation = 400;
@@ -199,23 +199,23 @@ export default class Upgrade extends Scene {
         maxLine2.fontSize = 80;
         maxLine2.font = "PixelSimple";
 
-        this.tire = this.add.sprite("tire", "UI");
-        this.tire.tweens.add("spin", {
+        this.gear = this.add.sprite("gear", "UI");
+        this.gear.tweens.add("spin", {
             startDelay: 0,
-            duration: 1000,
+            duration: 2000,
             effects: [
                 {
                     property: "rotation",
-                    start: 2*Math.PI,
-                    end: 0,
+                    start: 0,
+                    end: 2*Math.PI,
                     ease: EaseFunctionType.IN_OUT_QUAD
                 }
             ],
         });
-        this.tire.position.set(center.x-500, center.y-180);
-        //this.tire.size.set(160, 160);
-        this.tire.scale = new Vec2(4, 4);
-        this.tire.tweens.play("spin", true);
+        this.gear.position.set(center.x-500, center.y-170);
+        //this.gear.size.set(160, 160);
+        this.gear.scale = new Vec2(3, 3);
+        this.gear.tweens.play("spin", true);
 
         //Add Text
         const statsLine = <Label>this.add.uiElement(UIElementType.LABEL, "UI", {position: new Vec2(center.x-10, center.y-320), text: "Stats"});

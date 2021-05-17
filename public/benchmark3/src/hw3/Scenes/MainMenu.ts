@@ -35,8 +35,8 @@ export default class MainMenu extends Scene {
     // Player car animated sprite
     private car: AnimatedSprite;
 
-    // Gear sprite
-    private gear: Sprite;
+    // tire sprite
+    private tire: Sprite;
 
     // level 2 locked/unlocked
     protected lvl2Lock: boolean;
@@ -49,7 +49,7 @@ export default class MainMenu extends Scene {
     loadScene(){
         // Load spritesheets for animated sprites
         this.load.spritesheet("car", "road_assets/spritesheets/car.json");
-        this.load.image("gear", "road_assets/sprites/gear.png");
+        this.load.image("tire", "road_assets/sprites/tire.png");
 
         // Load sprites
         this.load.image("cursor", "road_assets/sprites/cursor.png");
@@ -109,23 +109,23 @@ export default class MainMenu extends Scene {
         this.background.size.set(1200,800);
 
         
-        this.gear = this.add.sprite("gear", "background");
-        this.gear.tweens.add("spin", {
+        this.tire = this.add.sprite("tire", "background");
+        this.tire.tweens.add("spin", {
             startDelay: 0,
-            duration: 3000,
+            duration: 2000,
             effects: [
                 {
                     property: "rotation",
-                    start: 0,
-                    end: 2*Math.PI,
+                    start: 2*Math.PI,
+                    end: 0,
                     ease: EaseFunctionType.IN_OUT_QUAD
                 }
             ],
         });
-        this.gear.position.set(center.x-420, center.y+135);
-        //this.gear.size.set(160, 160);
-        this.gear.scale = new Vec2(4, 4);
-        this.gear.tweens.play("spin", true);
+        this.tire.position.set(center.x-420, center.y+135);
+        //this.tire.size.set(160, 160);
+        this.tire.scale = new Vec2(8, 8);
+        this.tire.tweens.play("spin", true);
 
         this.car = this.add.animatedSprite("car", "background");
         this.car.position.set(center.x+420, center.y+150);
@@ -456,7 +456,7 @@ export default class MainMenu extends Scene {
                     }
                 }
                 this.sceneManager.changeToScene(Level1_1, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1, weaponArray: ["pistol"]}, sceneOptions);
-                this.gear.visible = false;
+                this.tire.visible = false;
                 this.car.visible = false;
                 this.logo.visible = false;
             }
@@ -476,7 +476,7 @@ export default class MainMenu extends Scene {
                     }
                 }
                 this.sceneManager.changeToScene(Level1_2, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1, weaponArray: ["pistol"]}, sceneOptions);
-                this.gear.visible = false;
+                this.tire.visible = false;
                 this.car.visible = false;
                 this.logo.visible = false;
             }
@@ -496,7 +496,7 @@ export default class MainMenu extends Scene {
                     }
                 }
                 this.sceneManager.changeToScene(Level2_1, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1, weaponArray: ["pistol"]}, sceneOptions);
-                this.gear.visible = false;
+                this.tire.visible = false;
                 this.car.visible = false;
                 this.logo.visible = false;
             }
@@ -516,7 +516,7 @@ export default class MainMenu extends Scene {
                     }
                 }
                 this.sceneManager.changeToScene(Level2_2, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1, weaponArray: ["pistol"]}, sceneOptions);
-                this.gear.visible = false;
+                this.tire.visible = false;
                 this.car.visible = false;
                 this.logo.visible = false;
             }
@@ -536,7 +536,7 @@ export default class MainMenu extends Scene {
                     }
                 }
                 this.sceneManager.changeToScene(Level3_1, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1, weaponArray: ["pistol"]}, sceneOptions);
-                this.gear.visible = false;
+                this.tire.visible = false;
                 this.car.visible = false;
                 this.logo.visible = false;
             }
@@ -556,7 +556,7 @@ export default class MainMenu extends Scene {
                     }
                 }
                 this.sceneManager.changeToScene(Level3_2, {scrapCount: 0, maxHP: 6, hpCount: 6, healthStat: 1, speedStat: 1, damageStat: 1, scrapGainStat: 1, weaponArray: ["pistol"]}, sceneOptions);
-                this.gear.visible = false;
+                this.tire.visible = false;
                 this.car.visible = false;
                 this.logo.visible = false;
             }
@@ -570,7 +570,7 @@ export default class MainMenu extends Scene {
                 this.mainMenu.setHidden(true);
                 //this.logo.size.set(0,0);
                 this.background.visible = false;
-                this.gear.visible = false;
+                this.tire.visible = false;
                 this.car.visible = false;
                 this.logo.visible = false;
             }
@@ -582,7 +582,7 @@ export default class MainMenu extends Scene {
                 this.levelSelect.setHidden(true);
                 //this.logo.size.set(800,800);
                 this.background.visible = true;
-                this.gear.visible = true;
+                this.tire.visible = true;
                 this.car.visible = true;
                 this.logo.visible = true;
             }
@@ -592,7 +592,7 @@ export default class MainMenu extends Scene {
                 this.mainMenu.setHidden(true);
                 //this.logo.size.set(0,0);
                 this.background.visible = false;
-                this.gear.visible = false;
+                this.tire.visible = false;
                 this.car.visible = false;
                 this.logo.visible = false;
             }
@@ -602,7 +602,7 @@ export default class MainMenu extends Scene {
                 this.mainMenu.setHidden(true);
                 //this.logo.size.set(0,0);
                 this.background.visible = false;
-                this.gear.visible = false;
+                this.tire.visible = false;
                 this.car.visible = false;
                 this.logo.visible = false;
             }

@@ -8,9 +8,11 @@ import GameNode from "../../Wolfie2D/Nodes/GameNode";
 import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import Sprite from "../../Wolfie2D/Nodes/Sprites/Sprite";
 import OrthogonalTilemap from "../../Wolfie2D/Nodes/Tilemaps/OrthogonalTilemap";
+import Scene from "../../Wolfie2D/Scene/Scene";
 import Viewport from "../../Wolfie2D/SceneGraph/Viewport";
 import Weapon from "../GameSystems/items/Weapon";
 import { hw3_Events } from "../hw3_constants";
+import GameLevel from "../Scenes/GameLevel";
 import BattlerAI from "./BattlerAI";
 import Alert from "./EnemyStates/Alert";
 import Attack from "./EnemyStates/Attack";
@@ -18,6 +20,8 @@ import Ball from "./EnemyStates/Ball";
 import Barricade from "./EnemyStates/Barricade";
 import Guard from "./EnemyStates/Guard";
 import Patrol from "./EnemyStates/Patrol";
+import Patrol2 from "./EnemyStates/Patrol2";
+import Tank from "./EnemyStates/Tank";
 import Tower from "./EnemyStates/Tower";
 
 export default class EnemyAI extends StateMachineAI implements BattlerAI {
@@ -40,6 +44,8 @@ export default class EnemyAI extends StateMachineAI implements BattlerAI {
 
     instakill: boolean;
 
+    weapon2: Weapon;
+
     initializeAI(owner: AnimatedSprite, options: Record<string, any>): void {
         this.owner = owner;
         this.instakill = false;
@@ -56,6 +62,12 @@ export default class EnemyAI extends StateMachineAI implements BattlerAI {
                 break;
             case "ball":
                 this.addState(EnemyStates.DEFAULT, new Ball(this, owner));
+                break;
+            case "patrol2":
+                this.addState(EnemyStates.DEFAULT, new Patrol2(this, owner, options.patrolRoute));
+                break;
+            case "tank":
+                this.addState(EnemyStates.DEFAULT, new Tank(this, owner));
                 break;
         }
 
@@ -78,6 +90,8 @@ export default class EnemyAI extends StateMachineAI implements BattlerAI {
         this.player = options.player;
 
         this.viewport= options.viewport;
+
+        this.weapon2 = options.weapon2;
 
         // Subscribe to events
         this.receiver.subscribe(hw3_Events.SHOT_FIRED);

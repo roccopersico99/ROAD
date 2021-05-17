@@ -6,7 +6,7 @@ import { hw3_Events, hw3_Names } from "../../hw3_constants";
 import EnemyAI, { EnemyStates } from "../EnemyAI";
 import EnemyState from "./EnemyState";
 
-export default class Patrol extends EnemyState {
+export default class Patrol2 extends EnemyState {
 
 
     // A return object for exiting this state
@@ -43,7 +43,7 @@ export default class Patrol extends EnemyState {
         }
         if(this.owner.position.y >= this.parent.viewport.position.y - 130){
             if(this.owner.position.y > 30){
-                this.owner.position.add(Vec2.UP.scaled(25 * deltaT));
+                this.owner.position.add(Vec2.UP.scaled(30 * deltaT));
             }
             let dir = this.parent.player.position.clone().sub(this.owner.position).normalize();
             dir.rotateCCW(Math.PI / 4 * Math.random() - Math.PI/8);

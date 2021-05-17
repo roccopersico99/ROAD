@@ -1,8 +1,8 @@
 {
     "name": "Tank",
     "spriteSheetImage": "tank.png",
-    "spriteWidth": 16,
-    "spriteHeight": 16,
+    "spriteWidth": 32,
+    "spriteHeight": 32,
     "columns": 4,
     "rows": 4,
     "durationType": "time",

@@ -1,5 +1,5 @@
 {
-    "numWeapons": 8,
+    "numWeapons": 9,
     "weapons": [
         {
             "weaponType": "semiAutoGun",
@@ -24,7 +24,18 @@
             "color": "#000000",
             "projectile": "projectile2",
             "speed": 250
-            
+        },
+        {
+            "weaponType": "semiAutoGun",
+            "name": "tank_missle",
+            "displayName": "TankMissle",
+            "spriteKey": "pistol",
+            "damage": 3,
+            "cooldown": 1600,
+            "useVolume": 10,
+            "color": "#000000",
+            "projectile": "projectile3",
+            "speed": 175
         },
         {
             "weaponType": "semiAutoGun",
@@ -71,7 +82,7 @@
             "cooldown": 900,
             "useVolume": 150,
             "color": "#FDBFBF",
-            "projectile": "projectile",
+            "projectile": "projectile2",
             "speed": 300
         },
         {

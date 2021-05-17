@@ -277,7 +277,7 @@ export default class SemiAutoGun extends WeaponType {
                         speed: this.speed,
                         attack: this.damage
                     });
-                if(this.name == "weak_pistol"){
+                if(this.name == "weak_pistol" || this.name == "tank_missle"){
                     bullet.setGroup("projectile2");
                 }
                 else {

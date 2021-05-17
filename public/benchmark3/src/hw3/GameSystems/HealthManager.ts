@@ -89,6 +89,9 @@ export default class HealthManager {
         let hearts = 0;
         let halfHearts = 0;
         this.currentHealth = newHealth;
+        if(this.currentHealth < 0){
+            this.currentHealth = 0;
+        }
 
         if(this.totalHealth % 1 == .5) {
             hearts = this.totalHealth - .5;
@@ -109,7 +112,7 @@ export default class HealthManager {
         }
 
         // Create the empty hearts 
-        for(let i = Math.ceil(newHealth); i < this.totalHealth; i++){
+        for(let i = Math.ceil(this.currentHealth); i < this.totalHealth; i++){
             this.heartContainers[i].imageId = "emptyHeart";
         }
 

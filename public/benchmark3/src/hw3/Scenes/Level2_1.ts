@@ -105,6 +105,7 @@ export default class Level2_1 extends GameLevel {
         this.resourceManager.keepImage("crosshair");
         this.resourceManager.keepImage("cursor");
         this.resourceManager.keepSpritesheet("player");
+        this.resourceManager.keepSpritesheet("ball");
         this.resourceManager.keepSpritesheet("patrol");
         this.resourceManager.keepSpritesheet("projectile");
         this.resourceManager.keepSpritesheet("projectile2");

@@ -16,7 +16,7 @@
         {
             "position": [104, 2160],
             "mode": "tank",
-            "weapon": "weak_pistol",
+            "weapon": "tank_missle",
             "health": 10
         },
         {

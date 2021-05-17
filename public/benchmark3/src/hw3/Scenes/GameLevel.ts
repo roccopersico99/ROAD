@@ -453,10 +453,12 @@ export default class GameLevel extends Scene {
                             let other4 = this.sceneGraph.getNode(event.data.get("other"));
     
                             if(other4.group === 4){
-                                node5.destroy();
+                                node5.visible = false;
+                                node5.disablePhysics();
                             }
                             else{
-                                other4.destroy();
+                                other4.visible = false;
+                                other4.disablePhysics();
                             }
                             break;
                     case "EnemyDamaged":
@@ -808,7 +810,9 @@ export default class GameLevel extends Scene {
         for(let i = 0; i < weaponData.numWeapons; i++){
             let weapon = weaponData.weapons[i];
             weapon.scene = this;
-            weapon.damage = ((weapon.damage+((this.damageStat-1)*(weapon.damage/5))));
+            if(weapon.name != "weak_pistol" && weapon.name != "weak_shotgun" && weapon.name != "tank_missile"){
+                weapon.damage = ((weapon.damage+((this.damageStat-1)*(weapon.damage/5))));
+            }
             
             // console.log("before: " + weapon.damage);
             // weapon.damage += Math.floor(((this.damageStat-1)*(weapon.damage/5)));
@@ -869,7 +873,7 @@ export default class GameLevel extends Scene {
         this.player.addPhysics(new AABB(Vec2.ZERO, new Vec2(5, 5)));
         this.player.addAI(PlayerController, 
             {
-                speed: Math.floor(150+((this.speedStat-1)*8)),
+                speed: Math.floor(150+((this.speedStat-1)*12)),
                 health: this.healthStat+3,
                 scrapCount: this.scrapCount,
                 inventory: inventory,

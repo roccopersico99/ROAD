@@ -23,7 +23,7 @@
             "useVolume": 10,
             "color": "#000000",
             "projectile": "projectile2",
-            "speed": 250
+            "speed": 150
         },
         {
             "weaponType": "semiAutoGun",
@@ -35,7 +35,7 @@
             "useVolume": 10,
             "color": "#000000",
             "projectile": "projectile3",
-            "speed": 175
+            "speed": 125
         },
         {
             "weaponType": "semiAutoGun",
@@ -83,7 +83,7 @@
             "useVolume": 150,
             "color": "#FDBFBF",
             "projectile": "projectile2",
-            "speed": 175
+            "speed": 150
         },
         {
             "weaponType": "semiAutoGun",

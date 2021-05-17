@@ -13,8 +13,14 @@ export default class Level3_2 extends GameLevel {
         //Load the player and enemy spritesheets
         this.load.spritesheet("player", "road_assets/spritesheets/car.json");
         this.load.spritesheet("patrol", "road_assets/spritesheets/camo_truck.json");
+        this.load.spritesheet("patrol2", "road_assets/spritesheets/kamikaze_truck.json");
+        this.load.spritesheet("barricade", "road_assets/spritesheets/camo_barricade.json");
+        this.load.spritesheet("tower", "road_assets/spritesheets/turret.json");
+        this.load.spritesheet("tank", "road_assets/spritesheets/tank.json");
+        this.load.spritesheet("ball", "road_assets/spritesheets/rock.json");
         this.load.spritesheet("projectile", "road_assets/spritesheets/projectile.json");
         this.load.spritesheet("projectile2", "road_assets/spritesheets/projectile2.json");
+        this.load.spritesheet("projectile3", "road_assets/spritesheets/projectile3.json");
         this.load.spritesheet("laser_projectile", "road_assets/spritesheets/laser_projectile.json");
 
         // Load the tilemap
@@ -25,7 +31,7 @@ export default class Level3_2 extends GameLevel {
         this.load.object("navmesh", "road_assets/data/my-navmesh.json");
 
         // Load in the enemy info
-        this.load.object("enemyData", "road_assets/data/enemy1_2.json");
+        this.load.object("enemyData", "road_assets/data/enemy3_2.json");
 
         // Load in item info
         this.load.object("itemData", "road_assets/data/items.json");
@@ -107,8 +113,13 @@ export default class Level3_2 extends GameLevel {
         this.resourceManager.keepImage("cursor");
         this.resourceManager.keepSpritesheet("player");
         this.resourceManager.keepSpritesheet("patrol");
+        this.resourceManager.keepSpritesheet("patrol2");
+        this.resourceManager.keepSpritesheet("barricade");
+        this.resourceManager.keepSpritesheet("tower");
+        this.resourceManager.keepSpritesheet("tank");
         this.resourceManager.keepSpritesheet("projectile");
         this.resourceManager.keepSpritesheet("projectile2");
+        this.resourceManager.keepSpritesheet("projectile3");
         this.resourceManager.keepSpritesheet("laser_projectile");
         this.resourceManager.keepObject("itemData");
         this.resourceManager.keepObject("weaponData");
@@ -151,6 +162,6 @@ export default class Level3_2 extends GameLevel {
 
     moveToNextScene(): void {
         console.log("you won! moving to splash screen...")
-        this.sceneManager.changeToScene(SplashScreen, {});
+        this.sceneManager.changeToScene(MainMenu, {});
     }
 }

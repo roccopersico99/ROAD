@@ -8,14 +8,6 @@
         "destination": "/benchmark1.html"
       },
       {
-        "source": "/benchmark2",
-        "destination": "/404.html"
-      },
-      {
-        "source": "/benchmark3",
-        "destination": "/index.html"
-      },
-      {
         "source": "**",
         "destination": "/index.html"
       }

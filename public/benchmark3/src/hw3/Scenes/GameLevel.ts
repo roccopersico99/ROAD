@@ -364,18 +364,6 @@ export default class GameLevel extends Scene {
                     case "levelEnd":
                         console.log(this.hpCount);
                         this.moveToNextScene();
-                        // if(this.nextLevel == LastLevel){
-                        //     this.sceneManager.changeToScene(LastLevel, {});
-                        // }
-                        // else {
-                        //     this.moveToNextScene();
-                        // }
-                        // if(this.nextLevel){
-                        //     this.sceneManager.changeToScene(this.nextLevel, {maxHP: this.maxHP, hpCount: this.hpCount, scrapCount: this.scrapCount, lvl2Lock: false});
-                        // }
-                        // else{
-                        //     this.sceneManager.changeToScene(MainMenu, {});
-                        // }
                         break;
                     case "EnemyDied":
                         this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "explode1", loop: false, holdReference: false});
@@ -509,24 +497,6 @@ export default class GameLevel extends Scene {
                 this.getLayer("graph").setHidden(!this.getLayer("graph").isHidden());
             }
         }
-        // else{
-        //     this.player.freeze();
-        //     this.player.animation.pause();
-        //     this.player.setAIActive(false, {});
-        //     //console.log("freezing enemies...");
-        //     for(let i = 0; i < this.enemies.length; i++) {
-        //         //console.log(i + ": " + this.enemies[i]);
-        //         if(this.enemies[i]._ai !== undefined) {
-        //             this.enemies[i].freeze();
-        //             this.enemies[i].setAIActive(false, {});
-        //             this.enemies[i].animation.pause();
-        //         }
-        //     }
-        //     this.pauseLayer.setHidden(false);
-        //     this.viewport.setZoomLevel(1);
-        //     this.cursorLayer.setHidden(false);
-        //     this.crosshairLayer.setHidden(true);
-        // }
     }
 
     
@@ -742,7 +712,6 @@ export default class GameLevel extends Scene {
         this.sceneManager.changeToScene(Upgrade, {nextLevel: this.nextLevel, maxHP: this.maxHP, scrapCount: this.scrapCount, healthStat: this.healthStat, damageStat: this.damageStat, speedStat: this.speedStat, scrapGainStat: this.scrapGainStat, weaponArray: this.weaponArray});
     }
 
-    // HOMEWORK 3 - TODO - DONE
     /**
      * This function spawns in all of the items in "items.json"
      * 
@@ -817,7 +786,6 @@ export default class GameLevel extends Scene {
         this.navManager.addNavigableEntity(hw3_Names.NAVMESH, navmesh);
     }
 
-    // HOMEWORK 3 - TODO - DONE
     /**
      * You'll want to have a new weapon type available in your program - a laser gun.
      * Carefully look through the code for how the other weapon types (knife and pistol)
@@ -916,27 +884,6 @@ export default class GameLevel extends Scene {
         this.scrapCountLabel.text = "" + this.scrapCount;
     }
 
-    // HOMEWORK 3 - TODO - DONE
-    /**
-     * This function creates the navmesh for the game world.
-     * 
-     * It reads in information in the navmesh.json file.
-     * The format of the navmesh.json file is as follows
-     * 
-     * {
-     *  // An array of positions on the tilemap. You can see the position of your mouse in [row, col]
-     *  // while editing a map in Tiled, and can just multiply those values by the tile size, 16x16
-     *      "nodes": [[100, 200], [50, 400], ...]
-     * 
-     *  // An array of edges between nodes. The numbers here correspond to indices in the "nodes" array above.
-     *  // Note that edges are not directed here. An edge [0, 1] foes in both directions.
-     *      "edges": [[0, 1], [2, 4], ...]
-     * }
-     * 
-     * Your job here is to make a new graph to serve as the navmesh. Your graph should be designed
-     * for your tilemap, and no edges should go through walls.
-     */
-
     protected addLevelEnd(startingTile: Vec2, size: Vec2): void {
         this.levelEndArea = <Rect>this.add.graphic(GraphicType.RECT, "primary", {position: startingTile.add(size.scaled(0.5)).scale(32), size: size.scale(32)});
         this.levelEndArea.addPhysics(undefined, undefined, false, true);
@@ -944,7 +891,6 @@ export default class GameLevel extends Scene {
         this.levelEndArea.color = new Color(0, 0, 0, 0);
     }
 
-    // HOMEWORK 3 - TODO - DONE
     /**
      * This function creates all enemies from the enemy.json file.
      * You shouldn't have to modify any code here, but you should edit enemy.json to
@@ -977,6 +923,10 @@ export default class GameLevel extends Scene {
                     this.enemies[i].addPhysics(new Circle(Vec2.ZERO, 15));
                     this.enemies[i].setTrigger("player", "BallHitPlayer", null);
                     this.enemies[i].setTrigger("projectile1", "ProjectileHitBall", null);
+                    break;
+                case "tank":
+                    this.enemies[i].addPhysics(new AABB(Vec2.ZERO, new Vec2(14,14)));
+                    this.enemies[i].setTrigger("projectile1", "ProjectileHitEnemy", null);
                     break;
                 default:
                     this.enemies[i].addPhysics(new AABB(Vec2.ZERO, new Vec2(5, 5)));

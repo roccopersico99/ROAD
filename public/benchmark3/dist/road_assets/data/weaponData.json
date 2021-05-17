@@ -1,5 +1,5 @@
 {
-    "numWeapons": 9,
+    "numWeapons": 10,
     "weapons": [
         {
             "weaponType": "semiAutoGun",
@@ -91,11 +91,11 @@
             "displayName": "AutoShotgun",
             "spriteKey": "auto_shotgun",
             "damage": 0.75,
-            "cooldown": 400,
+            "cooldown": 600,
             "useVolume": 150,
             "color": "#FDBFBF",
             "projectile": "projectile",
-            "speed": 500
+            "speed": 400
         },
         {
             "weaponType": "semiAutoGun",
@@ -108,6 +108,18 @@
             "color": "#CCCC00",
             "projectile": "projectile",
             "speed": 300
+        },
+        {
+            "weaponType": "semiAutoGun",
+            "name": "weak_autoshotgun",
+            "displayName": "WeakAutoShotgun",
+            "spriteKey": "auto_shotgun",
+            "damage": 1,
+            "cooldown": 900,
+            "useVolume": 150,
+            "color": "#FDBFBF",
+            "projectile": "projectile2",
+            "speed": 150
         }
     ]
 }

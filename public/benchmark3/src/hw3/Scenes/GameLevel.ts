@@ -978,6 +978,10 @@ export default class GameLevel extends Scene {
                     this.enemies[i].setTrigger("player", "BallHitPlayer", null);
                     this.enemies[i].setTrigger("projectile1", "ProjectileHitBall", null);
                     break;
+                case "tank":
+                    this.enemies[i].addPhysics(new AABB(Vec2.ZERO, new Vec2(14,14)));
+                    this.enemies[i].setTrigger("projectile1", "ProjectileHitEnemy", null);
+                    break;
                 default:
                     this.enemies[i].addPhysics(new AABB(Vec2.ZERO, new Vec2(5, 5)));
                     this.enemies[i].setTrigger("projectile1", "ProjectileHitEnemy", null);

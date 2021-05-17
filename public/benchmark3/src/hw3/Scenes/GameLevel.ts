@@ -436,14 +436,16 @@ export default class GameLevel extends Scene {
                             node3.visible = false;
                             node3.disablePhysics();
                             //node3.destroy();
-                            (<EnemyAI>other2._ai).damage((atk+((this.damageStat-1)*(atk/5))));
+                            //(<EnemyAI>other2._ai).damage((atk+((this.damageStat-1)*(atk/5))));
+                            (<EnemyAI>other2._ai).damage(atk);
                         }
                         else{
                             let atk = (<Bullet>other2._ai).attack;
                             other2.visible = false;
                             other2.disablePhysics();
                             //other2.destroy();
-                            (<EnemyAI>node3._ai).damage((atk+((this.damageStat-1)*(atk/5))));
+                            //(<EnemyAI>node3._ai).damage((atk+((this.damageStat-1)*(atk/5))));
+                            (<EnemyAI>node3._ai).damage(atk);
                         }
                         break;
                     case "ProjectileHitBall":
@@ -806,6 +808,7 @@ export default class GameLevel extends Scene {
         for(let i = 0; i < weaponData.numWeapons; i++){
             let weapon = weaponData.weapons[i];
             weapon.scene = this;
+            weapon.damage = ((weapon.damage+((this.damageStat-1)*(weapon.damage/5))));
             
             // console.log("before: " + weapon.damage);
             // weapon.damage += Math.floor(((this.damageStat-1)*(weapon.damage/5)));

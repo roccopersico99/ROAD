@@ -17,7 +17,7 @@
             "position": [104, 2160],
             "mode": "patrol",
             "weapon": "weak_pistol",
-            "health": 10
+            "health": 6
         },
         {
             "position": [232, 1416],

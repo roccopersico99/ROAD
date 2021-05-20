@@ -84,10 +84,10 @@ export default class WeaponManager {
      */
     addItem(item: Item): void {
         this.items[this.itemCount] = item;
-        let y = this.position.y
+        let y = this.position.y;
         let offset = this.itemCount;
         if(this.itemCount > 2){
-            y = this.position.y+18
+            y = this.position.y+19.5;
             offset = this.itemCount-3;
         }
         item.moveSprite(new Vec2(this.position.x + (offset)*(this.slotSize.x + this.padding), y), this.itemLayer);

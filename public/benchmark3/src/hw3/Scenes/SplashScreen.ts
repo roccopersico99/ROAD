@@ -27,7 +27,7 @@ export default class SplashScreen extends Scene {
     loadScene(){
         // Load sprites
         this.load.image("cursor", "road_assets/sprites/cursor.png");
-        this.load.image("splashImage", "road_assets/sprites/splashImage.png");
+        this.load.image("splashImage", "road_assets/sprites/final_splash.png");
         this.load.image("clickToStart", "road_assets/sprites/clickToStart.png")
 
         // Load music
@@ -48,6 +48,7 @@ export default class SplashScreen extends Scene {
         // Add splash image to layer
         this.splash = this.add.sprite("splashImage", "splash");
         this.splash.position.set(center.x, center.y);
+        this.splash.scale = new Vec2(6, 4);
 
         // Add "click anywhere to start..." text
         this.clickToStart = this.add.sprite("clickToStart", "primary")

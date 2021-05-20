@@ -46,7 +46,7 @@ export default class WeaponManager {
                 this.inventorySlots[i].position.set(position.x + i*(this.slotSize.x + this.padding), position.y);
             }
             else {
-                this.inventorySlots[i].position.set(position.x + (i-3)*(this.slotSize.x + this.padding), position.y+18);
+                this.inventorySlots[i].position.set(position.x + (i-3)*(this.slotSize.x + this.padding), position.y+19.5);
             }
         }
 

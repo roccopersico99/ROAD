@@ -78,7 +78,7 @@ export default class Level3_2 extends GameLevel {
         this.load.audio("sniper_fired", "road_assets/sounds/sniper_firing.mp3");
         
         // Load pause image
-        this.load.image("pauseImage", "road_assets/sprites/pauseimage.png");
+        this.load.image("pauseImage", "road_assets/sprites/dirt_background.png");
     }
 
     unloadScene(): void {

@@ -116,6 +116,9 @@ export default class GameLevel extends Scene {
 
     protected inventory: Array<Weapon>;
 
+    //Prevent death animation multiple times
+    protected isDead: boolean;
+
     loadScene() {}
 
     initScene(init: Record<string, any>): void {
@@ -195,6 +198,7 @@ export default class GameLevel extends Scene {
         this.isPaused = false;
         this.invFlag = false;
         this.instakill = false;
+        this.isDead = false;
 
         // Create the battle manager
         this.battleManager = new BattleManager();
@@ -379,9 +383,12 @@ export default class GameLevel extends Scene {
                         break;
                     case "PlayerDied":
                         //Input.disableInput();
-                        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "game_over", loop: false, holdReference: false});
-                        this.player.visible = false;
-                        this.emitter.fireEvent("GameOver");
+                        if(!this.isDead) {
+                            this.isDead = true;
+                            this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "game_over", loop: false, holdReference: false});
+                            this.player.visible = false;
+                            this.emitter.fireEvent("GameOver");
+                        }
                         break;
                     case "GameOver":
                         this.sceneManager.changeToScene(GameOver, {});

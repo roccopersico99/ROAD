@@ -24,17 +24,17 @@ export default class GameOver extends Scene {
         this.addUILayer("primary").setDepth(100);
 
         const gameOver = <Label>this.add.uiElement(UIElementType.LABEL, "primary", {position: new Vec2(center.x, center.y), text: "Game Over"});
-        gameOver.textColor = Color.BLACK;
-        gameOver.fontSize = 50;
+        gameOver.textColor = Color.WHITE;
+        gameOver.fontSize = 70;
         gameOver.font = "PixelSimple"
 
         const play = <Label>this.add.uiElement(UIElementType.BUTTON, "primary", {position: new Vec2(center.x, center.y + 100), text: "Main Menu"});
         play.size.set(300, 50);
         play.borderWidth = 2;
-        play.borderColor = Color.RED;
-        play.backgroundColor = Color.ORANGE;
+        play.borderColor = Color.TRANSPARENT;
+        play.backgroundColor = new Color(0, 0, 0, 0.3);
         play.onClickEventId = "restart";
-        play.textColor = Color.BLACK;
+        play.textColor = Color.WHITE;
         play.fontSize = 40;
         play.font = "PixelSimple";
 

@@ -6,6 +6,7 @@ import Debug from "../../Wolfie2D/Debug/Debug";
 import MainMenu from "./MainMenu";
 import Level1_1 from "./Level1_1";
 import SplashScreen from "./SplashScreen";
+import Victory from "./Victory";
 
 export default class Level3_2 extends GameLevel {
 
@@ -162,6 +163,6 @@ export default class Level3_2 extends GameLevel {
 
     moveToNextScene(): void {
         console.log("you won! moving to splash screen...")
-        this.sceneManager.changeToScene(MainMenu, {});
+        this.sceneManager.changeToScene(Victory, {});
     }
 }

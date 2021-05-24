@@ -201,7 +201,7 @@ export default class PlayerController implements BattlerAI {
                 // this.takingDmg = false;
                 // return;
             }
-            if(this.health <= 0){
+            if(this.health <= 0 && !this.owner.animation.isPlaying("DEATH")){
                 console.log("outer game over");
                 this.owner.tweens.stopAll();
                 this.owner.setAIActive(false, {});

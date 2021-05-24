@@ -350,7 +350,7 @@ export default class GameLevel extends Scene {
                 this.player.autoMove = false;
             }
 
-            if(this.player.position.y > this.viewportMover.position.y + 155) {
+            if((this.player.position.y > this.viewportMover.position.y + 155) && !this.isDead) {
                 this.player.position.y = this.player.position.y = this.viewportMover.position.y + 100;
                 (<PlayerController>this.player._ai).damage(1);
             }

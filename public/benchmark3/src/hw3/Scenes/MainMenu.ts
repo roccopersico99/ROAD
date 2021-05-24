@@ -350,7 +350,7 @@ export default class MainMenu extends Scene {
         lvlSelect11.borderWidth = 2;
         lvlSelect11.borderColor = Color.RED;
         lvlSelect11.backgroundColor = Color.ORANGE;
-        lvlSelect11.textColor = Color.BLACK;
+        lvlSelect11.textColor = Color.WHITE;
         lvlSelect11.onClickEventId = "level1-1";
         lvlSelect11.fontSize = 40;
         lvlSelect11.font = "PixelSimple";

@@ -13,6 +13,7 @@ import GameLevel from "./GameLevel";
 import { GameEventType } from "../../Wolfie2D/Events/GameEventType";
 import Button from "../../Wolfie2D/Nodes/UIElements/Button";
 import { EaseFunctionType } from "../../Wolfie2D/Utils/EaseFunctions";
+import { TweenableProperties } from "../../Wolfie2D/Nodes/GameNode";
 
 export default class Upgrade extends Scene {
     // Layer for holding the upgrade screen image
@@ -102,6 +103,8 @@ export default class Upgrade extends Scene {
 
     protected weaponArray: Array<string>;
 
+    protected levelEndLabel: Label;
+
     loadScene(){
         this.load.image("cursor", "road_assets/sprites/cursor.png");
         this.load.image("gear", "road_assets/sprites/gear.png");
@@ -150,6 +153,7 @@ export default class Upgrade extends Scene {
         this.viewport.setCenter(600, 400);
 
         const center = this.viewport.getCenter();
+        this.addUILayer("label").setDepth(104);
 
         this.addUILayer("primary").setDepth(103);
 
@@ -162,6 +166,32 @@ export default class Upgrade extends Scene {
         this.initializeCursor();
 
         this.initShopUI();
+
+        // End of level label (start off screen)
+        this.levelEndLabel = <Label>this.add.uiElement(UIElementType.LABEL, "label", {position: new Vec2(center.x, center.y), text: "Level Complete"});
+        this.levelEndLabel.size.set(1200, 800);
+        this.levelEndLabel.borderRadius = 0;
+        this.levelEndLabel.backgroundColor = new Color(20, 20, 20);
+        this.levelEndLabel.textColor = Color.WHITE;
+        this.levelEndLabel.fontSize = 100;
+        this.levelEndLabel.font = "PixelSimple";
+
+        // Add a tween to move the label on screen
+        this.levelEndLabel.tweens.add("slideOut", {
+            startDelay: 0,
+            duration: 2000,
+            effects: [
+                {
+                    property: TweenableProperties.posX,
+                    start: center.x,
+                    end: center.x-1200,
+                    ease: EaseFunctionType.OUT_SINE
+                }
+            ],
+            onEnd: this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "music", loop: true, holdReference: true})
+        });
+
+        this.levelEndLabel.tweens.play("slideOut");
 
         // Create the upgrade layer
         this.upgradeLayer = this.addUILayer("upgrade");
@@ -461,7 +491,7 @@ export default class Upgrade extends Scene {
         this.receiver.subscribe("sniper");
 
         // Scene has finished loading, so start playing menu music
-        this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "music", loop: true, holdReference: true});
+        // this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "music", loop: true, holdReference: true});
     }
 
     updateScene(){

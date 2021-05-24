@@ -133,7 +133,7 @@ export default class MainMenu extends Scene {
         this.car.animation.play("WALK", true);
 
         this.truck = this.add.animatedSprite("truck", "background");
-        this.truck.position.set(center.x+100, center.y-800);
+        this.truck.position.set(center.x+100, center.y-1200);
         this.truck.scale = new Vec2(4, 4);
         this.truck.rotation = Math.PI;
         this.truck.animation.play("WALK", true);
@@ -464,7 +464,7 @@ export default class MainMenu extends Scene {
         }
         this.truck.position.y+=4;
         if(this.truck.position.y > 1000){
-            this.truck.position.set(center.x+100, center.y-800);
+            this.truck.position.set(center.x+100, center.y-1200);
         }
 
         while(this.receiver.hasNextEvent()){
